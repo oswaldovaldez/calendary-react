@@ -1,7 +1,7 @@
 {
-  "name": "react",
+  "name": "Calendary react",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    
     "@tanstack/react-router": "^1.131.28",
     "@tanstack/react-router-devtools": "^1.131.28",
     "@tanstack/react-table": "^8.21.3",
