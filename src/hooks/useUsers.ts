@@ -1,0 +1,45 @@
+// hooks/useUsers.ts
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Api } from "../services/api";
+import { useAuthStore } from "../store/auth.store";
+export function useUsers() {
+  // console.log('users')
+  //   const [loadingState, setLoadingState] = useState({
+  //   isLoading: false,
+  //   isSuccess: false,
+  //   isError: false
+  // });
+  const qc = useQueryClient();
+  const token = useAuthStore((s)=>s.token);
+  const usersQuery = useQuery({
+    queryKey: ["users"],
+    queryFn: async() => Api.readUsers({ _token: token??'' }),
+  });
+
+const showUser = useMutation({
+    mutationFn: async (userId: number) => Api.showUser({ user_id: userId, _token: token ?? '' }),
+    onSuccess: (data, variables) => {
+      // Actualiza el cache con los datos del usuario
+      qc.setQueryData(["users", variables], data);
+    },
+  });
+  
+  const createUser = useMutation({
+    mutationFn: Api.createUser,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
+  });
+
+  const updateUser = useMutation({
+    mutationFn: Api.updateUser,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
+  });
+
+  const deleteUser = useMutation({
+    mutationFn: Api.deleteUser,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
+  });
+
+
+
+  return { usersQuery, createUser, updateUser, deleteUser,showUser };
+}
