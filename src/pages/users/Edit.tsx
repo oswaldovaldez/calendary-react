@@ -12,15 +12,15 @@ const Edit = () => {
     password: "",
     role: "",
   });
-  const { userId } = useParams({ from: "/users/$userId/edit"});
+  const { userId } = useParams({ from: "/users/$userId/edit" });
   const token = useAuthStore((s) => s.token);
 
   useEffect(() => {
-    Api.showUser({ _token: token??'',user_id:userId })
-    .then((res)=>{
-      setFormData({...res,role:res.roles[0].id});
-    })
-    .catch(console.log);
+    Api.showUser({ _token: token ?? "", user_id: userId })
+      .then((res) => {
+        setFormData({ ...res, role: res.roles[0].id });
+      })
+      .catch(console.log);
   }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

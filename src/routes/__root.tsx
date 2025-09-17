@@ -47,7 +47,7 @@ import {
   TemplatesEdit,
   TemplatesIndex,
   TemplatesShow,
-} from "../pages/records/templates/index.ts";
+} from "../pages/templates/index.ts";
 import {
   ServicesIndex,
   ServicesCreate,
@@ -373,7 +373,7 @@ const routeTree = rootRoute.addChildren([
   }),
   new Route({
     getParentRoute: () => rootRoute,
-    path: "/records/templates/create",
+    path: "/templates/create",
     component: () => (
       <RouteGuard permission="records.template.create">
         <TemplatesCreate />
@@ -382,7 +382,7 @@ const routeTree = rootRoute.addChildren([
   }),
   new Route({
     getParentRoute: () => rootRoute,
-    path: "/records/templates/$templateId",
+    path: "/templates/$templateId",
     component: () => (
       <RouteGuard permission="records.template.view">
         <TemplatesShow />
@@ -391,7 +391,7 @@ const routeTree = rootRoute.addChildren([
   }),
   new Route({
     getParentRoute: () => rootRoute,
-    path: "/records/templates/$templateId/edit",
+    path: "/templates/$templateId/edit",
     component: () => (
       <RouteGuard permission="records.template.edit">
         <TemplatesEdit />
