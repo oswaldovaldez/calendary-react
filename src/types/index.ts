@@ -8,9 +8,40 @@ export interface UserType {
  id:                number;
  name:              string;
  permissions:       any[];
+ record_templates?: RecordTemplateType[];
  roles:             RoleType|any[];
  updated_at:        Date|string;
 }
+
+
+export interface RecordTemplateType {
+ commerce_id: number;
+ created_at:  Date;
+ deleted_at:  null;
+ fields:      FieldType[];
+ id:          number;
+ name:        string;
+ pivot:       RecordTemplatePivotType;
+ updated_at:  Date;
+}
+
+export interface FieldType {
+ label:    string;
+ max?:     number;
+ min?:     number;
+ options?: string[];
+ pattern?: string;
+ required: boolean;
+ type:     string;
+}
+
+export interface RecordTemplatePivotType {
+ model_id:           number;
+ model_type:         string;
+ record_template_id: number;
+}
+
+
 
 export interface CommerceType {
  address:     string|null;
@@ -24,6 +55,7 @@ export interface CommerceType {
  name:        string;
  phone:       string|null;
  pivot:       CommercePivotType;
+ record_templates?: RecordTemplateType[];
  slug:        string;
  updated_at:  Date;
 }
@@ -89,6 +121,7 @@ export interface PatientType {
  last_name:   string;
  phone:       string;
  records:     any[];
+ record_templates?: RecordTemplateType[];
  updated_at:  Date;
 }
 
