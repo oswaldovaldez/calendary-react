@@ -2,25 +2,37 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 
-// 📌 Tipo de los valores del formulario
 export interface CommerceFormValues {
 	name: string;
 	email: string;
 	phone: string;
-	data: Record<string, any>; // objeto genérico
+	data: Record<string, any>;
 }
 
-// 📌 Schema de validación con Yup
-export const commerceSchema = Yup.object().shape({
-	name: Yup.string().required("El nombre es obligatorio"),
+export const commerceSchema = Yup.object({
+	name: Yup.string()
+		.trim()
+		.min(3, "El nombre debe tener al menos 3 caracteres")
+		.required("El nombre es obligatorio"),
 	email: Yup.string()
+		.trim()
 		.email("Correo inválido")
 		.required("El correo es obligatorio"),
-	phone: Yup.string().required("El teléfono es obligatorio"),
-	data: Yup.mixed().required("La data es obligatoria"),
+	phone: Yup.string()
+		.matches(/^\+?\d{7,15}$/, "Número de teléfono no válido")
+		.required("El teléfono es obligatorio"),
+	data: Yup.mixed()
+		.test("is-valid-json", "Debe ser un objeto JSON válido", (value) => {
+			try {
+				JSON.parse(JSON.stringify(value));
+				return true;
+			} catch {
+				return false;
+			}
+		})
+		.required("La data es obligatoria"),
 });
 
-// 📌 Props del componente
 interface FormCommerceProps {
 	initialValues: CommerceFormValues;
 	isEdit?: boolean;
