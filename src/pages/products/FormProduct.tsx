@@ -35,103 +35,91 @@ const FormProduct: React.FC<FormProductProps> = ({
 	onSubmit,
 }) => {
 	return (
-		<Formik
-			initialValues={initialValues}
-			validationSchema={productSchema}
-			onSubmit={onSubmit}
-		>
-			{({ errors, touched, isSubmitting, setFieldValue }) => (
-				<div className="card">
-					<Form className="form-container">
-						<div className="card-body">
-							{/* Nombre */}
-							<div className="form-group">
-								<label htmlFor="name">Nombre</label>
-								<Field
-									className={`input input-sm ${
-										errors.name && touched.name
-											? "input-invalid"
-											: ""
-									}`}
-									type="text"
-									name="name"
-									onChange={(
-										e: React.ChangeEvent<HTMLInputElement>
-									) =>
-										setFieldValue(
-											"name",
-											e.target.value.toUpperCase()
-										)
-									}
-								/>
-								<ErrorMessage
-									name="name"
-									component="div"
-									className="form-text-invalid"
-								/>
-							</div>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={productSchema}
+      onSubmit={onSubmit}
+    >
+      {({ errors, touched, isSubmitting, setFieldValue }) => (
+        <div className="card neumo">
+          <Form className="form-container">
+            <div className="card-body">
+              {/* Nombre */}
+              <div className="form-group">
+                <label htmlFor="name">Nombre</label>
+                <Field
+                  className={`input input-sm ${
+                    errors.name && touched.name ? "input-invalid" : ""
+                  }`}
+                  type="text"
+                  name="name"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setFieldValue("name", e.target.value.toUpperCase())
+                  }
+                />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="form-text-invalid"
+                />
+              </div>
 
-							{/* Descripción */}
-							<div className="form-group">
-								<label htmlFor="description">Descripción</label>
-								<Field
-									className="input input-sm"
-									type="text"
-									name="description"
-								/>
-								<ErrorMessage
-									name="description"
-									component="div"
-									className="form-text-invalid"
-								/>
-							</div>
+              {/* Descripción */}
+              <div className="form-group">
+                <label htmlFor="description">Descripción</label>
+                <Field
+                  className="input input-sm"
+                  type="text"
+                  name="description"
+                />
+                <ErrorMessage
+                  name="description"
+                  component="div"
+                  className="form-text-invalid"
+                />
+              </div>
 
-							{/* commerce_id como select */}
-							<div className="form-group">
-								<label htmlFor="commerce_id">Comercio</label>
-								<Field
-									as="select"
-									name="commerce_id"
-									className={`input input-sm ${
-										errors.commerce_id &&
-										touched.commerce_id
-											? "input-invalid"
-											: ""
-									}`}
-								>
-									<option value="">
-										-- Selecciona un comercio --
-									</option>
-									{commerces.map((c) => (
-										<option key={c.id} value={c.id}>
-											{c.name}
-										</option>
-									))}
-								</Field>
-								<ErrorMessage
-									name="commerce_id"
-									component="div"
-									className="form-text-invalid"
-								/>
-							</div>
-						</div>
+              {/* commerce_id como select */}
+              <div className="form-group">
+                <label htmlFor="commerce_id">Comercio</label>
+                <Field
+                  as="select"
+                  name="commerce_id"
+                  className={`input input-sm ${
+                    errors.commerce_id && touched.commerce_id
+                      ? "input-invalid"
+                      : ""
+                  }`}
+                >
+                  <option value="">-- Selecciona un comercio --</option>
+                  {commerces.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage
+                  name="commerce_id"
+                  component="div"
+                  className="form-text-invalid"
+                />
+              </div>
+            </div>
 
-						<div className="card-footer">
-							<button
-								className="btn btn-success ml-auto"
-								type="submit"
-								disabled={isSubmitting}
-							>
-								{isEdit
-									? "Editar Producto"
-									: "Registrar Producto"}
-							</button>
-						</div>
-					</Form>
-				</div>
-			)}
-		</Formik>
-	);
+            <div className="card-footer">
+              <button
+                className="btn btn-success ml-auto neumo"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isEdit ? "Editar Producto" : "Registrar Producto"}
+              </button>
+            </div>
+          </Form>
+        </div>
+      )}
+    </Formik>
+  );
 };
 
 export default FormProduct;
