@@ -9,7 +9,7 @@ export interface UserType {
  id?:                number;
  name:              string;
  permissions?:       any[];
- record_templates?: RecordTemplateType[];
+ record_templates?:  RecordTemplateType[];
  roles?:             RoleType|any[];
  updated_at?:        Date|string;
 }

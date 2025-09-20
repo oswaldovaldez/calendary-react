@@ -4,8 +4,10 @@ import { Api } from "../../services/api";
 import { useParams } from "@tanstack/react-router";
 import FormUser from "./FormUser";
 import type { UserType } from "../../types";
+ import toast, { Toaster } from "react-hot-toast";
 
 const Edit = () => {
+   const notify = (text) => toast.success(text);
   const [formData, setFormData] = useState<UserType>({
     name: "",
     email: "",
@@ -17,14 +19,21 @@ const Edit = () => {
   const { userId } = useParams({ from: "/users/$userId/edit" });
   const token = useAuthStore((s) => s.token);
   const [loading, setLoading] = useState(true);
-  const handleSubmit = async (values: UserType) => {
-    console.log(values);
+  const handleSubmit = async (values: any) => {
+    Api.updateUser({ ...values, user_id: values.id, _token: token ?? "" })
+      .then((res) => {
+        console.log(res);
+          notify(res.message);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   useEffect(() => {
     Api.showUser({ _token: token ?? "", user_id: userId })
       .then((res) => {
         setFormData({ ...res, role: res.roles[0].id });
-        console.log(res.record_templates[0].fields);
+
         setLoading(false);
       })
       .catch((error) => {
@@ -37,6 +46,7 @@ const Edit = () => {
 
   return (
     <div>
+      <Toaster />
       {formData && (
         <FormUser
           initialValues={formData}
