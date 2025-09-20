@@ -1,16 +1,17 @@
 export interface UserType {
- commerces:         CommerceType[]|null;
- created_at:        Date|string;
- data:              any[]|null;
- deleted_at:        Date|null;
+ commerces?:         CommerceType[]|null;
+ created_at?:        Date|string;
+ data?:              any[]|null;
+ password?:         string|null;
+ deleted_at?:        Date|null;
  email:             string;
- email_verified_at: Date|string;
- id:                number;
+ email_verified_at?: Date|string;
+ id?:                number;
  name:              string;
- permissions:       any[];
+ permissions?:       any[];
  record_templates?: RecordTemplateType[];
- roles:             RoleType|any[];
- updated_at:        Date|string;
+ roles?:             RoleType|any[];
+ updated_at?:        Date|string;
 }
 
 

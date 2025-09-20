@@ -80,6 +80,28 @@ html.dark {
 
 /* 🛠️ Utilidades personalizadas */
 @layer utilities {
+  .bg-content{
+    background-color: var(--color-background-light);
+    color: var(--color-text-primary-light);
+  }
+  html:not(.dark) .bg-content{
+    background-color: var(--color-background-light);
+    color: var(--color-text-primary-light);
+  }
+  html.dark .bg-content{
+    background-color: var(--color-background-dark);
+    color: var(--color-text-primary-dark);
+  }
+
+  html{
+    background-color: var(--color-background-light);
+    color: var(--color-text-primary-light);
+  }
+  
+  html.dark{
+    background-color: var(--color-background-dark);
+    color: var(--color-text-primary-dark);
+  }
   /* 🔲 Neumorphism */
   .neumo {
     border-radius: 16px !important;

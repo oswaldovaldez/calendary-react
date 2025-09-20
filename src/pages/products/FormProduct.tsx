@@ -2,39 +2,39 @@ import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 
 export interface ProductFormValues {
-	name: string;
-	description: string;
-	commerce_id: number;
+  name: string;
+  description: string;
+  commerce_id: number;
 }
 
 interface Commerce {
-	id: number;
-	name: string;
+  id: number;
+  name: string;
 }
 
 const productSchema = Yup.object().shape({
-	name: Yup.string().required("El nombre es obligatorio"),
-	description: Yup.string().nullable(),
-	commerce_id: Yup.number().required("Debes seleccionar un comercio"),
+  name: Yup.string().required("El nombre es obligatorio"),
+  description: Yup.string().nullable(),
+  commerce_id: Yup.number().required("Debes seleccionar un comercio"),
 });
 
 interface FormProductProps {
-	initialValues: ProductFormValues;
-	commerces: Commerce[];
-	isEdit?: boolean;
-	onSubmit: (
-		values: ProductFormValues,
-		helpers: FormikHelpers<ProductFormValues>
-	) => void | Promise<void>;
+  initialValues: ProductFormValues;
+  commerces: Commerce[];
+  isEdit?: boolean;
+  onSubmit: (
+    values: ProductFormValues,
+    helpers: FormikHelpers<ProductFormValues>
+  ) => void | Promise<void>;
 }
 
 const FormProduct: React.FC<FormProductProps> = ({
-	initialValues,
-	commerces,
-	isEdit = false,
-	onSubmit,
+  initialValues,
+  commerces,
+  isEdit = false,
+  onSubmit,
 }) => {
-	return (
+  return (
     <Formik
       initialValues={initialValues}
       validationSchema={productSchema}
@@ -108,7 +108,7 @@ const FormProduct: React.FC<FormProductProps> = ({
 
             <div className="card-footer">
               <button
-                className="btn btn-success ml-auto neumo"
+                className="btn neumo btn-success ml-auto neumo"
                 type="submit"
                 disabled={isSubmitting}
               >

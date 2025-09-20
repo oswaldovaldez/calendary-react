@@ -14,22 +14,28 @@ const links = [
   { to: "/services", label: "Services" },
   { to: "/users", label: "Users" },
 ]
-
+import { useSidebarStore } from "../store/sidebar.store";
 export function Sidebar() {
+
+   const { isOpen } = useSidebarStore();
   return (
-    <aside className="w-64 bg-white dark:bg-gray-800 shadow-md h-screen flex flex-col">
-      <div className="p-4 text-lg font-bold">Dashboard</div>
-      <nav className="flex flex-col gap-2 p-2 overflow-y-auto">
-        {links.map((l) => (
-          <Link
-            key={l.to}
-            to={l.to}
-            className="px-3 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700"
-          >
-            {l.label}
-          </Link>
-        ))}
-      </nav>
-    </aside>
-  )
+    <>
+      
+
+      <aside
+        className={`fixed lg:static top-0 left-0 h-screen w-64 shadow-md flex flex-col 
+          bg-content transition-transform duration-300 neumo z-50
+          ${isOpen ? "translate-x-0" : "-translate-x-64"}`}
+      >
+        <div className="p-4 text-lg font-bold">Dashboard</div>
+        <nav className="flex flex-col gap-2 p-2 overflow-y-auto">
+          {links.map((l) => (
+            <Link key={l.to} to={l.to} className="px-3 py-2 rounded-lg">
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+      </aside>
+    </>
+  );
 }

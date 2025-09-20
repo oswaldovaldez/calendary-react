@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import Table from "../../components/Table";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
@@ -24,14 +24,14 @@ const Index = () => {
           {/* Botón para ver registro */}
           <Link
             to={`/categories/${info.row.original.id}`}
-            className="btn btn-info"
+            className="btn neumo btn-info"
           >
             Ver
           </Link>
           {/* Botón para editar */}
           <Link
             to={`/categories/${info.row.original.id}/edit`}
-            className="btn btn-warning"
+            className="btn neumo btn-warning"
           >
             Editar
           </Link>
@@ -40,7 +40,7 @@ const Index = () => {
             onClick={() =>
               alert(`Eliminar comercio con ID: ${info.row.original.id}`)
             }
-            className="btn btn-danger"
+            className="btn neumo btn-danger"
           >
             Eliminar
           </button>
@@ -51,18 +51,15 @@ const Index = () => {
   useEffect(() => {
     Api.readCategories({ _token: token ?? "" })
       .then((res: any) => {
-        setCategories(res);
+        setCategories(res.data);
       })
       .catch(console.log);
   }, []);
   return (
     <div>
-      
-
-        <Table datos={categories} cols={cols} createLink={createLink} />
-
+      <Table datos={categories} cols={cols} createLink={createLink} />
     </div>
   );
 };
 
-export default Index
+export default Index;

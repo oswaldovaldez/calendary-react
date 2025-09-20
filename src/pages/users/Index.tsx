@@ -26,13 +26,16 @@ const Index = () => {
       cell: (info: any) => (
         <div className="flex gap-2">
           {/* Botón para ver registro */}
-          <Link to={`/users/${info.row.original.id}`} className="btn btn-info">
+          <Link
+            to={`/users/${info.row.original.id}`}
+            className="btn neumo btn-info"
+          >
             Ver
           </Link>
           {/* Botón para editar */}
           <Link
             to={`/users/${info.row.original.id}/edit`}
-            className="btn btn-warning"
+            className="btn neumo btn-warning"
           >
             Editar
           </Link>
@@ -41,7 +44,7 @@ const Index = () => {
             onClick={() =>
               alert(`Eliminar usuario con ID: ${info.row.original.id}`)
             }
-            className="btn btn-danger"
+            className="btn neumo btn-danger"
           >
             Eliminar
           </button>
@@ -58,9 +61,7 @@ const Index = () => {
   }, []);
   return (
     <div>
-      
-        <Table datos={users.data} cols={cols} createLink={createLink} />
-      
+      <Table datos={users.data} cols={cols} createLink={createLink} />
     </div>
   );
 };

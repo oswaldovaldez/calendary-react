@@ -26,14 +26,14 @@ const Index = () => {
           {/* Botón para ver registro */}
           <Link
             to={`/patients/${info.row.original.id}`}
-            className="btn btn-info"
+            className="btn neumo btn-info"
           >
             Ver
           </Link>
           {/* Botón para editar */}
           <Link
             to={`/patients/${info.row.original.id}/edit`}
-            className="btn btn-warning"
+            className="btn neumo btn-warning"
           >
             Editar
           </Link>
@@ -42,7 +42,7 @@ const Index = () => {
             onClick={() =>
               alert(`Eliminar comercio con ID: ${info.row.original.id}`)
             }
-            className="btn btn-danger"
+            className="btn neumo btn-danger"
           >
             Eliminar
           </button>
@@ -59,10 +59,7 @@ const Index = () => {
   }, []);
   return (
     <div>
-      
-      
-        <Table datos={patients.data} cols={cols} createLink={createLink} />
-      
+      <Table datos={patients.data} cols={cols} createLink={createLink} />
     </div>
   );
 };
