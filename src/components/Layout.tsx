@@ -10,21 +10,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isNotRootPath = location.pathname !== "/";
   // console.log(isNotRootPath)
   const { toggle, isOpen } = useSidebarStore();
-  
-  
+
   return (
     <div className="flex h-screen">
       {isNotRootPath ? <Sidebar /> : <></>}
       <main className="flex-1 overflow-y-auto overflow-hidden relative z-0">
         <div
-          className={`w-full h-[40px] flex flex-row justify-between px-4 py-2 gap-3 ${isOpen && "sm:pl-64"}`}
+          className={`w-full h-[40px] flex flex-row justify-between px-4 py-2 gap-3 ${isOpen ? "sm:pl-64 xl:pl-2":""}`}
         >
           <button onClick={toggle} className="ml-2 btn neumo btn-secondary">
             <TiThMenu />
           </button>
           <ThemeSwitch />
         </div>
-        <div className={`p-6 ${isOpen && "sm:ml-64"}`}>{children}</div>
+        <div className={`p-6 ${isOpen && "sm:ml-64 xl:ml-2"}`}>{children}</div>
       </main>
     </div>
   );

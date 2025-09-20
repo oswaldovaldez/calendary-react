@@ -60,9 +60,9 @@ export const Api = {
   //crud comercios
   createCommerce:(data:{name:string,email:string,phone:string,data:object,_token:string})=>apiFetch('/commerces',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readCommerces:(data:{_token:string})=>apiFetch(`/commerces`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
-  updateCommerce:(data:{name:string,email:string,phone:string,data:object,commerce:number,_token: string})=>apiFetch(`/commerces/${data.commerce}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
-  deleteCommerce:(data:{name:string,email:string,password:string,role:string,commerce_id:number|null,commerce:number,_token: string})=>apiFetch(`/commerces/${data.commerce}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
-  showCommerce:(data:{commerce:number,_token:string,})=>apiFetch(`/commerces/${data.commerce}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
+  updateCommerce:(data:{name:string,email:string,phone:string,data:object,commerce_id:number,_token: string})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  deleteCommerce:(data:{name:string,email:string,password:string,role:string,commerce_id:number,_token: string})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  showCommerce:(data:{commerce_id:number,_token:string,})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   attachUserCommerce:(data:{user_id:number,commerce_id:number,_token:string})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   detachUserCommerce:(data:{user_id:number,commerce_id:number,_token:string})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   //crud categorias

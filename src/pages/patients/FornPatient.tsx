@@ -1,4 +1,11 @@
-import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  type FormikHelpers,
+  FieldArray,
+} from "formik";
 import * as Yup from "yup";
 
 export interface PatientFormValues {
@@ -35,6 +42,83 @@ const FormPatient: React.FC<FormPatientProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
+  const formRender = (arrayHelpers: any) => {
+    return (
+      <div>
+        {initialValues.record_templates[0].fields.map((element, indexE) => (
+          <div className="form-control mt-2" key={`element-${indexE}`}>
+            <label
+              htmlFor={`data[${element.name ?? ""}]`}
+              className="form-label"
+            >
+              {element.label ?? ""}
+            </label>
+            {element.type === "select" && (
+              <>
+                <Field
+                  as="select"
+                  className="input input-sm"
+                  name={`data[${element.name ?? ""}]`}
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : initialValues.data[element.name]
+                  }
+                >
+                  {Object.entries(element.options).map(
+                    ([key, labelx], index) => (
+                      <option key={`option-${index}`} value={key}>
+                        {labelx ?? ""}
+                      </option>
+                    )
+                  )}
+                </Field>
+              </>
+            )}
+            {element.type === "multiselect" && (
+              <>
+                <Field
+                  as="select"
+                  className="input input-sm"
+                  name={`data[${element.name ?? ""}]`}
+                  multiple
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : initialValues.data[element.name]
+                  }
+                >
+                  {Object.entries(element.options).map(
+                    ([key, labelx], index) => (
+                      <option key={`option-${index}`} value={key}>
+                        {labelx ?? ""}
+                      </option>
+                    )
+                  )}
+                </Field>
+              </>
+            )}
+            {element.type === "group" && <></>}
+            {element.type !== "select" &&
+              element.type !== "multiselect" &&
+              element.type !== "group" && (
+                <Field
+                  className={`input input-sm ${element.type === "textarea" && "textarea"}`}
+                  type={element.type}
+                  name={`data[${element.name ?? ""}]`}
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : (initialValues.data[element.name] ?? "")
+                  }
+                />
+              )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -42,8 +126,8 @@ const FormPatient: React.FC<FormPatientProps> = ({
       onSubmit={onSubmit}
     >
       {({ errors, touched, isSubmitting }) => (
-        <div className="card">
-          <Form className="form-container">
+        <Form className="form-container">
+          <div className="card neumo">
             <div className="card-body">
               {/* Nombre */}
               <div className="form-group">
@@ -135,9 +219,9 @@ const FormPatient: React.FC<FormPatientProps> = ({
                 <label htmlFor="gender">Género</label>
                 <Field as="select" name="gender" className="input input-sm">
                   <option value="">-- Selecciona --</option>
-                  <option value="M">Masculino</option>
-                  <option value="F">Femenino</option>
-                  <option value="O">Otro</option>
+                  <option value="male">Masculino</option>
+                  <option value="female">Femenino</option>
+                  <option value="other">Otro</option>
                 </Field>
                 <ErrorMessage
                   name="gender"
@@ -146,18 +230,26 @@ const FormPatient: React.FC<FormPatientProps> = ({
                 />
               </div>
             </div>
-
-            <div className="card-footer">
-              <button
-                className="btn neumo btn-success ml-auto"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isEdit ? "Editar Paciente" : "Registrar Paciente"}
-              </button>
+          </div>
+          {isEdit && (
+            <div className="card neumo">
+              <div className="card-header">
+                <h3>Otros Datos</h3>
+              </div>
+              <div className="card-body">
+                <FieldArray name="data" render={formRender} />
+              </div>
             </div>
-          </Form>
-        </div>
+          )}
+
+          <button
+            className="btn neumo btn-success ml-auto"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isEdit ? "Editar Paciente" : "Registrar Paciente"}
+          </button>
+        </Form>
       )}
     </Formik>
   );

@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 
@@ -47,6 +47,82 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
+  const formRender = (arrayHelpers: any) => {
+    return (
+      <div>
+        {initialValues.record_templates[0].fields.map((element, indexE) => (
+          <div className="form-control mt-2" key={`element-${indexE}`}>
+            <label
+              htmlFor={`data[${element.name ?? ""}]`}
+              className="form-label"
+            >
+              {element.label ?? ""}
+            </label>
+            {element.type === "select" && (
+              <>
+                <Field
+                  as="select"
+                  className="input input-sm"
+                  name={`data[${element.name ?? ""}]`}
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : initialValues.data[element.name]
+                  }
+                >
+                  {Object.entries(element.options).map(
+                    ([key, labelx], index) => (
+                      <option key={`option-${index}`} value={key}>
+                        {labelx ?? ""}
+                      </option>
+                    )
+                  )}
+                </Field>
+              </>
+            )}
+            {element.type === "multiselect" && (
+              <>
+                <Field
+                  as="select"
+                  className="input input-sm"
+                  name={`data[${element.name ?? ""}]`}
+                  multiple
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : initialValues.data[element.name]
+                  }
+                >
+                  {Object.entries(element.options).map(
+                    ([key, labelx], index) => (
+                      <option key={`option-${index}`} value={key}>
+                        {labelx ?? ""}
+                      </option>
+                    )
+                  )}
+                </Field>
+              </>
+            )}
+            {element.type === "group" && <></>}
+            {element.type !== "select" &&
+              element.type !== "multiselect" &&
+              element.type !== "group" && (
+                <Field
+                  className={`input input-sm ${element.type === "textarea" && "textarea"}`}
+                  type={element.type}
+                  name={`data[${element.name ?? ""}]`}
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : (initialValues.data[element.name] ?? "")
+                  }
+                />
+              )}
+          </div>
+        ))}
+      </div>
+    );
+  };
   return (
     <div>
       <Formik
@@ -55,8 +131,8 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
         onSubmit={onSubmit}
       >
         {({ errors, touched, isSubmitting, setFieldValue }) => (
-          <div className="card">
-            <Form className="form-container">
+          <Form className="form-container">
+            <div className="card neumo">
               <div className="card-body">
                 {/* Nombre */}
                 <div className="form-group">
@@ -115,45 +191,27 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
                   />
                 </div>
 
-                {/* Data JSON */}
-                <div className="form-group">
-                  <label htmlFor="data" className="form-label">
-                    Data (JSON)
-                  </label>
-                  <Field
-                    as="textarea"
-                    name="data"
-                    className={`input input-sm ${
-                      errors.data && touched.data ? "input-invalid" : ""
-                    }`}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                      try {
-                        const parsed = JSON.parse(e.target.value);
-                        setFieldValue("data", parsed);
-                      } catch {
-                        setFieldValue("data", e.target.value);
-                      }
-                    }}
-                  />
-                  <ErrorMessage
-                    name="data"
-                    component="div"
-                    className="form-text-invalid"
-                  />
+                
+              </div>
+            </div>
+            {isEdit && (
+              <div className="card neumo">
+                <div className="card-header">
+                  <h3>Otros Datos</h3>
+                </div>
+                <div className="card-body">
+                  <FieldArray name="data" render={formRender} />
                 </div>
               </div>
-
-              <div className="card-footer">
-                <button
-                  className="btn neumo btn-success ml-auto"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  {isEdit ? "Editar Comercio" : "Registrar Comercio"}
-                </button>
-              </div>
-            </Form>
-          </div>
+            )}
+            <button
+              className="btn neumo btn-success ml-auto"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isEdit ? "Editar Comercio" : "Registrar Comercio"}
+            </button>
+          </Form>
         )}
       </Formik>
     </div>

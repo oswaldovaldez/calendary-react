@@ -4,10 +4,11 @@ import { Api } from "../../services/api";
 import { useParams } from "@tanstack/react-router";
 import FormUser from "./FormUser";
 import type { UserType } from "../../types";
- import toast, { Toaster } from "react-hot-toast";
+import { useNotificationStore } from "../../store/notification.store";
+//  import toast, { Toaster } from "react-hot-toast";
 
 const Edit = () => {
-   const notify = (text) => toast.success(text);
+  const notify = useNotificationStore((state) => state.notify);
   const [formData, setFormData] = useState<UserType>({
     name: "",
     email: "",
@@ -22,11 +23,11 @@ const Edit = () => {
   const handleSubmit = async (values: any) => {
     Api.updateUser({ ...values, user_id: values.id, _token: token ?? "" })
       .then((res) => {
-        console.log(res);
-          notify(res.message);
+        notify("success", res.message);
       })
       .catch((error) => {
         console.log(error);
+        notify("error", "Algo salió mal ❌");
       });
   };
   useEffect(() => {
@@ -46,7 +47,6 @@ const Edit = () => {
 
   return (
     <div>
-      <Toaster />
       {formData && (
         <FormUser
           initialValues={formData}

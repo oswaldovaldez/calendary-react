@@ -80,8 +80,8 @@ const routeTree = rootRoute.addChildren([
     path: "/dashboard",
     component: () => (
       <RouteGuard permission="dashboard.view">
-        {" "}
-        <Dashboard />{" "}
+        
+        <Dashboard />
       </RouteGuard>
     ),
   }),
@@ -92,8 +92,8 @@ const routeTree = rootRoute.addChildren([
     path: "/users",
     component: () => (
       <RouteGuard permission="users.view">
-        {" "}
-        <UsersIndex />{" "}
+        
+        <UsersIndex />
       </RouteGuard>
     ),
   }),
@@ -132,8 +132,8 @@ const routeTree = rootRoute.addChildren([
     path: "/appointments",
     component: () => (
       <RouteGuard permission="appointments.view">
-        {" "}
-        <AppointmentsIndex />{" "}
+        
+        <AppointmentsIndex />
       </RouteGuard>
     ),
   }),
@@ -171,8 +171,8 @@ const routeTree = rootRoute.addChildren([
     path: "/categories",
     component: () => (
       <RouteGuard permission="categories.view">
-        {" "}
-        <CategoriesIndex />{" "}
+        
+        <CategoriesIndex />
       </RouteGuard>
     ),
   }),
@@ -210,8 +210,8 @@ const routeTree = rootRoute.addChildren([
     path: "/commerces",
     component: () => (
       <RouteGuard permission="commerces.view">
-        {" "}
-        <CommercesIndex />{" "}
+        
+        <CommercesIndex />
       </RouteGuard>
     ),
   }),
@@ -249,8 +249,8 @@ const routeTree = rootRoute.addChildren([
     path: "/patients",
     component: () => (
       <RouteGuard permission="patients.view">
-        {" "}
-        <PatientsIndex />{" "}
+        
+        <PatientsIndex />
       </RouteGuard>
     ),
   }),
@@ -288,8 +288,8 @@ const routeTree = rootRoute.addChildren([
     path: "/products",
     component: () => (
       <RouteGuard permission="products.view">
-        {" "}
-        <ProductsIndex />{" "}
+        
+        <ProductsIndex />
       </RouteGuard>
     ),
   }),
@@ -327,8 +327,8 @@ const routeTree = rootRoute.addChildren([
     path: "/records",
     component: () => (
       <RouteGuard permission="records.view">
-        {" "}
-        <RecordsIndex />{" "}
+        
+        <RecordsIndex />
       </RouteGuard>
     ),
   }),
@@ -366,8 +366,8 @@ const routeTree = rootRoute.addChildren([
     path: "/records/templates",
     component: () => (
       <RouteGuard permission="records.template.view">
-        {" "}
-        <TemplatesIndex />{" "}
+        
+        <TemplatesIndex />
       </RouteGuard>
     ),
   }),
@@ -405,8 +405,8 @@ const routeTree = rootRoute.addChildren([
     path: "/schedules",
     component: () => (
       <RouteGuard permission="schedules.view">
-        {" "}
-        <SchedulesIndex />{" "}
+        
+        <SchedulesIndex />
       </RouteGuard>
     ),
   }),
@@ -444,8 +444,8 @@ const routeTree = rootRoute.addChildren([
     path: "/services",
     component: () => (
       <RouteGuard permission="services.view">
-        {" "}
-        <ServicesIndex />{" "}
+        
+        <ServicesIndex />
       </RouteGuard>
     ),
   }),

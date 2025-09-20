@@ -46,19 +46,19 @@ export interface RecordTemplatePivotType {
 
 export interface CommerceType {
  address:     string|null;
- created_at:  Date;
+ created_at?:  Date;
  data:        any[]|null;
- deleted_at:  Date|null;
+ deleted_at?:  Date|null;
  description: string|null;
  email:       string|null;
- id:          number;
- image:       string|null;
+ id?:          number;
+ image?:       string|null;
  name:        string;
  phone:       string|null;
- pivot:       CommercePivotType;
+ pivot?:       CommercePivotType;
  record_templates?: RecordTemplateType[];
- slug:        string;
- updated_at:  Date;
+ slug?:        string;
+ updated_at?:  Date;
 }
 
 export interface CommercePivotType {
@@ -110,20 +110,20 @@ export interface CategoryType {
 
 
 export interface PatientType {
- birth_date:  Date;
- commerce_id: number;
- created_at:  Date;
- data:        PatientDataType;
- deleted_at:  Date|null;
+ birth_date:  Date|string;
+ commerce_id?: number;
+ created_at?:  Date;
+ data:        PatientDataType|Array<any>;
+ deleted_at?:  Date|null;
  email:       string;
  first_name:  string;
  gender:      string;
- id:          number;
+ id?:          number;
  last_name:   string;
  phone:       string;
- records:     any[];
+ records?:     any[];
  record_templates?: RecordTemplateType[];
- updated_at:  Date;
+ updated_at?:  Date;
 }
 
 export interface PatientDataType {
