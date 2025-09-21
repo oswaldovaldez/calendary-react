@@ -23,7 +23,7 @@ export function Sidebar() {
       
 
       <aside
-        className={`fixed lg:static top-0 left-0 h-screen w-64 shadow-md flex flex-col 
+        className={`fixed top-0 left-0 h-screen w-64 shadow-md flex flex-col 
           bg-content transition-transform duration-300 neumo z-50
           ${isOpen ? "translate-x-0" : "-translate-x-64"}`}
       >

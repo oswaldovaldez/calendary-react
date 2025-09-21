@@ -20,6 +20,7 @@ export const useAuthStore = create<AuthState>()(persist(
   roles: [],
   permissions: [],
   commerces: [],
+  
   setAuth: (data) => set({
     user: data?.user,
     token: data?.token,

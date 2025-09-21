@@ -17,7 +17,8 @@ const Index = () => {
       accessorKey: "id",
       header: "ID",
     },
-    { accessorKey: "name", header: "Nombre" },
+    { accessorKey: "first_name", header: "Nombre" },
+    { accessorKey: "last_name", header: "Apellidos" },
     {
       // Nueva columna para las acciones
       header: "Acciones",
@@ -57,9 +58,22 @@ const Index = () => {
       })
       .catch(console.log);
   }, []);
+  const handleSeach = (values) => {};
+  const handlePaginate = (query) => {
+    Api.readPatients({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setPatients(res);
+      })
+      .catch(console.log);
+  };
   return (
     <div>
-      <Table datos={patients.data} cols={cols} createLink={createLink} />
+      <Table
+        datos={patients}
+        cols={cols}
+        createLink={createLink}
+        handlePage={handlePaginate}
+      />
     </div>
   );
 };

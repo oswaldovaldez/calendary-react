@@ -33,8 +33,8 @@ function Login() {
   const router = useRouter();
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 max-w-lg w-lg">
-      <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg">
+    <div className="flex justify-center items-center min-h-screen max-w-lg w-lg">
+      <div className="w-full max-w-md p-6 rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h2>
         <Formik
           initialValues={values}

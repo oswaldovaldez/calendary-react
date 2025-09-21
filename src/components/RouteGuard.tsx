@@ -13,12 +13,13 @@ export function RouteGuard({
   role?: string;
 }) {
   const user = useAuthStore((s) => s.user);
-  const permissions = useAuthStore((s) => s.permissions);
-  const roles = useAuthStore((s) => s.roles);
+  const permissions = useAuthStore((s) => s.user.roles[0].permissions);
+
+  const roles = useAuthStore((s) => s.user.roles);
 
   if (!user) return <Navigate to="/" />;
 
-  if (permission && !permissions.includes(permission)) {
+  if (permission && !permissions.some((p) => p.name === permission)) {
     return <Navigate to="/unauthorized" />;
   }
 

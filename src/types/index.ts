@@ -11,6 +11,7 @@ export interface UserType {
  permissions?:       any[];
  record_templates?:  RecordTemplateType[];
  roles?:             RoleType|any[];
+ role?:             number;
  updated_at?:        Date|string;
 }
 

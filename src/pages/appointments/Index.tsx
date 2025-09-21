@@ -57,9 +57,22 @@ const Index = () => {
       })
       .catch(console.log);
   }, []);
+  const handleSeach = (values) => {};
+  const handlePaginate = (query) => {
+    Api.readAppointments({ _token: token ?? "", paginate: page })
+      .then((res: any) => {
+        setAppointments(res);
+      })
+      .catch(console.log);
+  };
   return (
     <div>
-      <Table datos={appointments} cols={cols} createLink={createLink} />
+      <Table
+        datos={appointments}
+        cols={cols}
+        createLink={createLink}
+        handlePage={handlePaginate}
+      />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import {
   FieldArray,
 } from "formik";
 import * as Yup from "yup";
+import FormRender from "../../components/FormRender";
 
 export interface PatientFormValues {
   first_name: string;
@@ -42,82 +43,7 @@ const FormPatient: React.FC<FormPatientProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
-  const formRender = (arrayHelpers: any) => {
-    return (
-      <div>
-        {initialValues.record_templates[0].fields.map((element, indexE) => (
-          <div className="form-control mt-2" key={`element-${indexE}`}>
-            <label
-              htmlFor={`data[${element.name ?? ""}]`}
-              className="form-label"
-            >
-              {element.label ?? ""}
-            </label>
-            {element.type === "select" && (
-              <>
-                <Field
-                  as="select"
-                  className="input input-sm"
-                  name={`data[${element.name ?? ""}]`}
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : initialValues.data[element.name]
-                  }
-                >
-                  {Object.entries(element.options).map(
-                    ([key, labelx], index) => (
-                      <option key={`option-${index}`} value={key}>
-                        {labelx ?? ""}
-                      </option>
-                    )
-                  )}
-                </Field>
-              </>
-            )}
-            {element.type === "multiselect" && (
-              <>
-                <Field
-                  as="select"
-                  className="input input-sm"
-                  name={`data[${element.name ?? ""}]`}
-                  multiple
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : initialValues.data[element.name]
-                  }
-                >
-                  {Object.entries(element.options).map(
-                    ([key, labelx], index) => (
-                      <option key={`option-${index}`} value={key}>
-                        {labelx ?? ""}
-                      </option>
-                    )
-                  )}
-                </Field>
-              </>
-            )}
-            {element.type === "group" && <></>}
-            {element.type !== "select" &&
-              element.type !== "multiselect" &&
-              element.type !== "group" && (
-                <Field
-                  className={`input input-sm ${element.type === "textarea" && "textarea"}`}
-                  type={element.type}
-                  name={`data[${element.name ?? ""}]`}
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : (initialValues.data[element.name] ?? "")
-                  }
-                />
-              )}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  
 
   return (
     <Formik
@@ -237,7 +163,15 @@ const FormPatient: React.FC<FormPatientProps> = ({
                 <h3>Otros Datos</h3>
               </div>
               <div className="card-body">
-                <FieldArray name="data" render={formRender} />
+                <FieldArray
+                  name="data"
+                  render={(arrayHelpers: any) => (
+                    <FormRender
+                      arrayHelpers={arrayHelpers}
+                      initialValues={initialValues}
+                    />
+                  )}
+                />
               </div>
             </div>
           )}

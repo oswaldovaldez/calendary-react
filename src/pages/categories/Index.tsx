@@ -51,13 +51,26 @@ const Index = () => {
   useEffect(() => {
     Api.readCategories({ _token: token ?? "" })
       .then((res: any) => {
-        setCategories(res.data);
+        setCategories(res);
       })
       .catch(console.log);
   }, []);
+  const handleSeach = (values) => {};
+  const handlePaginate = (query) => {
+    Api.readCategories({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setCategories(res);
+      })
+      .catch(console.log);
+  };
   return (
     <div>
-      <Table datos={categories} cols={cols} createLink={createLink} />
+      <Table
+        datos={categories}
+        cols={cols}
+        createLink={createLink}
+        handlePage={handlePaginate}
+      />
     </div>
   );
 };

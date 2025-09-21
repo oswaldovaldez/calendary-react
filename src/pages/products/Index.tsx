@@ -57,9 +57,22 @@ const Index = () => {
       })
       .catch(console.log);
   }, []);
+  const handleSeach = (values) => {};
+  const handlePaginate = (query) => {
+    Api.readProducts({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setProducts(res);
+      })
+      .catch(console.log);
+  };
   return (
     <div>
-      <Table datos={products.data} cols={cols} createLink={createLink} />
+      <Table
+        datos={products}
+        cols={cols}
+        createLink={createLink}
+        handlePage={handlePaginate}
+      />
     </div>
   );
 };

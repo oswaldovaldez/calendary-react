@@ -57,9 +57,22 @@ const Index = () => {
       })
       .catch(console.log);
   }, []);
+  const handleSeach = (values) => {};
+  const handlePaginate = (query) => {
+    Api.readSchedules({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setSchedules(res);
+      })
+      .catch(console.log);
+  };
   return (
     <div>
-      <Table datos={schedules} cols={cols} createLink={createLink} />
+      <Table
+        datos={schedules}
+        cols={cols}
+        createLink={createLink}
+        handlePage={handlePaginate}
+      />
     </div>
   );
 };

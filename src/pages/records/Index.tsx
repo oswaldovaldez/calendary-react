@@ -57,9 +57,22 @@ const Index = () => {
       })
       .catch(console.log);
   }, []);
+  const handleSeach = (values) => {};
+  const handlePaginate = (query) => {
+    Api.readRecords({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setRecords(res);
+      })
+      .catch(console.log);
+  };
   return (
     <div>
-      <Table datos={records} cols={cols} createLink={createLink} />
+      <Table
+        datos={records}
+        cols={cols}
+        createLink={createLink}
+        handlePage={handlePaginate}
+      />
     </div>
   );
 };

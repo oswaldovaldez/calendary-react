@@ -56,10 +56,30 @@ const Index = () => {
         setServices(res);
       })
       .catch(console.log);
-  }, []);
+  }, [token]);
+  const handleSeach = (values: any) => {
+    Api.readServices({ _token: token ?? "", query: values })
+      .then((res: any) => {
+        setServices(res);
+      })
+      .catch(console.log);
+  };
+  const handlePaginate = (query) => {
+    Api.readServices({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setServices(res);
+      })
+      .catch(console.log);
+  };
   return (
     <div>
-      <Table datos={services.data} cols={cols} createLink={createLink} />
+      <Table
+        datos={services}
+        cols={cols}
+        createLink={createLink}
+        handlePage={handlePaginate}
+        handleSearch={handleSeach}
+      />
     </div>
   );
 };
