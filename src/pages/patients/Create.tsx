@@ -1,8 +1,8 @@
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate } from "@tanstack/react-router";
-import type { PatientFormValues } from "./FornPatient";
-import FormPatient from "./FornPatient";
+import type { PatientFormValues } from "./FormPatient";
+import FormPatient from "./FormPatient";
 
 const CreatePatient = () => {
 	const token = useAuthStore((s) => s.token);
