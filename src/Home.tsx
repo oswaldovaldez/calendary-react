@@ -21,12 +21,12 @@ const Home = () => {
     }
 
     Api.existUser().then((res:any)=>{
-      console.log(res);
+      // console.log(res);
       if(res.exist){
-        console.log("Existe usuario, mostrar login");
+        // console.log("Existe usuario, mostrar login");
         setIsRegister(false);
       }else{
-        console.log("No existe usuario, mostrar registro");
+        // console.log("No existe usuario, mostrar registro");
         setIsRegister(true);
       }
     }).catch(console.error);

@@ -1,80 +1,11 @@
 import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import { userSchema, userSchemaEdit } from "../../schemas/userSchema";
+import FormRender from "../../components/FormRender";
+import { useAuthStore } from "../../store/auth.store";
 const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
-  const formRender = (arrayHelpers: any) => {
-    return (
-      <div>
-        {initialValues.record_templates[0].fields.map((element, indexE) => (
-          <div className="form-control mt-2" key={`element-${indexE}`}>
-            <label
-              htmlFor={`data[${element.name ?? ""}]`}
-              className="form-label"
-            >
-              {element.label ?? ""}
-            </label>
-            {element.type === "select" && (
-              <>
-                <Field
-                  as="select"
-                  className="input input-sm"
-                  name={`data[${element.name ?? ""}]`}
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : initialValues.data[element.name]
-                  }
-                >
-                  {Object.entries(element.options).map(
-                    ([key, labelx], index) => (
-                      <option key={`option-${index}`} value={key}>
-                        {labelx ?? ""}
-                      </option>
-                    )
-                  )}
-                </Field>
-              </>
-            )}
-            {element.type === "multiselect" && (
-              <>
-                <Field
-                  as="select"
-                  className="input input-sm"
-                  name={`data[${element.name ?? ""}]`}
-                  multiple
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : initialValues.data[element.name]
-                  }
-                >
-                  {Object.entries(element.options).map(
-                    ([key, labelx], index) => (
-                      <option key={`option-${index}`} value={key}>
-                        {labelx ?? ""}
-                      </option>
-                    )
-                  )}
-                </Field>
-              </>
-            )}
-            {element.type !== "select" && element.type !== "multiselect" && (
-              <Field
-                className={`input input-sm ${element.type === "textarea" && "textarea"}`}
-                type={element.type}
-                name={`data[${element.name ?? ""}]`}
-                defaultValue={
-                  initialValues.data === null
-                    ? ""
-                    : (initialValues.data[element.name] ?? "")
-                }
-              />
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const rolesStore = useAuthStore((s) => s.roles);
+  const roleUser = useAuthStore((s) => s.user.roles[0]);
 
   return (
     <div>
@@ -135,6 +66,42 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
                     className="form-text-invalid"
                   />
                 </div>
+                <div className="form-group">
+                  <label htmlFor="role" className="form-label">
+                    Rol
+                  </label>
+                  <Field
+                    as="select"
+                    className={`input input-sm ${
+                      errors.role && touched.role ? "input-invalid" : ""
+                    }`}
+                    type="select"
+                    name="role"
+                    defaultValue={
+                      isEdit
+                        ? (initialValues.roles?.[0]?.name ?? "staff")
+                        : "staff"
+                    }
+                  >
+                    {rolesStore.map((roleStore, indexStore) => (
+                      <option
+                        value={roleStore.name}
+                        key={`option-role-${indexStore}`}
+                        disabled={
+                          roleUser.name !== "admin" &&
+                          roleUser.name !== "superadmin"
+                        }
+                      >
+                        {roleStore.name}
+                      </option>
+                    ))}
+                  </Field>
+                  <ErrorMessage
+                    name="role"
+                    component="div"
+                    className="form-text-invalid"
+                  />
+                </div>
               </div>
             </div>
             {isEdit && (
@@ -143,7 +110,15 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
                   <h3>Otros Datos</h3>
                 </div>
                 <div className="card-body">
-                  <FieldArray name="data" render={formRender} />
+                  <FieldArray
+                    name="data"
+                    render={(arrayHelpers: any) => (
+                      <FormRender
+                        arrayHelpers={arrayHelpers}
+                        initialValues={initialValues}
+                      />
+                    )}
+                  />
                 </div>
               </div>
             )}

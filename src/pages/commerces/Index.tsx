@@ -4,10 +4,23 @@ import Table from "../../components/Table";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { Link } from "@tanstack/react-router";
+import { useNotificationStore } from "../../store/notification.store";
+import { showConfirm } from "../../utils/alert";
 
 const Index = () => {
   const [commerces, setCommerces] = useState([]);
   const token = useAuthStore((s) => s.token);
+  const notify = useNotificationStore((state) => state.notify);
+  const handleDeleteCommerce = (id: number) => {
+    Api.deleteCommerce({ commerce_id: id, _token: token })
+      .then((res) => {
+        notify("success", res.message);
+      })
+      .catch((error) => {
+        console.log(error);
+        notify("error", "Algo salió mal ❌");
+      });
+  };
   const createLink = {
     url: "/commerces/create",
     name: "Nuevo Comercio",
@@ -40,7 +53,12 @@ const Index = () => {
           {/* Botón para eliminar (puede ser un botón con un evento onClick) */}
           <button
             onClick={() =>
-              alert(`Eliminar comercio con ID: ${info.row.original.id}`)
+              showConfirm({
+                              id: info.row.original.id ?? 0,
+                              handleConfirm: handleDeleteCommerce,
+                              title: "Eliminar Comercio",
+                              text: `Deseas eliminar al comercio con ID: ${info.row.original.id}`,
+                            })
             }
             className="btn neumo btn-danger"
           >
@@ -57,9 +75,29 @@ const Index = () => {
       })
       .catch(console.log);
   }, []);
+  const handleSeach = (query) => {
+    Api.readCommerces({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setCommerces(res);
+      })
+      .catch(console.log);
+  };
+  const handlePaginate = (query) => {
+    Api.readCommerces({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setCommerces(res);
+      })
+      .catch(console.log);
+  };
   return (
     <div>
-      <Table datos={commerces.data} cols={cols} createLink={createLink} />
+      <Table
+        datos={commerces}
+        cols={cols}
+        createLink={createLink}
+        handlePage={handlePaginate}
+        handleSearch={handleSeach}
+      />
     </div>
   );
 };

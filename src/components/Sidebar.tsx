@@ -4,16 +4,17 @@ import { Link } from "@tanstack/react-router"
 // { to: "/records_templates", label: "Records Templates" },
 const links = [
   { to: "/dashboard", label: "Dashboard" },
-  { to: "/appointments", label: "Appointments" },
-  { to: "/categories", label: "Categories" },
-  { to: "/commerces", label: "Commerces" },
-  { to: "/patients", label: "Patients" },
-  { to: "/products", label: "Products" },
-  { to: "/records", label: "Records" },
+  { to: "/appointments", label: "Equipo" },
+  { to: "/categories", label: "Categorías" },
+  { to: "/commerces", label: "Tiendas" },
+  { to: "/patients", label: "Pacientes" },
+  { to: "/products", label: "Productos" },
+  { to: "/records", label: "Registros" },
   { to: "/schedules", label: "Schedules" },
-  { to: "/services", label: "Services" },
-  { to: "/users", label: "Users" },
-]
+  { to: "/services", label: "Servicios" },
+  { to: "/users", label: "Usuarios" },
+  { to: "/templates", label: "Plantillas" },
+];
 import { useSidebarStore } from "../store/sidebar.store";
 export function Sidebar() {
 
@@ -23,7 +24,7 @@ export function Sidebar() {
       
 
       <aside
-        className={`fixed lg:static top-0 left-0 h-screen w-64 shadow-md flex flex-col 
+        className={`fixed top-0 left-0 h-screen w-64 shadow-md flex flex-col 
           bg-content transition-transform duration-300 neumo z-50
           ${isOpen ? "translate-x-0" : "-translate-x-64"}`}
       >

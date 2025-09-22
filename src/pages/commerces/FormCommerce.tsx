@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
-
+import FormRender from "../../components/FormRender";
 export interface CommerceFormValues {
   name: string;
   email: string;
@@ -21,16 +21,6 @@ export const commerceSchema = Yup.object({
   phone: Yup.string()
     .matches(/^\+?\d{7,15}$/, "Número de teléfono no válido")
     .required("El teléfono es obligatorio"),
-  data: Yup.mixed()
-    .test("is-valid-json", "Debe ser un objeto JSON válido", (value) => {
-      try {
-        JSON.parse(JSON.stringify(value));
-        return true;
-      } catch {
-        return false;
-      }
-    })
-    .required("La data es obligatoria"),
 });
 
 interface FormCommerceProps {
@@ -47,82 +37,7 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
-  const formRender = (arrayHelpers: any) => {
-    return (
-      <div>
-        {initialValues.record_templates[0].fields.map((element, indexE) => (
-          <div className="form-control mt-2" key={`element-${indexE}`}>
-            <label
-              htmlFor={`data[${element.name ?? ""}]`}
-              className="form-label"
-            >
-              {element.label ?? ""}
-            </label>
-            {element.type === "select" && (
-              <>
-                <Field
-                  as="select"
-                  className="input input-sm"
-                  name={`data[${element.name ?? ""}]`}
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : initialValues.data[element.name]
-                  }
-                >
-                  {Object.entries(element.options).map(
-                    ([key, labelx], index) => (
-                      <option key={`option-${index}`} value={key}>
-                        {labelx ?? ""}
-                      </option>
-                    )
-                  )}
-                </Field>
-              </>
-            )}
-            {element.type === "multiselect" && (
-              <>
-                <Field
-                  as="select"
-                  className="input input-sm"
-                  name={`data[${element.name ?? ""}]`}
-                  multiple
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : initialValues.data[element.name]
-                  }
-                >
-                  {Object.entries(element.options).map(
-                    ([key, labelx], index) => (
-                      <option key={`option-${index}`} value={key}>
-                        {labelx ?? ""}
-                      </option>
-                    )
-                  )}
-                </Field>
-              </>
-            )}
-            {element.type === "group" && <></>}
-            {element.type !== "select" &&
-              element.type !== "multiselect" &&
-              element.type !== "group" && (
-                <Field
-                  className={`input input-sm ${element.type === "textarea" && "textarea"}`}
-                  type={element.type}
-                  name={`data[${element.name ?? ""}]`}
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : (initialValues.data[element.name] ?? "")
-                  }
-                />
-              )}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  
   return (
     <div>
       <Formik
@@ -190,8 +105,6 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
                     className="form-text-invalid"
                   />
                 </div>
-
-                
               </div>
             </div>
             {isEdit && (
@@ -200,7 +113,10 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
                   <h3>Otros Datos</h3>
                 </div>
                 <div className="card-body">
-                  <FieldArray name="data" render={formRender} />
+                  <FieldArray
+                    name="data"
+                    render={(arrayHelpers: any) => <FormRender arrayHelpers={arrayHelpers} initialValues={initialValues} />}
+                  />
                 </div>
               </div>
             )}

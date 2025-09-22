@@ -5,6 +5,7 @@ import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import FormUser from "./FormUser";
 import { useNotificationStore } from "../../store/notification.store";
+
 // import toast, { Toaster } from "react-hot-toast";
 
 const Create = () => {
@@ -16,7 +17,7 @@ const Create = () => {
     password: "",
     permissions: [],
     data: [],
-    roles: [],
+    role: 0,
   };
 
   const handleSubmit = async (values: any) => {
@@ -31,7 +32,7 @@ const Create = () => {
   };
   return (
     <>
-      <FormUser initialValues={values} onSubmit={handleSubmit} />;
+      <FormUser initialValues={values} onSubmit={handleSubmit} />
     </>
   );
 };

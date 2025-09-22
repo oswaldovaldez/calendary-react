@@ -34,11 +34,10 @@ const Edit = () => {
       });
   };
   useEffect(() => {
-    console.log(commerceId);
     Api.showCommerce({ _token: token ?? "", commerce_id: commerceId })
       .then((res) => {
+        console.log(res)
         setFormData({ ...res });
-
         setLoading(false);
       })
       .catch((error) => {
