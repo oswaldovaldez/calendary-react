@@ -363,7 +363,7 @@ const routeTree = rootRoute.addChildren([
   // Records Template
   new Route({
     getParentRoute: () => rootRoute,
-    path: "/records/templates",
+    path: "/templates",
     component: () => (
       <RouteGuard permission="records.template.view">
         

@@ -73,7 +73,7 @@ export interface CommercePivotType {
 }
 export interface PermissionsType {
  appointments: boolean;
- billing:      boolean;
+ billing:      boolean;appointments
  patients:     boolean;
  reports:      boolean;
 }
@@ -234,6 +234,7 @@ export interface AppointmentType {
  patient_id:  number;
  schedule:    ScheduleType;
  schedule_id: number;
+ service:     ServiceType;
  service_id:  number;
  start_at:    Date;
  status:      string;

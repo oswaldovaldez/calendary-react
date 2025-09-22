@@ -59,7 +59,7 @@ const Index = () => {
                 id: info.row.original.id ?? 0,
                 handleConfirm: handleDeleteUser,
                 title: "Eliminar Usuario",
-                text: `Eliminar usuario con ID: ${info.row.original.id}`,
+                text: `Deseas eliminar al usuario con ID: ${info.row.original.id}`,
               })
             }
             className="btn neumo btn-danger"
@@ -78,7 +78,13 @@ const Index = () => {
       .catch(console.log);
   }, []);
 
-  const handleSeach = (values) => {};
+  const handleSeach = (query) => {
+    Api.readUsers({ _token: token ?? "", query: query })
+      .then((res: any) => {
+        setUsers(res);
+      })
+      .catch(console.log);
+  };
   const handlePaginate = (query) => {
     Api.readUsers({ _token: token ?? "", query: query })
       .then((res) => {
@@ -93,6 +99,7 @@ const Index = () => {
         cols={cols}
         createLink={createLink}
         handlePage={handlePaginate}
+        handleSearch={handleSeach}
       />
     </div>
   );

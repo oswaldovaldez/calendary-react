@@ -4,10 +4,23 @@ import Table from "../../components/Table";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { Link } from "@tanstack/react-router";
+import { useNotificationStore } from "../../store/notification.store";
+import { showConfirm } from "../../utils/alert";
 
 const Index = () => {
   const [services, setServices] = useState([]);
   const token = useAuthStore((s) => s.token);
+  const notify = useNotificationStore((state) => state.notify);
+  const handleDeleteService = (id: number) => {
+    Api.deleteService({ service_id: id, _token: token })
+      .then((res) => {
+        notify("success", res.message);
+      })
+      .catch((error) => {
+        console.log(error);
+        notify("error", "Algo salió mal ❌");
+      });
+  };
   const createLink = {
     url: "/services/create",
     name: "Nuevo Servicio",
@@ -40,7 +53,12 @@ const Index = () => {
           {/* Botón para eliminar (puede ser un botón con un evento onClick) */}
           <button
             onClick={() =>
-              alert(`Eliminar comercio con ID: ${info.row.original.id}`)
+              showConfirm({
+                id: info.row.original.id ?? 0,
+                handleConfirm: handleDeleteService,
+                title: "Eliminar Servicio",
+                text: `Deseas eliminar el servicio con ID: ${info.row.original.id}`,
+              })
             }
             className="btn neumo btn-danger"
           >
@@ -57,8 +75,8 @@ const Index = () => {
       })
       .catch(console.log);
   }, [token]);
-  const handleSeach = (values: any) => {
-    Api.readServices({ _token: token ?? "", query: values })
+  const handleSeach = (query) => {
+    Api.readServices({ _token: token ?? "", query: query })
       .then((res: any) => {
         setServices(res);
       })

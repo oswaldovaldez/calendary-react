@@ -18,7 +18,9 @@ export function RouteGuard({
   const roles = useAuthStore((s) => s.user.roles);
 
   if (!user) return <Navigate to="/" />;
-
+  if (roles[0].name === "superadmin") {
+    return <>{children}</>;
+  }
   if (permission && !permissions.some((p) => p.name === permission)) {
     return <Navigate to="/unauthorized" />;
   }
