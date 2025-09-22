@@ -54,18 +54,20 @@ const Index = () => {
           </Link>
           {/* Botón para eliminar (puede ser un botón con un evento onClick) */}
           <button
-            onClick={() =>
-              showConfirm({
-                id: info.row.original.id ?? 0,
-                handleConfirm: handleDeleteRecordTemplate,
-                title: "Eliminar Plantiila",
-                text: `Deseas eliminar la plantilla con ID: ${info.row.original.id}`,
-              })
-            }
-            className="btn neumo btn-danger"
-          >
-            Eliminar
-          </button>
+  onClick={() =>
+    showConfirm({
+      id: info.row.original.id ?? 0,
+      handleConfirm: handleDeleteRecordTemplate,
+      title: "Eliminar plantilla",
+      message: `¿Deseas eliminar la plantilla <strong>${info.row.original.name}</strong>?`,
+      successText: `La plantilla <strong>${info.row.original.name}</strong> se eliminó correctamente.`,
+      errorText: `No se pudo eliminar la plantilla <strong>${info.row.original.name}</strong>. Intenta de nuevo.`,
+    })
+  }
+  className="btn neumo btn-danger"
+>
+  Eliminar
+</button>
         </div>
       ),
     },
