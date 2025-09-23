@@ -25,8 +25,8 @@ const patientSchema = Yup.object().shape({
     .email("Correo inválido")
     .required("El correo es obligatorio"),
   phone: Yup.string().required("El teléfono es obligatorio"),
-  birth_date: Yup.string().nullable(),
-  gender: Yup.string().oneOf(["M", "F", "O"], "Debe ser M, F u O").nullable(),
+  birth_date: Yup.string().required("La fecha de nacimiento es obligatoria"),
+  gender: Yup.string().oneOf(["male", "female", "other"], "Debe ser Masculino, Femenino u Otro").required("El genero es obligatorio"),
 });
 
 interface FormPatientProps {

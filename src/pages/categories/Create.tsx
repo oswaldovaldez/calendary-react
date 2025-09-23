@@ -2,6 +2,7 @@ import FormCategory, { type CategoryFormValues } from "./FormCategory";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 
 const CreateCategory = () => {
 	const token = useAuthStore((s) => s.token);
@@ -23,11 +24,17 @@ const CreateCategory = () => {
 				...values,
 				_token: token ?? "",
 			});
-			alert("Categoría creada con éxito");
+
+			toast.success("Categoría creada con éxito", {
+				duration: 4000,
+			});
+
 			navigate({ to: "/categories" });
-		} catch (error) {
+		} catch (error: any) {
 			console.error(error);
-			alert("Error al crear categoría");
+			toast.error(error.message || "Error al crear categoría", {
+				duration: 5000,
+			});
 		}
 	};
 

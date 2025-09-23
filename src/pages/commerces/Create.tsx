@@ -2,6 +2,7 @@ import FormCommerce, { type CommerceFormValues } from "./FormCommerce";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 
 const CreateCommerce = () => {
 	const token = useAuthStore((s) => s.token);
@@ -20,11 +21,15 @@ const CreateCommerce = () => {
 				...values,
 				_token: token ?? "",
 			});
-			alert("Comercio creado con éxito");
+
+			toast.success("Comercio creado con éxito", { duration: 4000 }); 
 			navigate({ to: "/commerces" });
-		} catch (error) {
+		} catch (error: any) {
 			console.error("Error al crear comercio:", error);
-			alert("Error al crear comercio");
+
+			toast.error(error.message || "Error al crear comercio", {
+				duration: 5000,
+			}); 
 		}
 	};
 
