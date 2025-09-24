@@ -1,0 +1,143 @@
+import React, { useState, useRef, useEffect } from "react";
+import { IoChevronDown } from "react-icons/io5";
+import { IoCheckmark } from "react-icons/io5";
+import { useAuthStore } from "../store/auth.store";
+
+export function CommerceSelector() {
+  const role = useAuthStore((s) => s.user.roles[0]);
+  const commerces = useAuthStore((s) =>
+    role.name === "superadmin" ? s.commerces : s.user.commerces
+  );
+
+  const currentCommerce = useAuthStore((s) => s.commerce);
+
+  const setCommerce = useAuthStore((s) => s.setCommerce);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelect = (commerce) => {
+    setCommerce(commerce);
+    setIsOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div className={`relative`} ref={dropdownRef}>
+      {/* Botón principal que muestra el commerce actual */}
+      <button
+        onClick={toggleDropdown}
+        className="w-full flex items-center justify-between px-3 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent neumo"
+      >
+        <div className="flex items-center space-x-3 min-w-0 flex-1">
+          {/* Avatar/Imagen */}
+          <div className="flex-shrink-0">
+            {currentCommerce?.image ? (
+              <img
+                src={currentCommerce.image}
+                alt={currentCommerce.name}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-semibold">
+                  {currentCommerce?.name?.charAt(0).toUpperCase() || "C"}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Nombre */}
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-gray-900 truncate">
+              {currentCommerce?.name || "Seleccionar Commerce"}
+            </p>
+            {currentCommerce?.description && (
+              <p className="text-xs text-gray-500 truncate">
+                {currentCommerce.description}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Chevron */}
+        <IoChevronDown
+          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
+            isOpen ? "transform rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      {/* Dropdown Menu */}
+      {isOpen && (
+        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto neumo">
+          <div className="py-1">
+            {commerces.length === 0 ? (
+              <div className="px-3 py-2 text-sm text-gray-500">
+                No hay commerces disponibles
+              </div>
+            ) : (
+              commerces.map((commerce) => (
+                <button
+                  key={commerce.id}
+                  onClick={() => handleSelect(commerce)}
+                  className="w-full flex items-center px-3 py-2.5 hover:bg-gray-50 transition-colors duration-150 text-left"
+                >
+                  <div className="flex items-center space-x-3 min-w-0 flex-1">
+                    {/* Avatar/Imagen */}
+                    <div className="flex-shrink-0">
+                      {commerce.image ? (
+                        <img
+                          src={commerce.image}
+                          alt={commerce.name}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                          <span className="text-white text-sm font-semibold">
+                            {commerce.name?.charAt(0).toUpperCase() || "C"}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Información */}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {commerce.name}
+                      </p>
+                      {commerce.description && (
+                        <p className="text-xs text-gray-500 truncate">
+                          {commerce.description}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Check si está seleccionado */}
+                    {currentCommerce?.id === commerce.id && (
+                      <IoCheckmark className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                    )}
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
