@@ -308,7 +308,7 @@ const Index = () => {
             </h1>
           </div>
           <div className="flex items-center space-x-2">
-            <Link to="/appointments/new" className="btn btn-info neumo">
+            <Link to="/appointments/create" className="btn btn-info neumo">
               Nueva Cita
             </Link>
           </div>
