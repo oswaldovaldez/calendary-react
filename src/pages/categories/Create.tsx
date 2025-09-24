@@ -6,22 +6,30 @@ import toast from "react-hot-toast";
 
 const CreateCategory = () => {
 	const token = useAuthStore((s) => s.token);
-	const user = useAuthStore((s) => s.user);
+	const commerce = useAuthStore((s) => s.commerce);
 	const navigate = useNavigate();
 
-	const commerces = user?.commerces ?? [];
+
+	const currentCommerceId = commerce?.id ?? 0;
 
 	const initialValues: CategoryFormValues = {
 		name: "",
 		description: "",
 		parent_id: null,
-		commerce_id: 0,
+		commerce_id: currentCommerceId,
 	};
 
 	const handleSubmit = async (values: CategoryFormValues) => {
 		try {
-			await Api.createCategory({
+			const payload: CategoryFormValues = {
 				...values,
+				name: values.name.trim().toUpperCase(),
+				parent_id: null, 
+				commerce_id: currentCommerceId,
+			};
+
+			await Api.createCategory({
+				...payload,
 				_token: token ?? "",
 			});
 
@@ -39,11 +47,7 @@ const CreateCategory = () => {
 	};
 
 	return (
-		<FormCategory
-			initialValues={initialValues}
-			commerces={commerces}
-			onSubmit={handleSubmit}
-		/>
+		<FormCategory initialValues={initialValues} onSubmit={handleSubmit} />
 	);
 };
 
