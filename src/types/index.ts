@@ -18,13 +18,13 @@ export interface UserType {
 
 export interface RecordTemplateType {
  commerce_id: number;
- created_at:  Date;
- deleted_at:  null;
- fields:      FieldType[];
- id:          number;
+ created_at?:  Date;
+ deleted_at?:  null;
+ fields:      FieldType[]|null;
+ id?:          number;
  name:        string;
- pivot:       RecordTemplatePivotType;
- updated_at:  Date;
+ pivot?:       RecordTemplatePivotType;
+ updated_at?:  Date;
 }
 
 export interface FieldType {

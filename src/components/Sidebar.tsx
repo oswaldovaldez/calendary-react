@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 // { to: "/records_templates", label: "Records Templates" },
 const links = [
   { to: "/dashboard", label: "Dashboard" },
-  { to: "/appointments", label: "Equipo" },
+  { to: "/appointments", label: "Citas" },
   { to: "/categories", label: "Categorías" },
   { to: "/commerces", label: "Tiendas" },
   { to: "/patients", label: "Pacientes" },

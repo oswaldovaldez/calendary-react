@@ -41,7 +41,7 @@ export function CommerceSelector() {
       {/* Botón principal que muestra el commerce actual */}
       <button
         onClick={toggleDropdown}
-        className="w-full flex items-center justify-between px-3 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent neumo"
+        className="w-full flex items-center justify-between px-3 py-2.5 border border-gray-200 rounded-lg shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent neumo"
       >
         <div className="flex items-center space-x-3 min-w-0 flex-1">
           {/* Avatar/Imagen */}
@@ -63,13 +63,11 @@ export function CommerceSelector() {
 
           {/* Nombre */}
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-gray-900 truncate">
+            <p className="text-sm font-medium truncate">
               {currentCommerce?.name || "Seleccionar Commerce"}
             </p>
             {currentCommerce?.description && (
-              <p className="text-xs text-gray-500 truncate">
-                {currentCommerce.description}
-              </p>
+              <p className="text-xs truncate">{currentCommerce.description}</p>
             )}
           </div>
         </div>
@@ -84,7 +82,7 @@ export function CommerceSelector() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto neumo">
+        <div className="absolute z-50 w-full mt-1 border rounded-lg shadow-lg max-h-64 overflow-y-auto neumo">
           <div className="py-1">
             {commerces.length === 0 ? (
               <div className="px-3 py-2 text-sm text-gray-500">
@@ -95,7 +93,7 @@ export function CommerceSelector() {
                 <button
                   key={commerce.id}
                   onClick={() => handleSelect(commerce)}
-                  className="w-full flex items-center px-3 py-2.5 hover:bg-gray-50 transition-colors duration-150 text-left"
+                  className="w-full flex items-center px-3 py-2.5 transition-colors duration-150 text-left"
                 >
                   <div className="flex items-center space-x-3 min-w-0 flex-1">
                     {/* Avatar/Imagen */}
@@ -117,11 +115,11 @@ export function CommerceSelector() {
 
                     {/* Información */}
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                      <p className="text-sm font-medium truncate">
                         {commerce.name}
                       </p>
                       {commerce.description && (
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-xs truncate">
                           {commerce.description}
                         </p>
                       )}

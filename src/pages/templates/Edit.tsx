@@ -3,19 +3,16 @@ import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useParams } from "@tanstack/react-router";
 import FormTemplate from "./FormTemplate";
-import type { UserType } from "../../types";
+import type { RecordTemplateType, UserType } from "../../types";
 import { useNotificationStore } from "../../store/notification.store";
 //  import toast, { Toaster } from "react-hot-toast";
 
 const Edit = () => {
   const notify = useNotificationStore((state) => state.notify);
-  const [formData, setFormData] = useState<UserType>({
+  const [formData, setFormData] = useState<RecordTemplateType>({
     name: "",
-    email: "",
-    password: "",
-    permissions: [],
-    data: [],
-    roles: [],
+    fields: [],
+    commerce_id: 0,
   });
   const { templateId } = useParams({ from: "/templates/$templateId/edit" });
   const token = useAuthStore((s) => s.token);
@@ -41,7 +38,7 @@ const Edit = () => {
     })
       .then((res) => {
         setFormData(res);
-        console.log(JSON.stringify(res.fields));
+        // console.log(JSON.stringify(res.fields));
         setLoading(false);
       })
       .catch((error) => {
