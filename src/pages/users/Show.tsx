@@ -1,47 +1,114 @@
-import React, { useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import { useParams } from "@tanstack/react-router";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
-import type { userType } from "../../types";
+import type { UserType } from "../../types";
 
-const Show = () => {
-  const { userId } = useParams({ from: "/users/$userId" });
-  const token = useAuthStore((s) => s.token);
-  const [userData, setUserData] = useState<userType>({
-    commerces: [],
-    created_at: "",
-    email: "",
-    email_verified_at: "",
-    id: 0,
-    name: "",
-    permissions: [],
-    roles: [],
-    updated_at: "",
-  });
-  useEffect(() => {
-    Api.showUser({ _token: token ?? "", user_id: userId })
-      .then((res: any) => {
-        setUserData(res);
-        // console.log(res);
-      })
-      .catch(console.log);
-  }, []);
+const ShowUser = () => {
+	const { userId } = useParams({ from: "/users/$userId" });
+	const token = useAuthStore((s) => s.token);
 
-  return (
-    <div>
-      <div className="card">
-        <div className="card-body">
-          <span>Id:{userData.id}</span>
-          <br />
-          <span>Nombre:{userData.name}</span>
-          <br />
-          <span>Email:{userData.email}</span>
-          <br />
-        </div>
-      </div>
-    </div>
-  );
+	const [user, setUser] = useState<UserType | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (!token) {
+			setError("No hay sesión activa");
+			setIsLoading(false);
+			return;
+		}
+
+		let isMounted = true;
+
+		const fetchUser = async () => {
+			setIsLoading(true);
+			try {
+				const response = await Api.showUser({
+					_token: token,
+					user_id: Number(userId),
+				});
+
+				if (!isMounted) return;
+				setUser(response as UserType);
+				setError(null);
+			} catch (err) {
+				console.error("Error cargando el usuario", err);
+				if (!isMounted) return;
+				setError("No pudimos cargar el usuario");
+			} finally {
+				if (isMounted) {
+					setIsLoading(false);
+				}
+			}
+		};
+
+		fetchUser();
+
+		return () => {
+			isMounted = false;
+		};
+	}, [userId, token]);
+
+	if (isLoading) {
+		return <div className="card neumo p-6">Cargando usuario...</div>;
+	}
+
+	if (error || !user) {
+		return (
+			<div className="card neumo p-6">
+				{error ?? "Usuario no encontrado"}
+			</div>
+		);
+	}
+
+	return (
+		<div className="card neumo">
+			<div className="card-header">
+				<h2 className="text-lg font-semibold">Detalle de usuario</h2>
+				<p className="text-sm text-gray-500">ID: {user.id}</p>
+			</div>
+			<div className="card-body grid gap-3 md:grid-cols-2">
+				<div>
+					<span className="font-semibold">Nombre:</span> {user.name}
+				</div>
+				<div>
+					<span className="font-semibold">Email:</span> {user.email}
+				</div>
+				<div>
+					<span className="font-semibold">Roles:</span>{" "}
+					{Array.isArray(user.roles) && user.roles.length > 0
+						? user.roles
+								.map((r: any) =>
+									typeof r === "string" ? r : r.name
+								)
+								.join(", ")
+						: "Sin roles"}
+				</div>
+				<div>
+					<span className="font-semibold">Permisos:</span>{" "}
+					{Array.isArray(user.permissions) &&
+					user.permissions.length > 0
+						? user.permissions.join(", ")
+						: "Sin permisos"}
+				</div>
+				<div>
+					<span className="font-semibold">Comercios asignados:</span>{" "}
+					{user.commerces?.length
+						? user.commerces.map((c) => c.name).join(", ")
+						: "Ninguno"}
+				</div>
+				<div>
+					<span className="font-semibold">Creado:</span>{" "}
+					{user.created_at ? String(user.created_at) : "-"}
+				</div>
+				<div>
+					<span className="font-semibold">Actualizado:</span>{" "}
+					{user.updated_at ? String(user.updated_at) : "-"}
+				</div>
+			</div>
+		</div>
+	);
 };
 
-export default Show;
+export default ShowUser;
