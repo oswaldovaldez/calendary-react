@@ -97,7 +97,7 @@ export const Api = {
   showProduct:(data:{product_id:number,_token:string,})=>apiFetch(`/products/${data.product_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
   //crud Pacientes
-  createPatient:(data:{first_name:string,last_name:string,email:string|null,phone:string|null,birth_date:string|null,gender:string|null,_token:string})=>apiFetch('/patients',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  createPatient:(data:{first_name:string,last_name:string,email:string|null,phone:string|null,birth_date:string|null,gender:string|null,_token:string, commerce_id:number|null})=>apiFetch('/patients',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readPatients:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/patients`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
   updatePatient:(data:{first_name:string,last_name:string,email:string|null,phone:string|null,birth_date:string|null,gender:string|null,patient_id:number,_token: string})=>apiFetch(`/patients/${data.patient_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deletePatient:(data:{patient_id:number,_token: string})=>apiFetch(`/patients/${data.patient_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
