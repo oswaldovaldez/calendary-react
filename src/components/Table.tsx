@@ -23,19 +23,19 @@ const Table = ({
   datos: any;
   cols: any;
   createLink: { url: string; name: string };
-  handlePage: (query:any) => void;
+  handlePage: (query: any) => void;
   handleSearch: (values: any) => void;
 }) => {
   const initialValues: searchSchema = {
     search: "",
   };
   const [search, setSearch] = useState("");
-  const submitSearch = (values:searchSchema) => {
+  const submitSearch = (values: searchSchema) => {
     setSearch(values.search);
     handleSearch(values);
-   };
+  };
   const handlePagination = ({ selected }) => {
-    let query = { page: selected + 1,search:search };
+    let query = { page: selected + 1, search: search };
     handlePage(query);
   };
   const table = useReactTable({
@@ -95,24 +95,26 @@ const Table = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-row-reverse py-2">
-        <ReactPaginate
-          previousLabel="←"
-          nextLabel="→"
-          breakLabel="..."
-          pageCount={datos.last_page}
-          onPageChange={handlePagination}
-          containerClassName="flex space-x-2 mt-4"
-          pageClassName="btn neumo"
-          previousClassName="btn neumo"
-          nextClassName="btn neumo"
-          breakClassName="btn neumo"
-          previousLinkClassName=""
-          nextLinkClassName=""
-          breakLinkClassName=""
-          activeClassName="btn-primary"
-        />
-      </div>
+      {datos.last_page > 1 && (
+        <div className="flex flex-row-reverse py-2">
+          <ReactPaginate
+            previousLabel="←"
+            nextLabel="→"
+            breakLabel="..."
+            pageCount={datos.last_page}
+            onPageChange={handlePagination}
+            containerClassName="flex space-x-2 mt-4"
+            pageClassName="btn neumo"
+            previousClassName="btn neumo"
+            nextClassName="btn neumo"
+            breakClassName="btn neumo"
+            previousLinkClassName=""
+            nextLinkClassName=""
+            breakLinkClassName=""
+            activeClassName="btn-primary"
+          />
+        </div>
+      )}
     </div>
   );
 };

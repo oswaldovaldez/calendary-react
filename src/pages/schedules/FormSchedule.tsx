@@ -17,10 +17,8 @@ export interface ScheduleFormValues {
 }
 
 export const scheduleSchema = Yup.object({
-  commerce_id: Yup.number().required(),
   user_id: Yup.number().required("El usuario es obligatorio"),
-  day_of_week: Yup.string()
-    .required("El día de la semana es obligatorio"),
+  day_of_week: Yup.string().required("El día de la semana es obligatorio"),
   start_time: Yup.string().required("La hora de inicio es obligatoria"),
   end_time: Yup.string().required("La hora de fin es obligatoria"),
   breaks: Yup.array().of(
@@ -38,14 +36,16 @@ interface FormScheduleProps {
     values: ScheduleFormValues,
     helpers: FormikHelpers<ScheduleFormValues>
   ) => void | Promise<void>;
-  users: { id: number; name: string }[];
+  userId: number;
+  commerceId: number;
 }
 
 const FormSchedule: React.FC<FormScheduleProps> = ({
   initialValues,
   isEdit = false,
   onSubmit,
-  users,
+  userId,
+  commerceId,
 }) => (
   <Formik
     initialValues={initialValues}
@@ -60,28 +60,30 @@ const FormSchedule: React.FC<FormScheduleProps> = ({
         <div className="card neumo">
           <div className="card-body">
             {/* Usuario */}
-            <div className="form-group">
-              <label htmlFor="user_id" className="form-label">Usuario</label>
-              <Field
-                as="select"
+            <Field
+              type="hidden"
+              name="user_id"
+              value={userId}
+              className={`input input-sm`}
+            />
+            {/* <div className="form-group">
+              <label htmlFor="user_id" className="form-label">
+                Usuario
+              </label>
+                
+              
+              <ErrorMessage
                 name="user_id"
-                className={`input input-sm ${
-                  errors.user_id && touched.user_id ? "input-invalid" : ""
-                }`}
-              >
-                <option value="">Selecciona un usuario</option>
-                {users.map((u) => (
-                  <option key={u.id} value={u.id}>
-                    {u.name}
-                  </option>
-                ))}
-              </Field>
-              <ErrorMessage name="user_id" component="div" className="form-text-invalid" />
-            </div>
+                component="div"
+                className="form-text-invalid"
+              />
+            </div> */}
 
             {/* Día de la semana */}
             <div className="form-group">
-              <label htmlFor="day_of_week" className="form-label">Día de la semana</label>
+              <label htmlFor="day_of_week" className="form-label">
+                Día de la semana
+              </label>
               <Field as="select" name="day_of_week" className="input input-sm">
                 <option value="">Selecciona un día</option>
                 <option value="monday">Lunes</option>
@@ -92,19 +94,35 @@ const FormSchedule: React.FC<FormScheduleProps> = ({
                 <option value="saturday">Sábado</option>
                 <option value="sunday">Domingo</option>
               </Field>
-              <ErrorMessage name="day_of_week" component="div" className="form-text-invalid" />
+              <ErrorMessage
+                name="day_of_week"
+                component="div"
+                className="form-text-invalid"
+              />
             </div>
 
             {/* Horas */}
             <div className="form-group">
-              <label htmlFor="start_time" className="form-label">Hora de inicio</label>
+              <label htmlFor="start_time" className="form-label">
+                Hora de inicio
+              </label>
               <Field type="time" name="start_time" className="input input-sm" />
-              <ErrorMessage name="start_time" component="div" className="form-text-invalid" />
+              <ErrorMessage
+                name="start_time"
+                component="div"
+                className="form-text-invalid"
+              />
             </div>
             <div className="form-group">
-              <label htmlFor="end_time" className="form-label">Hora de fin</label>
+              <label htmlFor="end_time" className="form-label">
+                Hora de fin
+              </label>
               <Field type="time" name="end_time" className="input input-sm" />
-              <ErrorMessage name="end_time" component="div" className="form-text-invalid" />
+              <ErrorMessage
+                name="end_time"
+                component="div"
+                className="form-text-invalid"
+              />
             </div>
           </div>
         </div>
@@ -122,8 +140,16 @@ const FormSchedule: React.FC<FormScheduleProps> = ({
                   {arrayHelpers.form.values.breaks.map(
                     (_: BreakType, index: number) => (
                       <div key={index} className="form-group flex gap-2">
-                        <Field type="time" name={`breaks.${index}.start`} className="input input-sm" />
-                        <Field type="time" name={`breaks.${index}.end`} className="input input-sm" />
+                        <Field
+                          type="time"
+                          name={`breaks.${index}.start`}
+                          className="input input-sm"
+                        />
+                        <Field
+                          type="time"
+                          name={`breaks.${index}.end`}
+                          className="input input-sm"
+                        />
                         <button
                           type="button"
                           className="btn btn-danger btn-sm"

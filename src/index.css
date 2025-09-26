@@ -14,10 +14,10 @@
   --color-text-secondary-dark: #a9b3c1;
 
   /* Botones */
-  --color-button-primary-light: #FFD6A5;
-  --color-button-primary-hover-light: #FFC087;
-  --color-button-primary-dark: #E6A864;
-  --color-button-primary-hover-dark: #D18C4F;
+  --color-button-primary-light: #ffd6a5;
+  --color-button-primary-hover-light: #ffc087;
+  --color-button-primary-dark: #e6a864;
+  --color-button-primary-hover-dark: #d18c4f;
 
   --color-button-secondary-light: #afcbff;
   --color-button-secondary-hover-light: #94b8f8;
@@ -80,25 +80,25 @@ html.dark {
 
 /* 🛠️ Utilidades personalizadas */
 @layer utilities {
-  .bg-content{
+  .bg-content {
     background-color: var(--color-background-light);
     color: var(--color-text-primary-light);
   }
-  html:not(.dark) .bg-content{
+  html:not(.dark) .bg-content {
     background-color: var(--color-background-light);
     color: var(--color-text-primary-light);
   }
-  html.dark .bg-content{
+  html.dark .bg-content {
     background-color: var(--color-background-dark);
     color: var(--color-text-primary-dark);
   }
 
-  html{
+  html {
     background-color: var(--color-background-light);
     color: var(--color-text-primary-light);
   }
-  
-  html.dark{
+
+  html.dark {
     background-color: var(--color-background-dark);
     color: var(--color-text-primary-dark);
   }
@@ -112,25 +112,27 @@ html.dark {
 
   /* Light mode */
   html:not(.dark) .neumo {
-    box-shadow: 8px 8px 16px #C8D3E0,
-                -8px -8px 16px #FFFFFF !important;
+    box-shadow:
+      8px 8px 16px #c8d3e0,
+      -8px -8px 16px #ffffff !important;
   }
 
   /* Dark mode */
   html.dark .neumo {
-    box-shadow: 6px 6px 12px #121C24,
-                -6px -6px 12px #2E3C48 !important;
+    box-shadow:
+      6px 6px 12px #121c24,
+      -6px -6px 12px #2e3c48 !important;
   }
 
   /* Hover efecto hundido */
   .neumo:hover {
-    box-shadow: inset 4px 4px 8px rgba(0,0,0,0.1),
-                inset -4px -4px 8px rgba(255,255,255,0.2) !important;
+    box-shadow:
+      inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+      inset -4px -4px 8px rgba(255, 255, 255, 0.2) !important;
   }
   .btn {
     @apply flex justify-center items-center px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out py-2 rounded-md cursor-pointer;
   }
-
 
   /* 🔘 Primary */
   .btn-primary {
@@ -802,4 +804,58 @@ html.dark {
 }
 .dark .form-check-label {
   @apply text-gray-300;
+}
+
+/* === Modal estilo Bootstrap con Tailwind === */
+.modal {
+  @apply fixed inset-0 flex items-center justify-center z-[99999999];
+}
+
+.modal-dialog {
+  @apply relative w-full max-w-lg mx-auto;
+}
+
+.modal-content {
+  @apply bg-[#171718] text-white rounded-2xl shadow-2xl flex flex-col;
+}
+
+.modal-header {
+  @apply flex items-center justify-between border-b border-gray-700 p-4;
+}
+
+.modal-title {
+  @apply text-lg font-semibold;
+}
+
+.modal-body {
+  @apply p-4;
+}
+
+.modal-footer {
+  @apply flex justify-end gap-2 border-t border-gray-700 p-3;
+}
+
+/* Backdrop */
+.modal-backdrop {
+  @apply fixed inset-0 bg-black/50 z-40;
+}
+
+/* Botón cerrar */
+.modal-close {
+  @apply text-gray-400 hover:text-gray-200;
+}
+
+/* Modo oscuro forzado */
+.dark .modal-content {
+  @apply bg-[#171718] text-white;
+}
+/* Modal backdrop que cubre toda la pantalla */
+.modal-backdrop {
+  @apply fixed inset-0 bg-black/50 z-[99999999];
+  /* 
+    fixed → para posicionarlo respecto a la ventana, no al contenedor
+    inset-0 → top/right/bottom/left = 0
+    bg-black/50 → fondo negro con 50% de opacidad
+    z-40 → ponerlo por debajo del modal (modal normalmente z-50)
+  */
 }

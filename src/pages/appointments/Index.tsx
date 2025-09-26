@@ -30,7 +30,7 @@ const Index = () => {
 
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
-
+  const commerce = useAuthStore((s) => s.commerce);
   const fetchAppointments = async (date: Date) => {
     // Verificar que el token existe antes de hacer la llamada
     if (!token) {
@@ -42,7 +42,11 @@ const Index = () => {
     try {
       const res: any = await Api.readAppointments({
         _token: token,
-        query: { start_at: start_at, end_at: end_at },
+        query: {
+          start_at: start_at,
+          end_at: end_at,
+          commerce_id: `${commerce?.id}`,
+        },
       });
 
       const data: AppointmentType[] = res ?? [];

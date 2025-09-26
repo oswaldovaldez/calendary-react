@@ -400,43 +400,43 @@ const routeTree = rootRoute.addChildren([
   }),
 
   // Schedules
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/schedules",
-    component: () => (
-      <RouteGuard permission="schedules.view">
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/schedules",
+  //   component: () => (
+  //     <RouteGuard permission="schedules.view">
         
-        <SchedulesIndex />
-      </RouteGuard>
-    ),
-  }),
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/schedules/create",
-    component: () => (
-      <RouteGuard permission="schedules.create">
-        <SchedulesCreate />
-      </RouteGuard>
-    ),
-  }),
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/schedules/$scheduleId",
-    component: () => (
-      <RouteGuard permission="schedules.view">
-        <SchedulesShow />
-      </RouteGuard>
-    ),
-  }),
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/schedules/$scheduleId/edit",
-    component: () => (
-      <RouteGuard permission="schedules.edit">
-        <SchedulesEdit />
-      </RouteGuard>
-    ),
-  }),
+  //       <SchedulesIndex />
+  //     </RouteGuard>
+  //   ),
+  // }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/schedules/create",
+  //   component: () => (
+  //     <RouteGuard permission="schedules.create">
+  //       <SchedulesCreate />
+  //     </RouteGuard>
+  //   ),
+  // }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/schedules/$scheduleId",
+  //   component: () => (
+  //     <RouteGuard permission="schedules.view">
+  //       <SchedulesShow />
+  //     </RouteGuard>
+  //   ),
+  // }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/schedules/$scheduleId/edit",
+  //   component: () => (
+  //     <RouteGuard permission="schedules.edit">
+  //       <SchedulesEdit />
+  //     </RouteGuard>
+  //   ),
+  // }),
 
   // Services
   new Route({

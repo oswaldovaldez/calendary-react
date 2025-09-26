@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import { userSchema, userSchemaEdit } from "../../schemas/userSchema";
 import FormRender from "../../components/FormRender";
 import { useAuthStore } from "../../store/auth.store";
+import { SchedulesIndex } from "../schedules";
 const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
   const rolesStore = useAuthStore((s) => s.roles);
   const roleUser = useAuthStore((s) => s.user.roles[0]);
@@ -17,8 +18,8 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
         {({ errors, touched, isSubmitting }) => (
           <Form className="form-container">
             <div className="card neumo">
-              <div className="card-body">
-                <div className="form-group">
+              <div className="card-body grid gap-4 md:grid-cols-2">
+                <div className="form-group md:col-span-2">
                   <label htmlFor="name" className="form-label">
                     Nombre
                   </label>
@@ -105,22 +106,24 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
               </div>
             </div>
             {isEdit && (
-              <div className="card neumo">
-                <div className="card-header">
-                  <h3>Otros Datos</h3>
+              <>
+                <div className="card neumo">
+                  <div className="card-header">
+                    <h3>Otros Datos</h3>
+                  </div>
+                  <div className="card-body grid gap-4 md:grid-cols-2">
+                    <FieldArray
+                      name="data"
+                      render={(arrayHelpers: any) => (
+                        <FormRender
+                          arrayHelpers={arrayHelpers}
+                          initialValues={initialValues}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
-                <div className="card-body">
-                  <FieldArray
-                    name="data"
-                    render={(arrayHelpers: any) => (
-                      <FormRender
-                        arrayHelpers={arrayHelpers}
-                        initialValues={initialValues}
-                      />
-                    )}
-                  />
-                </div>
-              </div>
+              </>
             )}
             <button
               className="btn neumo btn-success ml-auto"
@@ -132,6 +135,14 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
           </Form>
         )}
       </Formik>
+      <div className="card neumo mt-4">
+        <div className="card-header">
+          <h3>Horarios</h3>
+        </div>
+        <div className="card-body">
+          <SchedulesIndex userId={initialValues.id} />
+        </div>
+      </div>
     </div>
   );
 };

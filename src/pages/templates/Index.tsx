@@ -11,6 +11,7 @@ import { useNotificationStore } from "../../store/notification.store";
 const Index = () => {
   const [templates, setTemplates] = useState([]);
   const token = useAuthStore((s) => s.token);
+  const commerce = useAuthStore((s) => s.commerce);
   const notify = useNotificationStore((state) => state.notify);
   const handleDeleteRecordTemplate = (id: number) => {
     Api.deleteRecordTemplate({ recordTemplate_id: id, _token: token })
@@ -54,41 +55,47 @@ const Index = () => {
           </Link>
           {/* Botón para eliminar (puede ser un botón con un evento onClick) */}
           <button
-  onClick={() =>
-    showConfirm({
-      id: info.row.original.id ?? 0,
-      handleConfirm: handleDeleteRecordTemplate,
-      title: "Eliminar plantilla",
-      message: `¿Deseas eliminar la plantilla <strong>${info.row.original.name}</strong>?`,
-      successText: `La plantilla <strong>${info.row.original.name}</strong> se eliminó correctamente.`,
-      errorText: `No se pudo eliminar la plantilla <strong>${info.row.original.name}</strong>. Intenta de nuevo.`,
-    })
-  }
-  className="btn neumo btn-danger"
->
-  Eliminar
-</button>
+            onClick={() =>
+              showConfirm({
+                id: info.row.original.id ?? 0,
+                handleConfirm: handleDeleteRecordTemplate,
+                title: "Eliminar plantilla",
+                message: `¿Deseas eliminar la plantilla <strong>${info.row.original.name}</strong>?`,
+                successText: `La plantilla <strong>${info.row.original.name}</strong> se eliminó correctamente.`,
+                errorText: `No se pudo eliminar la plantilla <strong>${info.row.original.name}</strong>. Intenta de nuevo.`,
+              })
+            }
+            className="btn neumo btn-danger"
+          >
+            Eliminar
+          </button>
         </div>
       ),
     },
   ];
   useEffect(() => {
-    Api.readRecordTemplates({ _token: token ?? "" })
+    Api.readRecordTemplates({
+      _token: token ?? "",
+      query: { commerce_id: `${commerce?.id}` },
+    })
       .then((res) => {
         setTemplates(res);
       })
       .catch(console.log);
   }, []);
 
-  const handleSeach = (query) => {
-    Api.readRecordTemplates({ _token: token ?? "", query: query })
+  const handleSearch = (query) => {
+    Api.readRecordTemplates({ _token: token ?? "", query: {...query,commerce_id: `${commerce?.id}`} })
       .then((res: any) => {
         setTemplates(res);
       })
       .catch(console.log);
   };
   const handlePaginate = (query) => {
-    Api.readRecordTemplates({ _token: token ?? "", query: query })
+    Api.readRecordTemplates({
+      _token: token ?? "",
+      query: { ...query, commerce_id: `${commerce?.id}` },
+    })
       .then((res) => {
         setTemplates(res);
       })
@@ -101,7 +108,7 @@ const Index = () => {
         cols={cols}
         createLink={createLink}
         handlePage={handlePaginate}
-        handleSearch={handleSeach}
+        handleSearch={handleSearch}
       />
     </div>
   );

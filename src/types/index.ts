@@ -18,13 +18,13 @@ export interface UserType {
 
 export interface RecordTemplateType {
  commerce_id: number;
- created_at?:  Date;
+ created_at?:  Date|string;
  deleted_at?:  null;
  fields:      FieldType[]|null;
  id?:          number;
  name:        string;
  pivot?:       RecordTemplatePivotType;
- updated_at?:  Date;
+ updated_at?:  Date|string;
 }
 
 export interface FieldType {
@@ -47,7 +47,7 @@ export interface RecordTemplatePivotType {
 
 export interface CommerceType {
  address:     string|null;
- created_at?:  Date;
+ created_at?:  Date|string;
  data:        any[]|null;
  deleted_at?:  Date|null;
  description: string|null;
@@ -59,16 +59,16 @@ export interface CommerceType {
  pivot?:       CommercePivotType;
  record_templates?: RecordTemplateType[];
  slug?:        string;
- updated_at?:  Date;
+ updated_at?:  Date|string;
 }
 
 export interface CommercePivotType {
  commerce_id: number;
- created_at:  Date;
+ created_at:  Date|string;
  is_active:   boolean;
  permissions: PermissionsType;
  role:        string;
- updated_at:  Date;
+ updated_at:  Date|string;
  user_id:     number;
 }
 export interface PermissionsType {
@@ -79,12 +79,12 @@ export interface PermissionsType {
 }
 
 export interface RoleType {
- created_at: Date;
+ created_at: Date|string;
  guard_name: string;
  id:         number;
  name:       string;
  pivot:      RolePivotType;
- updated_at: Date;
+ updated_at: Date|string;
 }
 
 export interface RolePivotType {
@@ -98,7 +98,7 @@ export interface CategoryType {
  _rgt:        number;
  children:    any[];
  commerce_id: number;
- created_at:  Date;
+ created_at:  Date|string;
  deleted_at:  Date|null;
  description: string|null;
  id:          number;
@@ -106,14 +106,14 @@ export interface CategoryType {
  parent_id:   number|null;
  slug:        string;
  status:      boolean;
- updated_at:  Date;
+ updated_at:  Date|string;
 }
 
 
 export interface PatientType {
  birth_date:  Date|string;
  commerce_id?: number;
- created_at?:  Date;
+ created_at?:  Date|string;
  data:        PatientDataType|Array<any>;
  deleted_at?:  Date|null;
  email:       string;
@@ -124,7 +124,7 @@ export interface PatientType {
  phone:       string;
  records?:     any[];
  record_templates?: RecordTemplateType[];
- updated_at?:  Date;
+ updated_at?:  Date|string;
 }
 
 export interface PatientDataType {
@@ -158,7 +158,7 @@ export interface ProductType {
  category_id:         number|null;
  commission:          string;
  cost:                string;
- created_at:          Date;
+ created_at:          Date|string;
  deleted_at:          Date|null;
  description:         string;
  format:              string;
@@ -173,7 +173,7 @@ export interface ProductType {
  status:              boolean;
  stock:               number;
  stock_alert:         number;
- updated_at:          Date;
+ updated_at:          Date|string;
 }
 
 
@@ -181,7 +181,7 @@ export interface ServiceType {
  home_service:     boolean;
  category:         CategoryType;
  category_id:      number;
- created_at:       Date;
+ created_at:       Date|string;
  deleted_at:       Date|null;
  description:      string;
  duration:         number;
@@ -196,21 +196,21 @@ export interface ServiceType {
  sessions:         boolean;
  slug:             string;
  start_offer_at:   null;
- updated_at:       Date;
+ updated_at:       Date|string;
 }
 
 
 export interface ScheduleType {
  breaks:      BreakType[];
  commerce_id: number;
- created_at:  Date;
+ created_at?:  Date|string;
  day_of_week: string;
- deleted_at:  Date|null;
+ deleted_at?:  Date|null;
  end_time:    string;
  id:          number;
  start_time:  string;
- updated_at:  Date;
- user:        UserType;
+ updated_at?:  Date|string;
+ user?:        UserType;
  user_id:     number;
 }
 
@@ -223,10 +223,10 @@ export interface BreakType {
 export interface AppointmentType {
  commerce:    CommerceType;
  commerce_id: number;
- created_at:  Date;
+ created_at:  Date|string;
  deleted_at:  Date|null;
  description: string;
- end_at:      Date;
+ end_at:      Date|string;
  id:          number;
  name:        string;
  notes:       string|null;
@@ -236,9 +236,19 @@ export interface AppointmentType {
  schedule_id: number;
  service:     ServiceType;
  service_id:  number;
- start_at:    Date;
+ start_at:    Date|string;
  status:      string;
- updated_at:  Date;
+ updated_at:  Date|string;
  user:        UserType;
  user_id:     number;
 }
+
+export const diasES: Record<string, string> = {
+  monday: "Lunes",
+  tuesday: "Martes",
+  wednesday: "Miércoles",
+  thursday: "Jueves",
+  friday: "Viernes",
+  saturday: "Sábado",
+  sunday: "Domingo",
+};

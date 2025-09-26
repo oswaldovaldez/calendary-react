@@ -17,6 +17,7 @@ export function CommerceSelector() {
 
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {
+    setCommerce(commerces[0]);
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);

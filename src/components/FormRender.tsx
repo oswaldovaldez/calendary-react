@@ -6,9 +6,9 @@ const FormRender = ({ arrayHelpers, initialValues }) => {
     return <></>;
   }
   return (
-    <div>
+    <>
       {initialValues.record_templates[0].fields.map((element, indexE) => (
-        <div className="form-control mt-2" key={`element-${indexE}`}>
+        <div className="form-group mt-2" key={`element-${indexE}`}>
           <label htmlFor={`data[${element.name ?? ""}]`} className="form-label">
             {element.label ?? ""}
           </label>
@@ -86,7 +86,7 @@ const FormRender = ({ arrayHelpers, initialValues }) => {
             )}
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
