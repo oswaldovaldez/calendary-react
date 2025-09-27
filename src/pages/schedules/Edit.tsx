@@ -6,7 +6,7 @@ import { useNotificationStore } from "../../store/notification.store";
 import FormSchedule from "./FormSchedule";
 //  import toast, { Toaster } from "react-hot-toast";
 
-const Edit = ({ scheduleId, userId, commerceId }) => {
+const Edit = ({ scheduleId, userId, onClosex }) => {
   const notify = useNotificationStore((state) => state.notify);
   const [formData, setFormData] = useState<ScheduleType>({
     breaks: [],
@@ -17,10 +17,12 @@ const Edit = ({ scheduleId, userId, commerceId }) => {
     start_time: "",
     user_id: 0,
   });
-
+  const currentCommerce = useAuthStore((s) => s.commerce);
+  const commerceId = currentCommerce?.id ?? 0;
   const token = useAuthStore((s) => s.token);
   const [loading, setLoading] = useState(true);
   const handleSubmit = async (values: any) => {
+    onClosex();
     Api.updateSchedule({
       ...values,
       schedule_id: scheduleId,
@@ -34,10 +36,23 @@ const Edit = ({ scheduleId, userId, commerceId }) => {
         notify("error", "Algo salió mal ❌");
       });
   };
+
+  const formatTimeToHHMM = (time: string): string => {
+    if (!time) return "";
+    // Si ya está en formato HH:MM, devolver tal como está
+    if (time.length === 5) return time;
+    // Si está en formato HH:MM:SS, quitar los segundos
+    return time.substring(0, 5);
+  };
+
   useEffect(() => {
     Api.showSchedule({ _token: token ?? "", schedule_id: scheduleId })
       .then((res) => {
-        setFormData({ ...res, role: res.roles[0].id });
+        setFormData({
+          ...res,
+          start_time: formatTimeToHHMM(res.start_time),
+          end_time: formatTimeToHHMM(res.end_time),
+        });
 
         setLoading(false);
       })

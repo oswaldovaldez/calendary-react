@@ -24,7 +24,7 @@ export function Sidebar() {
     <>
       <aside
         className={`fixed top-0 left-0 h-screen w-64 shadow-md flex flex-col 
-          bg-content transition-transform duration-300 neumo z-50
+          bg-content transition-transform duration-300 neumo z-3
           ${isOpen ? "translate-x-0" : "-translate-x-64"}`}
       >
         <div className="p-4 text-lg font-bold">

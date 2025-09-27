@@ -808,7 +808,7 @@ html.dark {
 
 /* === Modal estilo Bootstrap con Tailwind === */
 .modal {
-  @apply fixed inset-0 flex items-center justify-center z-[99999999];
+  @apply fixed w-full h-screen inset-0 flex items-center justify-center z-[99999999];
 }
 
 .modal-dialog {
@@ -816,7 +816,7 @@ html.dark {
 }
 
 .modal-content {
-  @apply bg-[#171718] text-white rounded-2xl shadow-2xl flex flex-col;
+  @apply bg-gray-50  rounded-2xl shadow-2xl flex flex-col;
 }
 
 .modal-header {

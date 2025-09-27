@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-
-
 // api.ts
 const API_URL = import.meta.env.API_URL || "http://168.231.69.210:9998/api";
 
@@ -121,9 +118,9 @@ export const Api = {
   showRecord:(data:{record_id:number,_token:string,})=>apiFetch(`/records/${data.record_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
   //crud horarios
-  createSchedule:(data:{day_of_week:string,start_time:string,end_time:string,breaks:object|null,_token:string})=>apiFetch('/schedules',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  createSchedule:(data:{commerce_id:number,user_id:number,day_of_week:string,start_time:string,end_time:string,breaks:object|null,_token: string})=>apiFetch('/schedules',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readSchedules:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/schedules`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
-  updateSchedule:(data:{day_of_week:string,start_time:string,end_time:string,breaks:object|null,schedule_id:number,_token: string})=>apiFetch(`/schedules/${data.schedule_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  updateSchedule:(data:{commerce_id:number,user_id:number,day_of_week:string,start_time:string,end_time:string,breaks:object|null,schedule_id:number,_token: string})=>apiFetch(`/schedules/${data.schedule_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteSchedule:(data:{schedule_id:number,_token: string})=>apiFetch(`/schedules/${data.schedule_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showSchedule:(data:{schedule_id:number,_token:string,})=>apiFetch(`/schedules/${data.schedule_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   

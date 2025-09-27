@@ -8,7 +8,7 @@ import { showConfirm } from "../../utils/alert";
 import { useNotificationStore } from "../../store/notification.store";
 import { diasES } from "../../types";
 import Modal from "../../components/Modal";
-import { SchedulesEdit } from ".";
+import { SchedulesCreate, SchedulesEdit } from ".";
 
 const Index = ({ userId = 0 }) => {
   const [schedules, setSchedules] = useState([]);
@@ -106,8 +106,8 @@ const Index = ({ userId = 0 }) => {
                 id: info.row.original.id ?? 0,
                 handleConfirm: handleDeleteSchedule,
                 title: "Eliminar horario",
-                message: `¿Deseas eliminar el horario <strong>${info.row.original.name}</strong>?`,
-                successText: `El horario <strong>${info.row.original.name}</strong> se eliminó correctamente.`,
+                message: `¿Deseas eliminar el horario <strong>${info.row.original.day_of_week}</strong>?`,
+                successText: `El horario <strong>${info.row.original.day_of_week}</strong> se eliminó correctamente.`,
                 errorText: `No se pudo eliminar el horario <strong>${info.row.original.name}</strong>. Intenta de nuevo.`,
               })
             }
@@ -165,16 +165,36 @@ const Index = ({ userId = 0 }) => {
         createLink={createLink}
         handlePage={handlePaginate}
         handleSearch={handleSeach}
+        handleOpen={() => setOpenCreate(true)}
+        isLink={false}
       />
       <Modal
-        open={openEdit}
-        onClose={() => setOpenEdit(false)}
+        isOpen={openEdit}
+        onClosex={() => {
+          setOpenEdit(false);
+        }}
         title="Editar Horario"
       >
         <SchedulesEdit
-          commerceId={commerceId}
           userId={userId}
           scheduleId={scheduleId}
+          onClosex={() => {
+            setOpenEdit(false);
+          }}
+        />
+      </Modal>
+      <Modal
+        isOpen={openCreate}
+        onClosex={() => {
+          setOpenCreate(false);
+        }}
+        title="Nuevo Horario"
+      >
+        <SchedulesCreate
+          userId={userId}
+          onClosex={() => {
+            setOpenCreate(false);
+          }}
         />
       </Modal>
     </div>

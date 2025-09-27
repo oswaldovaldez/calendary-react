@@ -19,12 +19,16 @@ const Table = ({
   createLink,
   handlePage,
   handleSearch,
+  handleOpen = () => {},
+  isLink = true,
 }: {
   datos: any;
   cols: any;
   createLink: { url: string; name: string };
   handlePage: (query: any) => void;
   handleSearch: (values: any) => void;
+  handleOpen?: () => void;
+  isLink?: boolean;
 }) => {
   const initialValues: searchSchema = {
     search: "",
@@ -58,9 +62,16 @@ const Table = ({
             )}
           </Formik>
         </div>
-        <Link to={createLink.url} className="btn neumo btn-primary">
-          {createLink.name}
-        </Link>
+
+        {isLink ? (
+          <Link to={createLink.url} className="btn neumo btn-primary">
+            {createLink.name}
+          </Link>
+        ) : (
+          <button className="btn btn-primary neumo" onClick={handleOpen}>
+            {createLink.name}
+          </button>
+        )}
       </div>
       <div className="overflow-x-auto overflow-y-auto min-h-[400px] h-[400px] sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">

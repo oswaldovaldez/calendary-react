@@ -1,64 +1,132 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import { IoClose } from "react-icons/io5";
 
 interface ModalProps {
-  open: boolean;
-  onClose: () => void;
+  isOpen: boolean;
+  onClosex: () => void;
   title?: string;
   children: ReactNode;
+  size?: "sm" | "lg" | "xl" | "";
 }
 
-export default function Modal({ open, onClose, title, children }: ModalProps) {
+export default function Modal({
+  isOpen,
+  onClosex,
+  title,
+  children,
+  size = "",
+}: ModalProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden"; // Bloquear scroll
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (isOpen) {
+      dialog.showModal();
+      // Prevenir scroll del body cuando el modal está abierto
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "";
+      dialog.close();
+      document.body.style.overflow = "unset";
     }
-  }, [open]);
 
-  if (!open) return null;
+    // Cleanup al desmontar
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
-  return (
-    <>
-      {/* Backdrop */}
-      <div className="modal-backdrop" onClick={onClose}></div>
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
 
-      {/* Modal */}
-      <div className="modal">
-        <div className="modal-dialog">
-          <div className="modal-content neumo">
-            {/* Header */}
+    const handleClose = () => {
+      onClosex();
+    };
+
+    const handleClick = (event: MouseEvent) => {
+      const rect = dialog.getBoundingClientRect();
+      const isInDialog =
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width;
+
+      if (!isInDialog) {
+        onClosex();
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClosex();
+      }
+    };
+
+    dialog.addEventListener("close", handleClose);
+    dialog.addEventListener("click", handleClick);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      dialog.removeEventListener("close", handleClose);
+      dialog.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [onClosex]);
+
+  const sizeClass = size ? `modal-${size}` : "";
+
+  // No renderizar nada si el modal no está abierto
+  if (!isOpen) {
+    return null;
+  }
+
+  // ✅ Usar Portal para renderizar en el root del documento
+  return createPortal(
+    <dialog
+      ref={dialogRef}
+      className="modal"
+      style={{
+        padding: 0,
+        border: "none",
+        borderRadius: 0,
+        maxWidth: "none",
+        maxHeight: "none",
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 9999, // Z-index muy alto
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: 0,
+      }}
+    >
+      <div className={`modal-dialog ${sizeClass}`} style={{ margin: 0 }}>
+        <div className="modal-content">
+          {title && (
             <div className="modal-header">
-              {title && <h5 className="modal-title">{title}</h5>}
+              <h5 className="modal-title">{title}</h5>
               <button
                 type="button"
-                className="modal-close"
-                aria-label="Cerrar modal"
-                onClick={onClose}
+                className="btn btn-danger neumo"
+                aria-label="Close"
+                onClick={onClosex}
               >
-                ✕
+                <IoClose />
               </button>
             </div>
-
-            {/* Body */}
-            <div className="modal-body">{children}</div>
-
-            {/* Footer */}
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={onClose}
-              >
-                Cerrar
-              </button>
-              <button type="button" className="btn btn-primary">
-                Guardar
-              </button>
-            </div>
-          </div>
+          )}
+          <div className="modal-body">{children}</div>
         </div>
       </div>
-    </>
+    </dialog>,
+    document.body // ✅ Renderizar directamente en el body
   );
 }

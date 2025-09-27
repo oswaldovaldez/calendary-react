@@ -42,7 +42,7 @@ export function CommerceSelector() {
       {/* Botón principal que muestra el commerce actual */}
       <button
         onClick={toggleDropdown}
-        className="w-full flex items-center justify-between px-3 py-2.5 border border-gray-200 rounded-lg shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent neumo"
+        className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent neumo"
       >
         <div className="flex items-center space-x-3 min-w-0 flex-1">
           {/* Avatar/Imagen */}
@@ -83,7 +83,7 @@ export function CommerceSelector() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 border rounded-lg shadow-lg max-h-64 overflow-y-auto neumo">
+        <div className="absolute z-50 w-full mt-1 rounded-lg shadow-lg max-h-64 overflow-y-auto neumo">
           <div className="py-1">
             {commerces.length === 0 ? (
               <div className="px-3 py-2 text-sm text-gray-500">
