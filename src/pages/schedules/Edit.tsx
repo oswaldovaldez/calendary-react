@@ -6,7 +6,7 @@ import { useNotificationStore } from "../../store/notification.store";
 import FormSchedule from "./FormSchedule";
 //  import toast, { Toaster } from "react-hot-toast";
 
-const Edit = ({ scheduleId, userId, onClosex }) => {
+const Edit = ({ scheduleId, userId, onClosex, reload }) => {
   const notify = useNotificationStore((state) => state.notify);
   const [formData, setFormData] = useState<ScheduleType>({
     breaks: [],
@@ -30,6 +30,7 @@ const Edit = ({ scheduleId, userId, onClosex }) => {
     })
       .then((res) => {
         notify("success", res.message);
+        reload();
       })
       .catch((error) => {
         console.log(error);

@@ -135,14 +135,16 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
           </Form>
         )}
       </Formik>
-      <div className="card neumo mt-4">
-        <div className="card-header">
-          <h3>Horarios</h3>
+      {isEdit && (
+        <div className="card neumo mt-4">
+          <div className="card-header">
+            <h3>Horarios</h3>
+          </div>
+          <div className="card-body">
+            <SchedulesIndex userId={initialValues.id} />
+          </div>
         </div>
-        <div className="card-body">
-          <SchedulesIndex userId={initialValues.id} />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

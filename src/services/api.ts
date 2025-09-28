@@ -10,16 +10,10 @@ interface RequestOptions<T> {
   headers?: Record<string, string>;
   query?: Record<string, string>;
 }
-interface ApiResponse<T> {
-  data: T | null;
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  error: Error | null;
-}
 
 
-function buildQueryParams(query?: Record<string, string>): string {
+
+export function buildQueryParams(query?: Record<string, string>): string {
   if (!query) return "";
   const params = new URLSearchParams(query);
   return `?${params.toString()}`;
@@ -72,8 +66,8 @@ export const Api = {
   updateCommerce:(data:{name:string,email:string,phone:string,data:object,commerce_id:number,_token: string})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteCommerce:(data:{name:string,email:string,password:string,role:string,commerce_id:number,_token: string})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showCommerce:(data:{commerce_id:number,_token:string,})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
-  attachUserCommerce:(data:{user_id:number,commerce_id:number,_token:string})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
-  detachUserCommerce:(data:{user_id:number,commerce_id:number,_token:string})=>apiFetch(`/commerces/${data.commerce_id}`,{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  attachUserCommerce:(data:{user_id:number,commerce_id:number,_token:string})=>apiFetch(`/commerces/${data.commerce_id}/attach-user`,{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  detachUserCommerce:(data:{user_id:number,commerce_id:number,_token:string})=>apiFetch(`/commerces/${data.commerce_id}/detach-user`,{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
 
   //crud categorias
   createCategory:(data:{name:string,description:string,parent_id:number|null,commerce_id:number,_token:string})=>apiFetch('/categories',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
@@ -139,4 +133,9 @@ export const Api = {
   
   //disponibilidad optimizada
   optimizedAvailability:(data:{user_id:number,date:string,duration:number,_token:string,})=>apiFetch(`/optimized-availability?user_id=${data.user_id}&date=${data.date}&duration=${data.duration}`,{method:'GET'}),
+  
+  getPermissions: (data: { _token: string, }) => apiFetch(`/permissions`, { method: 'GET', headers: { Authorization: `Bearer ${data._token}` } }),
+  
+  syncPermissions: (data: { permissions: Array<string>, _token: string, userId: number }) => apiFetch(`/users/${data.userId}/sync-permissions`, { method: 'POST', headers: { Authorization: `Bearer ${data._token}` }, body: {permissions:data.permissions} }),
+  
 };

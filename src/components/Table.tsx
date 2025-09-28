@@ -20,6 +20,7 @@ const Table = ({
   handlePage,
   handleSearch,
   handleOpen = () => {},
+  handleReload = () => {},
   isLink = true,
 }: {
   datos: any;
@@ -28,6 +29,7 @@ const Table = ({
   handlePage: (query: any) => void;
   handleSearch: (values: any) => void;
   handleOpen?: () => void;
+  handleReload?: () => void;
   isLink?: boolean;
 }) => {
   const initialValues: searchSchema = {
@@ -72,6 +74,7 @@ const Table = ({
             {createLink.name}
           </button>
         )}
+        
       </div>
       <div className="overflow-x-auto overflow-y-auto min-h-[400px] h-[400px] sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">

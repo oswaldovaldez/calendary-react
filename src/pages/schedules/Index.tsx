@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import Table from "../../components/Table";
-import { Api } from "../../services/api";
+import { Api, buildQueryParams } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
-import { Link } from "@tanstack/react-router";
 import { showConfirm } from "../../utils/alert";
 import { useNotificationStore } from "../../store/notification.store";
 import { diasES } from "../../types";
@@ -16,12 +15,14 @@ const Index = ({ userId = 0 }) => {
   const [openCreate, setOpenCreate] = useState(false);
   const [scheduleId, setScheduleId] = useState(0);
   const [commerceId, setCommerceId] = useState(0);
+  const [query, setQuery] = useState({});
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
   const handleDeleteSchedule = (id: number) => {
     Api.deleteSchedule({ schedule_id: id, _token: token })
       .then((res) => {
         notify("success", res.message);
+        handleGetData();
       })
       .catch((error) => {
         console.log(error);
@@ -119,43 +120,31 @@ const Index = ({ userId = 0 }) => {
       ),
     },
   ];
-  useEffect(() => {
-    if (userId !== 0) {
-      Api.readSchedules({
-        _token: token ?? "",
-        query: { user_id: `${userId}` },
-      })
-        .then((res: any) => {
-          setSchedules(res);
-        })
-        .catch(console.log);
-    } else {
-      Api.readSchedules({ _token: token ?? "" })
-        .then((res: any) => {
-          setSchedules(res);
-        })
-        .catch(console.log);
-    }
-  }, []);
-  const handleSeach = (query) => {
+  const handleGetData = () => {
     Api.readSchedules({
       _token: token ?? "",
-      query: { ...query, commerce_id: `${commerce?.id}` },
+      query: query,
     })
       .then((res: any) => {
         setSchedules(res);
       })
       .catch(console.log);
   };
-  const handlePaginate = (query) => {
-    Api.readSchedules({
-      _token: token ?? "",
-      query: { ...query, commerce_id: `${commerce?.id}` },
-    })
-      .then((res: any) => {
-        setSchedules(res);
-      })
-      .catch(console.log);
+  useEffect(() => {
+    if (userId !== 0) {
+      setQuery({ user_id: `${userId}` });
+    }
+  }, []);
+  useEffect(() => {
+    if (Object.keys(query).length > 0) {
+      handleGetData();
+    }
+  }, [query]);
+  const handleSearch = (queryData) => {
+    setQuery({ ...query, ...queryData });
+  };
+  const handlePaginate = (queryData) => {
+    setQuery({ ...query, queryData });
   };
   return (
     <div>
@@ -164,7 +153,7 @@ const Index = ({ userId = 0 }) => {
         cols={cols}
         createLink={createLink}
         handlePage={handlePaginate}
-        handleSearch={handleSeach}
+        handleSearch={handleSearch}
         handleOpen={() => setOpenCreate(true)}
         isLink={false}
       />
@@ -178,6 +167,7 @@ const Index = ({ userId = 0 }) => {
         <SchedulesEdit
           userId={userId}
           scheduleId={scheduleId}
+          reload={handleGetData}
           onClosex={() => {
             setOpenEdit(false);
           }}
@@ -192,6 +182,7 @@ const Index = ({ userId = 0 }) => {
       >
         <SchedulesCreate
           userId={userId}
+          reload={handleGetData}
           onClosex={() => {
             setOpenCreate(false);
           }}

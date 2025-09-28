@@ -74,7 +74,7 @@ const FormRender = ({ arrayHelpers, initialValues }) => {
             element.type !== "group" &&
             element.type !== "textarea" && (
               <Field
-                className={`input input-sm ${element.type === "textarea" && "textarea"}`}
+                className={`input input-sm ${element.type === "checkbox" ? "checkbox" : ""} ${element.type === "radio" ? "radio" : ""}`}
                 type={element.type}
                 name={`data[${element.name ?? ""}]`}
                 defaultValue={

@@ -5,7 +5,7 @@ import { useAuthStore } from "../../store/auth.store";
 import FormSchedule, { type ScheduleFormValues } from "./FormSchedule";
 import { useNotificationStore } from "../../store/notification.store";
 
-const CreateSchedule = ({ userId, onClosex }) => {
+const CreateSchedule = ({ userId, onClosex, reload }) => {
   const token = useAuthStore((s) => s.token);
   // const user = useAuthStore((s) => s.user);
   // const navigate = useNavigate();
@@ -45,8 +45,8 @@ const CreateSchedule = ({ userId, onClosex }) => {
   };
 
   const handleSubmit = async (values: ScheduleFormValues) => {
-    // onClosex();
-    console.log(values);
+    onClosex();
+    // console.log(values);
     // return;
     try {
       await Api.createSchedule({
@@ -54,6 +54,7 @@ const CreateSchedule = ({ userId, onClosex }) => {
         _token: token ?? "",
       });
       notify("success", "Horario creado con éxito");
+      reload();
       // navigate({ to: "/schedules" });
     } catch (error) {
       console.error(error);

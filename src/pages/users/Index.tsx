@@ -84,7 +84,7 @@ const Index = () => {
       .catch(console.log);
   }, []);
 
-  const handleSeach = (query) => {
+  const handleSearch = (query) => {
     Api.readUsers({
       _token: token ?? "",
       query: { ...query, commerce_id: `${commerce?.id}` },
@@ -111,7 +111,7 @@ const Index = () => {
         cols={cols}
         createLink={createLink}
         handlePage={handlePaginate}
-        handleSearch={handleSeach}
+        handleSearch={handleSearch}
       />
     </div>
   );
