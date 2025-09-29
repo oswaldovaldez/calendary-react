@@ -77,7 +77,7 @@ export const Api = {
   showCategory:(data:{category_id:number,_token:string,})=>apiFetch(`/categories/${data.category_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
   //crud servicios
-  createService:(data:{name:string,description:string,commerce_id:number,duration:number,price:number,price_offer:number,_token:string})=>apiFetch('/services',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  createService:(data:{name:string,description:string,commerce_id:number,category_id: number,duration:number,duration_type: string,price:number,price_offer:number,session_number: number,sessions: boolean,home_service: boolean,start_offer_at: string | null,end_offer_at: string | null,options: any[],_token:string})=>apiFetch('/services',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readServices:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/services`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
   updateService:(data:{name:string,description:string,commerce_id:number,duration:number,price:number,price_offer:number,service_id:number,_token: string})=>apiFetch(`/services/${data.service_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteService:(data:{service_id:number,_token: string})=>apiFetch(`/services/${data.service_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),

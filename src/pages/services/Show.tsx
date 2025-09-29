@@ -1,137 +1,129 @@
-import { useEffect, useState } from "react";
-import { useParams } from "@tanstack/react-router";
-
-import { Api } from "../../services/api";
+import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../../store/auth.store";
-import type { ServiceFormValues } from "./FormService"; 
+import { Api } from "../../services/api";
+import { useParams, useNavigate } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 
-const ShowService = () => {
+interface ServiceData {
+	id: number;
+	name: string;
+	description: string;
+	category_id: number;
+	category?: { id: number; name: string };
+	price: string;
+	price_offer: string | null;
+	duration: number;
+	duration_type: string;
+	session_number: number;
+	sessions: boolean;
+	home_service: boolean;
+	start_offer_at: string | null;
+	end_offer_at: string | null;
+	options: { name: string; extra_price: number }[];
+	created_at: string;
+	updated_at: string;
+}
+
+const ShowService: React.FC = () => {
+	const token = useAuthStore((s) => s.token);
 	const { serviceId } = useParams({ from: "/services/$serviceId" });
-	const token = useAuthStore((state) => state.token);
+	const navigate = useNavigate();
 
-	const [service, setService] = useState<ServiceFormValues | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const [service, setService] = useState<ServiceData | null>(null);
+	const [loading, setLoading] = useState(true);
+
+	const formatDate = (date: string | null) => {
+		if (!date) return "—";
+		return new Date(date).toISOString().split("T")[0];
+	};
 
 	useEffect(() => {
-		if (!token) {
-			setError("No hay sesión activa");
-			setIsLoading(false);
-			return;
-		}
+		Api.showService({
+			_token: token ?? "",
+			service_id: Number(serviceId),
+		})
+			.then((res: any) => {
+				setService(res);
+				setLoading(false);
+			})
+			.catch((error) => {
+				console.error("Error al cargar servicio:", error);
+				toast.error("No se pudo cargar el servicio");
+				setLoading(false);
+			});
+	}, [token, serviceId]);
 
-		let isMounted = true;
-
-		const fetchService = async () => {
-			setIsLoading(true);
-			try {
-				const response = await Api.showService({
-					_token: token,
-					service_id: Number(serviceId),
-				});
-
-				if (!isMounted) return;
-				setService(response as ServiceFormValues);
-				setError(null);
-			} catch (err) {
-				console.error("Error cargando el servicio", err);
-				if (!isMounted) return;
-				setError("No pudimos cargar el servicio");
-			} finally {
-				if (isMounted) {
-					setIsLoading(false);
-				}
-			}
-		};
-
-		fetchService();
-
-		return () => {
-			isMounted = false;
-		};
-	}, [serviceId, token]);
-
-	if (isLoading) {
-		return <div className="card neumo p-6">Cargando servicio...</div>;
-	}
-
-	if (error || !service) {
-		return (
-			<div className="card neumo p-6">
-				{error ?? "Servicio no encontrado"}
-			</div>
-		);
-	}
+	if (loading) return <div>Cargando...</div>;
+	if (!service) return <div>No se encontró el servicio</div>;
 
 	return (
-		<div className="card neumo">
-			<div className="card-header">
-				<h2 className="text-lg font-semibold">Detalle de servicio</h2>
-				<p className="text-sm text-gray-500">ID: {serviceId}</p>
+		<div className="card">
+			<div className="card-header flex justify-between items-center">
+				<h2 className="text-lg font-bold">{service.name}</h2>
+				<button
+					className="btn neumo btn-secondary"
+					onClick={() =>
+						navigate({ to: `/services/${service.id}/edit` })
+					}
+				>
+					Editar
+				</button>
 			</div>
 
-			<div className="card-body grid gap-3 md:grid-cols-2">
-				<div>
-					<span className="font-semibold">Nombre:</span>{" "}
-					{service.name}
-				</div>
+			<div className="card-body space-y-2">
+				<p>
+					<strong>Descripción:</strong> {service.description}
+				</p>
+				<p>
+					<strong>Categoría:</strong>{" "}
+					{service.category?.name ?? "Sin categoría"}
+				</p>
+				<p>
+					<strong>Precio:</strong> ${service.price}
+				</p>
+				<p>
+					<strong>Precio de Oferta:</strong> ${service.price_offer}
+				</p>
+				<p>
+					<strong>Duración:</strong> {service.duration}{" "}
+					{service.duration_type}
+				</p>
+				<p>
+					<strong>Sesiones:</strong>{" "}
+					{service.sessions
+						? `${service.session_number} sesiones`
+						: "Servicio único"}
+				</p>
+				<p>
+					<strong>Servicio a domicilio:</strong>{" "}
+					{service.home_service ? "Sí" : "No"}
+				</p>
+				<p>
+					<strong>Inicio oferta:</strong>{" "}
+					{formatDate(service.start_offer_at)}
+				</p>
+				<p>
+					<strong>Fin oferta:</strong>{" "}
+					{formatDate(service.end_offer_at)}
+				</p>
 
-				<div>
-					<span className="font-semibold">Descripción:</span>{" "}
-					{service.description ?? "Sin descripción"}
-				</div>
-
-				<div>
-					<span className="font-semibold">Categoría:</span>{" "}
-					{service.category_id ?? "Sin categoría"}
-				</div>
-
-				<div>
-					<span className="font-semibold">Duración:</span>{" "}
-					{service.duration} minutos
-				</div>
-
-				<div>
-					<span className="font-semibold">Precio:</span> $
-					{Number(service.price).toFixed(2)}
-				</div>
-
-				<div>
-					<span className="font-semibold">Precio de oferta:</span>{" "}
-					{service.price_offer
-						? `$${Number(service.price_offer).toFixed(2)}`
-						: "Sin oferta"}
-				</div>
-
-				{/*  created_at y updated_at  */}
-				{"created_at" in service && (
+				{service.options?.length > 0 && (
 					<div>
-						<span className="font-semibold">Creado:</span>{" "}
-						{service.created_at
-							? new Date(
-									service.created_at as any
-								).toLocaleString("es-MX", {
-									dateStyle: "medium",
-									timeStyle: "short",
-								})
-							: "-"}
+						<strong>Opciones:</strong>
+						<ul className="list-disc pl-6">
+							{service.options.map((opt, i) => (
+								<li key={i}>
+									{opt.name} (+${opt.extra_price})
+								</li>
+							))}
+						</ul>
 					</div>
 				)}
-				{"updated_at" in service && (
-					<div>
-						<span className="font-semibold">
-							Última actualización:
-						</span>{" "}
-						{service.updated_at
-							? new Date(
-									service.updated_at as any
-								).toLocaleString("es-MX", {
-									dateStyle: "medium",
-									timeStyle: "short",
-								})
-							: "-"}
-					</div>
-				)}
+			</div>
+
+			<div className="card-footer text-sm text-gray-500">
+				Creado: {formatDate(service.created_at)} | Última actualización:{" "}
+				{formatDate(service.updated_at)}
 			</div>
 		</div>
 	);
