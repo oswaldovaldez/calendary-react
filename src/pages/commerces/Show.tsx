@@ -186,7 +186,7 @@ const ShowCommerce = () => {
               {user.name}
               <button
                 onClick={() => detachUser(user.id)}
-                className="btn btn-danger"
+                className="btn btn-danger neumo"
               >
                 <CiTrash />
               </button>

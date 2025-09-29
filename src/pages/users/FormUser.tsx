@@ -135,7 +135,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
           </Form>
         )}
       </Formik>
-      {isEdit && (
+      {/* {isEdit && (
         <div className="card neumo mt-4">
           <div className="card-header">
             <h3>Horarios</h3>
@@ -144,7 +144,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
             <SchedulesIndex userId={initialValues.id} />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

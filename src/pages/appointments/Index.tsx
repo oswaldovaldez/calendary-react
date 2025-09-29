@@ -3,7 +3,8 @@ import { Link } from "@tanstack/react-router";
 import Calendar from "@toast-ui/calendar";
 import "@toast-ui/calendar/dist/toastui-calendar.min.css";
 import type { AppointmentType } from "../../types";
-
+import DetailPopup from "../../components/DetailPopup";
+import { useDetailPopup } from "../../hooks/useDetailPopup";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNotificationStore } from "../../store/notification.store";
@@ -27,7 +28,7 @@ const Index = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [visibleCalendars, setVisibleCalendars] = useState(new Set<string>());
   const [showAllCalendars, setShowAllCalendars] = useState(true);
-
+  const { isOpen, event, position, openPopup, closePopup } = useDetailPopup();
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
   const commerce = useAuthStore((s) => s.commerce);
@@ -83,14 +84,17 @@ const Index = () => {
         );
 
         calendarInstance.current.createEvents(
-          filteredEvents.map((a) => ({
-            id: String(a.id),
-            calendarId: String(a.user.id),
-            title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service.name}`,
-            start: a.start_at,
-            end: a.end_at,
-            category: "time",
-          }))
+          filteredEvents
+            .filter((a) => a.patient?.first_name != null)
+            .map((a) => ({
+              id: String(a.id),
+              calendarId: String(a.user.id),
+              title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service.name}`,
+              start: a.start_at,
+              raw: a,
+              end: a.end_at,
+              category: "time",
+            }))
         );
       }
     } catch (err) {
@@ -110,21 +114,21 @@ const Index = () => {
       const end = calendarInstance.current.getDateRangeEnd();
       const startDate = new Date(start);
       const endDate = new Date(end);
-      console.log(startDate, endDate);
+      // console.log(startDate, endDate);
 
       if (viewType === "month") {
         setCurrentDateRange(
-          startDate.toLocaleDateString("es-ES", {
+          startDate.toLocaleDateString("es-MX", {
             month: "long",
             year: "numeric",
           })
         );
       } else if (viewType === "week") {
         setCurrentDateRange(
-          `${startDate.toLocaleDateString("es-ES", {
+          `${startDate.toLocaleDateString("es-MX", {
             day: "numeric",
             month: "short",
-          })} - ${endDate.toLocaleDateString("es-ES", {
+          })} - ${endDate.toLocaleDateString("es-MX", {
             day: "numeric",
             month: "short",
             year: "numeric",
@@ -132,7 +136,7 @@ const Index = () => {
         );
       } else {
         setCurrentDateRange(
-          startDate.toLocaleDateString("es-ES", {
+          startDate.toLocaleDateString("es-MX", {
             weekday: "long",
             day: "numeric",
             month: "long",
@@ -190,14 +194,17 @@ const Index = () => {
 
       calendarInstance.current.clear();
       calendarInstance.current.createEvents(
-        filteredEvents.map((a) => ({
-          id: String(a.id),
-          calendarId: String(a.user.id),
-          title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service.name}`,
-          start: a.start_at,
-          end: a.end_at,
-          category: "time",
-        }))
+        filteredEvents
+          .filter((a) => a.patient?.first_name != null)
+          .map((a) => ({
+            id: String(a.id),
+            calendarId: String(a.user.id),
+            title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service.name}`,
+            start: a.start_at,
+            end: a.end_at,
+            raw: a,
+            category: "time",
+          }))
       );
     }
   };
@@ -211,54 +218,146 @@ const Index = () => {
     }
   };
 
+  const handleDeleteEvent = async (eventId: string) => {
+    try {
+      // Aquí harías la llamada a tu API
+      // await Api.deleteAppointment({ _token: token, id: eventId });
+
+      if (calendarInstance.current) {
+        calendarInstance.current.deleteEvent(eventId, "");
+      }
+
+      setAppointments((prev) => prev.filter((a) => String(a.id) !== eventId));
+
+      notify({
+        type: "success",
+        title: "Cita eliminada",
+        description: "La cita ha sido eliminada correctamente.",
+      });
+    } catch (error) {
+      console.error("Error al eliminar cita:", error);
+      notify({
+        type: "error",
+        title: "Error",
+        description: "No se pudo eliminar la cita. Intenta nuevamente.",
+      });
+    }
+  };
+
+  const handleEditEvent = (eventData: any) => {
+    // Cerrar el popup de detalles
+    closePopup();
+
+    // Buscar el appointment completo
+    const appointment = appointments.find((a) => String(a.id) === eventData.id);
+    if (appointment) {
+      setSelectedEvent(appointment);
+      setIsEditModalOpen(true);
+    }
+  };
+
+  const handleUpdateEvent = async (updatedData: any) => {
+    try {
+      // await Api.updateAppointment({ _token: token, id: selectedEvent.id, ...updatedData });
+
+      if (calendarInstance.current) {
+        calendarInstance.current.updateEvent(selectedEvent.id, "", {
+          title: `${updatedData.patient?.first_name || selectedEvent.patient.first_name} ${updatedData.patient?.last_name || selectedEvent.patient.last_name} - ${updatedData.service?.name || selectedEvent.service.name}`,
+          start: updatedData.start_at || selectedEvent.start_at,
+          end: updatedData.end_at || selectedEvent.end_at,
+        });
+      }
+
+      setAppointments((prev) =>
+        prev.map((a) =>
+          a.id === selectedEvent.id ? { ...a, ...updatedData } : a
+        )
+      );
+
+      setIsEditModalOpen(false);
+      setSelectedEvent(null);
+
+      notify({
+        type: "success",
+        title: "Cita actualizada",
+        description: "La cita ha sido actualizada correctamente.",
+      });
+    } catch (error) {
+      console.error("Error al actualizar cita:", error);
+      notify({
+        type: "error",
+        title: "Error",
+        description: "No se pudo actualizar la cita. Intenta nuevamente.",
+      });
+    }
+  };
+
   // Inicializar calendario
   useEffect(() => {
     if (calendarContainerRef.current && !calendarInstance.current) {
       calendarInstance.current = new Calendar(calendarContainerRef.current, {
         defaultView: viewType,
-        useDetailPopup: true,
-        useCreationPopup: false,
+        useFormPopup: false,
+        useDetailPopup: false,
         isReadOnly: false,
         calendars: [],
-        events: [],
+        gridSelection: {
+          enableDblClick: false,
+          enableClick: true,
+        },
         week: {
           showTimezoneCollapseButton: true,
           timezonesCollapsed: false,
         },
       });
-      calendarInstance.current.on("beforeUpdateSchedule", (event: any) => {
-        event.preventDefault(); // Prevenir la edición por defecto
-        //  handleEditEvent(event.schedule);
-        console.log("update");
+      calendarInstance.current.on("clickEvent", ({ event }) => {
+        console.log(event);
+        const eventData = {
+          id: event.id,
+          title: event.title,
+          start: event.start._date,
+          end: event.end._date,
+          raw: event.raw, // Datos completos
+        };
+        openPopup(event, event.nativeEvent);
+        // el.innerText = event.title;
       });
 
-      // Escuchar cuando se hace click en "Eliminar" en el popup
-      calendarInstance.current.on("beforeDeleteSchedule", (event: any) => {
-        event.preventDefault(); // Prevenir la eliminación por
-        console.log("delete");
-        // defecto
-        //  handleDeleteEvent(event.schedule.id);
-      });
-      // Escuchar cuando cambias de rango
-      calendarInstance.current.on("afterRender", (ev: any) => {
-        const date = new Date(ev.calendarDate);
-        // Solo cargar citas si hay token disponible
-        if (token) {
-          fetchAppointments(date);
-        }
-        updateDateRange();
-      });
+      // calendarInstance.current.on("beforeUpdateSchedule", (event: any) => {
+      //   console.log("update");
+      //   event.preventDefault(); // Prevenir la edición por defecto
+      //   //  handleEditEvent(event.schedule);
+      // });
 
-      // Escuchar creación de eventos
-      calendarInstance.current.on("beforeCreateEvent", (ev: any) => {
-        const start = ev.start.toDate();
-        const end = ev.end.toDate();
-        notify({
-          type: "info",
-          title: "Nueva Cita",
-          description: `Crear cita de ${start.toLocaleString()} a ${end.toLocaleString()}`,
-        });
-      });
+      // // Escuchar cuando se hace click en "Eliminar" en el popup
+      // calendarInstance.current.on("beforeDeleteSchedule", (event: any) => {
+      //   console.log("delete");
+      //   event.preventDefault(); // Prevenir la eliminación por
+      //   // defecto
+      //   //  handleDeleteEvent(event.schedule.id);
+      // });
+      // // Escuchar cuando cambias de rango
+      // calendarInstance.current.on("afterRender", (ev: any) => {
+      //   const date = new Date(ev.calendarDate);
+      //   console.log("change range");
+      //   // Solo cargar citas si hay token disponible
+      //   if (token) {
+      //     fetchAppointments(date);
+      //   }
+      //   updateDateRange();
+      // });
+
+      // // Escuchar creación de eventos
+      // calendarInstance.current.on("beforeCreateEvent", (ev: any) => {
+      //   console.log("create");
+      //   const start = ev.start.toDate();
+      //   const end = ev.end.toDate();
+      //   notify({
+      //     type: "info",
+      //     title: "Nueva Cita",
+      //     description: `Crear cita de ${start.toLocaleString()} a ${end.toLocaleString()}`,
+      //   });
+      // });
 
       updateDateRange();
     }
@@ -490,6 +589,14 @@ const Index = () => {
           </main>
         </div>
       </div>
+      <DetailPopup
+        event={event}
+        isOpen={isOpen}
+        position={position}
+        onClose={closePopup}
+        onEdit={handleEditEvent}
+        onDelete={handleDeleteEvent}
+      />
     </div>
   );
 };
