@@ -105,9 +105,9 @@ export const Api = {
   showService:(data:{service_id:number,_token:string,})=>apiFetch(`/services/${data.service_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
   //crud Productos
-  createProduct:(data:{name:string,description:string,commerce_id:number,_token:string})=>apiFetch('/products',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  createProduct:(data: {name: string,description: string,commerce_id: number,category_id: number,sku: string,barcode: string | null,brand: string,status: boolean,format: string,cost: number,price: number,price_with_discount: number|null,commission: number|null,iva: number,stock: number,stock_alert: number|null,active: boolean,image: string | null,  _token: string})=>apiFetch('/products',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readProducts:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/products`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
-  updateProduct:(data:{name:string,description:string,commerce_id:number,product_id:number,_token: string})=>apiFetch(`/products/${data.product_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  updateProduct:(data: { product_id: number, commerce_id: number, sku: string, name: string, barcode: string | null, brand: string, status: boolean, description: string, format: string, cost: number, price: number, price_with_discount: number | null, commission: number | null, iva: number, stock: number, stock_alert: number | null, active: boolean, image: string | null, category_id: number, _token: string })=>apiFetch(`/products/${data.product_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteProduct:(data:{product_id:number,_token: string})=>apiFetch(`/products/${data.product_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showProduct:(data:{product_id:number,_token:string,})=>apiFetch(`/products/${data.product_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
