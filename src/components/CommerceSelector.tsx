@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { IoChevronDown } from "react-icons/io5";
-import { IoCheckmark } from "react-icons/io5";
+import { IoChevronDown, IoCheckmark } from "react-icons/io5";
 import { useAuthStore } from "../store/auth.store";
 
 export function CommerceSelector() {
@@ -10,23 +9,31 @@ export function CommerceSelector() {
   );
 
   const currentCommerce = useAuthStore((s) => s.commerce);
-
   const setCommerce = useAuthStore((s) => s.setCommerce);
+
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Cerrar dropdown al hacer click fuera
+  // Inicializa commerce y cierre al hacer click fuera
   useEffect(() => {
-    setCommerce(commerces[0]);
+    if (commerces.length > 0) {
+      setCommerce(commerces[0]);
+    }
     const handleClickOutside = (event: any) => {
-      if (dropdownRef.current && !dropdownRef.current?.contains(event.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // 👉 Cambiar atributo data-commerce en <html>
+  useEffect(() => {
+    if (currentCommerce?.slug) {
+      document.documentElement.setAttribute("data-commerce", currentCommerce.slug);
+    }
+  }, [currentCommerce]);
 
   const handleSelect = (commerce: any) => {
     setCommerce(commerce);
@@ -38,7 +45,7 @@ export function CommerceSelector() {
   };
 
   return (
-    <div className={`relative`} ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
       {/* Botón principal que muestra el commerce actual */}
       <button
         onClick={toggleDropdown}
@@ -120,9 +127,7 @@ export function CommerceSelector() {
                         {commerce.name}
                       </p>
                       {commerce.description && (
-                        <p className="text-xs truncate">
-                          {commerce.description}
-                        </p>
+                        <p className="text-xs truncate">{commerce.description}</p>
                       )}
                     </div>
 

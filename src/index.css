@@ -859,3 +859,74 @@ html.dark {
     z-40 → ponerlo por debajo del modal (modal normalmente z-50)
   */
 }
+
+
+
+
+/* Valores por defecto */
+:root {
+  --sidebar-active-bg: oklch(0.5 0.15 180); /* verde */
+  --sidebar-active-hover: oklch(0.55 0.15 180);
+  --sidebar-active-text: #fff;
+}
+/* === LINKS ACTIVOS DEL SIDEBAR === */
+.sidebar-active {
+  background-color: var(--sidebar-active-bg);
+  color: var(--sidebar-active-text) !important;
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+.sidebar-active:hover {
+  background-color: var(--sidebar-active-hover);
+}
+
+
+/*  Grova */
+html[data-commerce="grova"] {
+  --sidebar-active-bg: oklch(0.5 0.15 180);
+  --sidebar-active-hover: oklch(0.55 0.15 180);
+  --sidebar-active-text: #fff;
+}
+
+/* Clínica Salud Prueba */
+html[data-commerce="clinica-salud-prueba"],
+html[data-commerce="clinica-salud-prueba-1"] {
+  --sidebar-active-bg: oklch(0.6 0.15 250);
+  --sidebar-active-hover: oklch(0.65 0.15 250);
+  --sidebar-active-text: #fff;
+}
+
+/*  Clínica dental */
+html[data-commerce="clinica-dental"] {
+  --sidebar-active-bg: oklch(0.7 0.2 30);
+  --sidebar-active-hover: oklch(0.75 0.2 30);
+  --sidebar-active-text: #fff;
+}
+
+/*  Kerluke, Powlowski and Thompson */
+html[data-commerce="repudiandae-architecto-id-est-debitis-illum-ratione"] {
+  --sidebar-active-bg: oklch(0.55 0.15 320);
+  --sidebar-active-hover: oklch(0.6 0.15 320);
+  --sidebar-active-text: #fff;
+}
+
+/*  Bartoletti LLC */
+html[data-commerce="iste-ut-non-quia-cumque"] {
+  --sidebar-active-bg: oklch(0.55 0.15 70);
+  --sidebar-active-hover: oklch(0.6 0.15 70);
+  --sidebar-active-text: #ffffff;
+}
+
+/* Wehner, Ondricka and Osinski */
+html[data-commerce="aut-quae-nobis-qui-eaque"] {
+  --sidebar-active-bg: oklch(0.5 0.15 200);
+  --sidebar-active-hover: oklch(0.55 0.15 200);
+  --sidebar-active-text: #fff;
+}
+
+/*  Hartmann, Heaney and Wolf */
+html[data-commerce="consequatur-omnis-esse-ipsa-necessitatibus-labore-cum-dolore-quis"] {
+  --sidebar-active-bg: oklch(0.55 0.18 140);
+  --sidebar-active-hover: oklch(0.6 0.18 140);
+  --sidebar-active-text: #ffffff;
+}
