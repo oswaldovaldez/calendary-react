@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FormTemplate from "./FormTemplate";
 import { Api } from "../../services/api";
 import { useNotificationStore } from "../../store/notification.store";
@@ -8,6 +8,7 @@ import { useAuthStore } from "../../store/auth.store";
 const Create = () => {
   const notify = useNotificationStore((state) => state.notify);
   const currentCommerce = useAuthStore((s) => s.commerce);
+  const token = useAuthStore((s) => s.token);
   const [formData, setFormData] = useState<RecordTemplateType>({
     name: "",
     fields: [],
@@ -16,9 +17,10 @@ const Create = () => {
   const handleSubmit = async (values: any) => {
     Api.createRecordTemplate({
       ...values,
-      _token: token ?? "",
+      _token: `${token}`,
     })
       .then((res) => {
+        setFormData(res.data);
         notify("success", res.message);
       })
       .catch((error) => {

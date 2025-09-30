@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useParams } from "@tanstack/react-router";
 import FormTemplate from "./FormTemplate";
-import type { RecordTemplateType, UserType } from "../../types";
+import type { RecordTemplateType } from "../../types";
 import { useNotificationStore } from "../../store/notification.store";
 //  import toast, { Toaster } from "react-hot-toast";
 
@@ -21,7 +21,7 @@ const Edit = () => {
     Api.updateRecordTemplate({
       ...values,
       recordTemplate_id: values.id,
-      _token: token ?? "",
+      _token: `${token}`,
     })
       .then((res) => {
         notify("success", res.message);
@@ -33,7 +33,7 @@ const Edit = () => {
   };
   useEffect(() => {
     Api.showRecordTemplate({
-      _token: token ?? "",
+      _token: `${token}`,
       recordTemplate_id: templateId,
     })
       .then((res) => {

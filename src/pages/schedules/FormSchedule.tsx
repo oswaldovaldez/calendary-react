@@ -37,7 +37,7 @@ interface FormScheduleProps {
     helpers: FormikHelpers<ScheduleFormValues>
   ) => void | Promise<void>;
   userId: number;
-  commerceId: number;
+  commerceId?: number;
 }
 
 const FormSchedule: React.FC<FormScheduleProps> = ({
@@ -45,28 +45,30 @@ const FormSchedule: React.FC<FormScheduleProps> = ({
   isEdit = false,
   onSubmit,
   userId,
-  commerceId,
-}) => (
-  <Formik
-    initialValues={initialValues}
-    validationSchema={scheduleSchema}
-    onSubmit={onSubmit}
-  >
-    {({ errors, touched, isSubmitting }) => (
-      <Form className="form-container">
-        {/* comercio_id oculto */}
-        <Field type="hidden" name="commerce_id" />
+  commerceId = 0,
+}) => {
+  console.log(commerceId);
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={scheduleSchema}
+      onSubmit={onSubmit}
+    >
+      {() => (
+        <Form className="form-container">
+          {/* comercio_id oculto */}
+          <Field type="hidden" name="commerce_id" />
 
-        <div className="card neumo">
-          <div className="card-body">
-            {/* Usuario */}
-            <Field
-              type="hidden"
-              name="user_id"
-              value={userId}
-              className={`input input-sm`}
-            />
-            {/* <div className="form-group">
+          <div className="card neumo">
+            <div className="card-body">
+              {/* Usuario */}
+              <Field
+                type="hidden"
+                name="user_id"
+                value={userId}
+                className={`input input-sm`}
+              />
+              {/* <div className="form-group">
               <label htmlFor="user_id" className="form-label">
                 Usuario
               </label>
@@ -79,110 +81,115 @@ const FormSchedule: React.FC<FormScheduleProps> = ({
               />
             </div> */}
 
-            {/* Día de la semana */}
-            <div className="form-group">
-              <label htmlFor="day_of_week" className="form-label">
-                Día de la semana
-              </label>
-              <Field as="select" name="day_of_week" className="input input-sm">
-                <option value="">Selecciona un día</option>
-                <option value="monday">Lunes</option>
-                <option value="tuesday">Martes</option>
-                <option value="wednesday">Miércoles</option>
-                <option value="thursday">Jueves</option>
-                <option value="friday">Viernes</option>
-                <option value="saturday">Sábado</option>
-                <option value="sunday">Domingo</option>
-              </Field>
-              <ErrorMessage
-                name="day_of_week"
-                component="div"
-                className="form-text-invalid"
-              />
-            </div>
+              {/* Día de la semana */}
+              <div className="form-group">
+                <label htmlFor="day_of_week" className="form-label">
+                  Día de la semana
+                </label>
+                <Field
+                  as="select"
+                  name="day_of_week"
+                  className="input input-sm"
+                >
+                  <option value="">Selecciona un día</option>
+                  <option value="monday">Lunes</option>
+                  <option value="tuesday">Martes</option>
+                  <option value="wednesday">Miércoles</option>
+                  <option value="thursday">Jueves</option>
+                  <option value="friday">Viernes</option>
+                  <option value="saturday">Sábado</option>
+                  <option value="sunday">Domingo</option>
+                </Field>
+                <ErrorMessage
+                  name="day_of_week"
+                  component="div"
+                  className="form-text-invalid"
+                />
+              </div>
 
-            {/* Horas */}
-            <div className="form-group">
-              <label htmlFor="start_time" className="form-label">
-                Hora de inicio
-              </label>
-              <Field type="time" name="start_time" className="input input-sm" />
-              <ErrorMessage
-                name="start_time"
-                component="div"
-                className="form-text-invalid"
-              />
+              {/* Horas */}
+              <div className="form-group">
+                <label htmlFor="start_time" className="form-label">
+                  Hora de inicio
+                </label>
+                <Field
+                  type="time"
+                  name="start_time"
+                  className="input input-sm"
+                />
+                <ErrorMessage
+                  name="start_time"
+                  component="div"
+                  className="form-text-invalid"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="end_time" className="form-label">
+                  Hora de fin
+                </label>
+                <Field type="time" name="end_time" className="input input-sm" />
+                <ErrorMessage
+                  name="end_time"
+                  component="div"
+                  className="form-text-invalid"
+                />
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="end_time" className="form-label">
-                Hora de fin
-              </label>
-              <Field type="time" name="end_time" className="input input-sm" />
-              <ErrorMessage
-                name="end_time"
-                component="div"
-                className="form-text-invalid"
+          </div>
+
+          {/* Descansos */}
+          <div className="card neumo">
+            <div className="card-header">
+              <h3>Descansos</h3>
+            </div>
+            <div className="card-body">
+              <FieldArray
+                name="breaks"
+                render={(arrayHelpers) => (
+                  <div>
+                    {arrayHelpers.form.values.breaks.map(
+                      (_: BreakType, index: number) => (
+                        <div key={index} className="form-group flex gap-2">
+                          <Field
+                            type="time"
+                            name={`breaks.${index}.start`}
+                            className="input input-sm"
+                          />
+                          <Field
+                            type="time"
+                            name={`breaks.${index}.end`}
+                            className="input input-sm"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => arrayHelpers.remove(index)}
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      )
+                    )}
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm mt-2"
+                      onClick={() => arrayHelpers.push({ start: "", end: "" })}
+                    >
+                      Agregar descanso
+                    </button>
+                  </div>
+                )}
               />
             </div>
           </div>
-        </div>
 
-        {/* Descansos */}
-        <div className="card neumo">
-          <div className="card-header">
-            <h3>Descansos</h3>
-          </div>
-          <div className="card-body">
-            <FieldArray
-              name="breaks"
-              render={(arrayHelpers) => (
-                <div>
-                  {arrayHelpers.form.values.breaks.map(
-                    (_: BreakType, index: number) => (
-                      <div key={index} className="form-group flex gap-2">
-                        <Field
-                          type="time"
-                          name={`breaks.${index}.start`}
-                          className="input input-sm"
-                        />
-                        <Field
-                          type="time"
-                          name={`breaks.${index}.end`}
-                          className="input input-sm"
-                        />
-                        <button
-                          type="button"
-                          className="btn btn-danger btn-sm"
-                          onClick={() => arrayHelpers.remove(index)}
-                        >
-                          Eliminar
-                        </button>
-                      </div>
-                    )
-                  )}
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm mt-2"
-                    onClick={() => arrayHelpers.push({ start: "", end: "" })}
-                  >
-                    Agregar descanso
-                  </button>
-                </div>
-              )}
-            />
-          </div>
-        </div>
-
-        <button
-          className="btn neumo btn-success ml-auto"
-          type="submit"
-          disabled={isSubmitting}
-        >
-          {isEdit ? "Editar Horario" : "Registrar Horario"}
-        </button>
-      </Form>
-    )}
-  </Formik>
-);
+          <button className="btn neumo btn-success ml-auto" type="submit">
+            {isEdit ? "Editar Horario" : "Registrar Horario"}
+          </button>
+        </Form>
+      )}
+    </Formik>
+  );
+};
 
 export default FormSchedule;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useParams, useNavigate } from "@tanstack/react-router";
@@ -31,7 +31,7 @@ const EditProduct = () => {
 
       await Api.updateProduct({
         ...payload,
-        _token: token ?? "",
+        _token: `${token}`,
         product_id: productId,
       });
 
@@ -50,7 +50,7 @@ const EditProduct = () => {
 
   useEffect(() => {
     Api.showProduct({
-      _token: token ?? "",
+      _token: `${token}`,
       product_id: productId,
     })
       .then((res) => {

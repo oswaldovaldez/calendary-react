@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Table from "../../components/Table";
 import { Api } from "../../services/api";
@@ -13,7 +13,7 @@ const Index = () => {
   const commerce = useAuthStore((s) => s.commerce);
   const notify = useNotificationStore((state) => state.notify);
   const handleDeletePatient = (id: number) => {
-    Api.deletePatient({ patient_id: id, _token: token })
+    Api.deletePatient({ patient_id: id, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);
       })
@@ -74,7 +74,7 @@ const Index = () => {
   ];
   useEffect(() => {
     Api.readPatients({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { commerce_id: `${commerce?.id}` },
     })
       .then((res: any) => {
@@ -82,9 +82,9 @@ const Index = () => {
       })
       .catch(console.log);
   }, []);
-  const handleSearch = (query) => {
+  const handleSearch = (query: any) => {
     Api.readPatients({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { ...query, commerce_id: `${commerce?.id}` },
     })
       .then((res: any) => {
@@ -92,9 +92,9 @@ const Index = () => {
       })
       .catch(console.log);
   };
-  const handlePaginate = (query) => {
+  const handlePaginate = (query: any) => {
     Api.readPatients({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { ...query, commerce_id: `${commerce?.id}` },
     })
       .then((res: any) => {

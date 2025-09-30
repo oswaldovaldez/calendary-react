@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import { userSchema, userSchemaEdit } from "../../schemas/userSchema";
 import FormRender from "../../components/FormRender";
 import { useAuthStore } from "../../store/auth.store";
-import { SchedulesIndex } from "../schedules";
-const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
+// import { SchedulesIndex } from "../schedules";
+const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
   const rolesStore = useAuthStore((s) => s.roles);
   const roleUser = useAuthStore((s) => s.user.roles[0]);
 
@@ -84,7 +83,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }) => {
                         : "staff"
                     }
                   >
-                    {rolesStore.map((roleStore, indexStore) => (
+                    {rolesStore.map((roleStore: any, indexStore: number) => (
                       <option
                         value={roleStore.name}
                         key={`option-role-${indexStore}`}

@@ -25,7 +25,7 @@ const ShowProduct = () => {
       setIsLoading(true);
       try {
         const response = await Api.showProduct({
-          _token: token,
+          _token: `${token}`,
           product_id: Number(productId),
         });
 
@@ -56,9 +56,7 @@ const ShowProduct = () => {
 
   if (error || !product) {
     return (
-      <div className="card neumo p-6">
-        {error ?? "Producto no encontrado"}
-      </div>
+      <div className="card neumo p-6">{error ?? "Producto no encontrado"}</div>
     );
   }
 
@@ -71,44 +69,36 @@ const ShowProduct = () => {
 
       <div className="card-body grid gap-3 md:grid-cols-2">
         <div>
-          <span className="font-semibold">Nombre:</span>{" "}
-          {product.name}
+          <span className="font-semibold">Nombre:</span> {product.name}
         </div>
         <div>
-          <span className="font-semibold">SKU:</span>{" "}
-          {product.sku ?? "-"}
+          <span className="font-semibold">SKU:</span> {product.sku ?? "-"}
         </div>
         <div>
-          <span className="font-semibold">Marca:</span>{" "}
-          {product.brand ?? "-"}
+          <span className="font-semibold">Marca:</span> {product.brand ?? "-"}
         </div>
         <div>
           <span className="font-semibold">Formato:</span>{" "}
           {product.format ?? "-"}
         </div>
         <div>
-          <span className="font-semibold">Precio:</span>{" "}
-          ${product.price}
+          <span className="font-semibold">Precio:</span> ${product.price}
         </div>
         <div>
-          <span className="font-semibold">Precio con descuento:</span>{" "}
-          ${product.price_with_discount}
+          <span className="font-semibold">Precio con descuento:</span> $
+          {product.price_with_discount}
         </div>
         <div>
-          <span className="font-semibold">Costo:</span>{" "}
-          ${product.cost}
+          <span className="font-semibold">Costo:</span> ${product.cost}
         </div>
         <div>
-          <span className="font-semibold">Comisión:</span>{" "}
-          ${product.commission}
+          <span className="font-semibold">Comisión:</span> ${product.commission}
         </div>
         <div>
-          <span className="font-semibold">IVA:</span>{" "}
-          {product.iva}%
+          <span className="font-semibold">IVA:</span> {product.iva}%
         </div>
         <div>
-          <span className="font-semibold">Stock:</span>{" "}
-          {product.stock}
+          <span className="font-semibold">Stock:</span> {product.stock}
         </div>
         <div>
           <span className="font-semibold">Alerta de stock:</span>{" "}

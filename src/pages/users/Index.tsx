@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import Table from "../../components/Table";
 import { Api } from "../../services/api";
@@ -14,7 +14,7 @@ const Index = () => {
   const commerce = useAuthStore((s) => s.commerce);
   const notify = useNotificationStore((state) => state.notify);
   const handleDeleteUser = (id: number) => {
-    Api.deleteUser({ user_id: id, _token: token })
+    Api.deleteUser({ user_id: id, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);
       })
@@ -75,7 +75,7 @@ const Index = () => {
   ];
   useEffect(() => {
     Api.readUsers({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { commerce_id: `${commerce?.id}` },
     })
       .then((res) => {
@@ -84,9 +84,9 @@ const Index = () => {
       .catch(console.log);
   }, []);
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: any) => {
     Api.readUsers({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { ...query, commerce_id: `${commerce?.id}` },
     })
       .then((res: any) => {
@@ -94,9 +94,9 @@ const Index = () => {
       })
       .catch(console.log);
   };
-  const handlePaginate = (query) => {
+  const handlePaginate = (query: any) => {
     Api.readUsers({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { ...query, commerce_id: `${commerce?.id}` },
     })
       .then((res) => {

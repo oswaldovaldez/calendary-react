@@ -1,5 +1,5 @@
 // hooks/useUsers.ts
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { Api } from "../services/api";
 import { useAuthStore } from "../store/auth.store";
 export function useUsers() {
@@ -13,11 +13,11 @@ export function useUsers() {
   const token = useAuthStore((s)=>s.token);
   const usersQuery = useQuery({
     queryKey: ["users"],
-    queryFn: async() => Api.readUsers({ _token: token??'' }),
+    queryFn: async() => Api.readUsers({ _token: `${token}` }),
   });
 
 const showUser = useMutation({
-    mutationFn: async (userId: number) => Api.showUser({ user_id: userId, _token: token ?? '' }),
+    mutationFn: async (userId: number) => Api.showUser({ user_id: userId, _token: `${token}` ?? '' }),
     onSuccess: (data, variables) => {
       // Actualiza el cache con los datos del usuario
       qc.setQueryData(["users", variables], data);

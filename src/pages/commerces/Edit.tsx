@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FormCommerce from "./FormCommerce";
 import { Api } from "../../services/api";
 import type { CommerceType } from "../../types/index";
@@ -23,7 +23,7 @@ const Edit = () => {
     Api.updateCommerce({
       ...values,
       commerce_id: values.id,
-      _token: token ?? "",
+      _token: `${token}`,
     })
       .then((res) => {
         notify("success", res.message);
@@ -34,9 +34,9 @@ const Edit = () => {
       });
   };
   useEffect(() => {
-    Api.showCommerce({ _token: token ?? "", commerce_id: commerceId })
+    Api.showCommerce({ _token: `${token}`, commerce_id: commerceId })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setFormData({ ...res });
         setLoading(false);
       })

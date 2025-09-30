@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import Calendar from "@toast-ui/calendar";
 import "@toast-ui/calendar/dist/toastui-calendar.min.css";
@@ -28,6 +28,7 @@ const Index = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [visibleCalendars, setVisibleCalendars] = useState(new Set<string>());
   const [showAllCalendars, setShowAllCalendars] = useState(true);
+  // const [selectedEvent, setSelectedEvent] = useState(null);
   const { isOpen, event, position, openPopup, closePopup } = useDetailPopup();
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
@@ -42,7 +43,7 @@ const Index = () => {
     const { start_at, end_at } = getMonthRange(date);
     try {
       const res: any = await Api.readAppointments({
-        _token: token,
+        _token: `${token}`,
         query: {
           start_at: start_at,
           end_at: end_at,
@@ -56,7 +57,7 @@ const Index = () => {
       // Generar lista de calendarios (usuarios únicos)
       const userCalendars = [
         ...new Map(
-          data.map((a) => [
+          data.map((a: any) => [
             a.user.id,
             {
               id: String(a.user.id),
@@ -99,12 +100,11 @@ const Index = () => {
       }
     } catch (err) {
       console.error("Error al cargar citas:", err);
-      notify({
-        type: "error",
-        title: "Error",
-        description:
-          "No se pudieron cargar las citas. Por favor, intenta nuevamente.",
-      });
+      notify(
+        "error",
+
+        "No se pudieron cargar las citas. Por favor, intenta nuevamente."
+      );
     }
   };
 
@@ -221,7 +221,7 @@ const Index = () => {
   const handleDeleteEvent = async (eventId: string) => {
     try {
       // Aquí harías la llamada a tu API
-      // await Api.deleteAppointment({ _token: token, id: eventId });
+      // await Api.deleteAppointment({ _token: `${token}`, id: eventId });
 
       if (calendarInstance.current) {
         calendarInstance.current.deleteEvent(eventId, "");
@@ -229,18 +229,10 @@ const Index = () => {
 
       setAppointments((prev) => prev.filter((a) => String(a.id) !== eventId));
 
-      notify({
-        type: "success",
-        title: "Cita eliminada",
-        description: "La cita ha sido eliminada correctamente.",
-      });
+      notify("success", "La cita ha sido eliminada correctamente.");
     } catch (error) {
       console.error("Error al eliminar cita:", error);
-      notify({
-        type: "error",
-        title: "Error",
-        description: "No se pudo eliminar la cita. Intenta nuevamente.",
-      });
+      notify("error", "No se pudo eliminar la cita. Intenta nuevamente.");
     }
   };
 
@@ -251,46 +243,38 @@ const Index = () => {
     // Buscar el appointment completo
     const appointment = appointments.find((a) => String(a.id) === eventData.id);
     if (appointment) {
-      setSelectedEvent(appointment);
-      setIsEditModalOpen(true);
+      // setSelectedEvent(appointment);
+      // setIsEditModalOpen(true);
     }
   };
 
-  const handleUpdateEvent = async (updatedData: any) => {
-    try {
-      // await Api.updateAppointment({ _token: token, id: selectedEvent.id, ...updatedData });
-
-      if (calendarInstance.current) {
-        calendarInstance.current.updateEvent(selectedEvent.id, "", {
-          title: `${updatedData.patient?.first_name || selectedEvent.patient.first_name} ${updatedData.patient?.last_name || selectedEvent.patient.last_name} - ${updatedData.service?.name || selectedEvent.service.name}`,
-          start: updatedData.start_at || selectedEvent.start_at,
-          end: updatedData.end_at || selectedEvent.end_at,
-        });
-      }
-
-      setAppointments((prev) =>
-        prev.map((a) =>
-          a.id === selectedEvent.id ? { ...a, ...updatedData } : a
-        )
-      );
-
-      setIsEditModalOpen(false);
-      setSelectedEvent(null);
-
-      notify({
-        type: "success",
-        title: "Cita actualizada",
-        description: "La cita ha sido actualizada correctamente.",
-      });
-    } catch (error) {
-      console.error("Error al actualizar cita:", error);
-      notify({
-        type: "error",
-        title: "Error",
-        description: "No se pudo actualizar la cita. Intenta nuevamente.",
-      });
-    }
-  };
+  // const handleUpdateEvent = async () => {
+  // const handleUpdateEvent = async (updatedData: any) => {
+  // try {
+  //   // await Api.updateAppointment({ _token: `${token}`, id: selectedEvent.id, ...updatedData });
+  //   if (calendarInstance.current) {
+  //     calendarInstance.current.updateEvent(selectedEvent.id, "", {
+  //       title: `${updatedData.patient?.first_name ?? selectedEvent.patient.first_name} ${updatedData.patient?.last_name ?? selectedEvent.patient.last_name} - ${updatedData.service?.name ?? selectedEvent.service.name}`,
+  //       start:
+  //         updatedData.start_at ??
+  //         (selectedEvent ? selectedEvent.start_at : ""),
+  //       end:
+  //         updatedData.end_at ?? (selectedEvent ? selectedEvent.end_at : ""),
+  //     });
+  //   }
+  //   setAppointments((prev) =>
+  //     prev.map((a) =>
+  //       a.id === selectedEvent.id ? { ...a, ...updatedData } : a
+  //     )
+  //   );
+  //   // setIsEditModalOpen(false);
+  //   setSelectedEvent(null);
+  //   notify("success", "La cita ha sido actualizada correctamente.");
+  // } catch (error) {
+  //   console.error("Error al actualizar cita:", error);
+  //   notify("error", "No se pudo actualizar la cita. Intenta nuevamente.");
+  // }
+  // };
 
   // Inicializar calendario
   useEffect(() => {
@@ -310,15 +294,15 @@ const Index = () => {
           timezonesCollapsed: false,
         },
       });
-      calendarInstance.current.on("clickEvent", ({ event }) => {
+      calendarInstance.current.on("clickEvent", ({ event }: any) => {
         console.log(event);
-        const eventData = {
-          id: event.id,
-          title: event.title,
-          start: event.start._date,
-          end: event.end._date,
-          raw: event.raw, // Datos completos
-        };
+        // const _eventData = {
+        //   id: event.id,
+        //   title: event.title,
+        //   start: event.start._date,
+        //   end: event.end._date,
+        //   raw: event.raw, // Datos completos
+        // };
         openPopup(event, event.nativeEvent);
         // el.innerText = event.title;
       });

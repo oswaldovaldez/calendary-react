@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Table from "../../components/Table";
-import { Api, buildQueryParams } from "../../services/api";
+import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { showConfirm } from "../../utils/alert";
 import { useNotificationStore } from "../../store/notification.store";
@@ -19,10 +19,11 @@ const Index = ({ userId = 0 }) => {
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
   const handleDeleteSchedule = (id: number) => {
-    Api.deleteSchedule({ schedule_id: id, _token: token })
+    Api.deleteSchedule({ schedule_id: id, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);
-        handleGetData();
+
+        console.log(commerceId);
       })
       .catch((error) => {
         console.log(error);
@@ -122,7 +123,7 @@ const Index = ({ userId = 0 }) => {
   ];
   const handleGetData = () => {
     Api.readSchedules({
-      _token: token ?? "",
+      _token: `${token}`,
       query: query,
     })
       .then((res: any) => {
@@ -140,10 +141,10 @@ const Index = ({ userId = 0 }) => {
       handleGetData();
     }
   }, [query]);
-  const handleSearch = (queryData) => {
+  const handleSearch = (queryData: any) => {
     setQuery({ ...query, ...queryData });
   };
-  const handlePaginate = (queryData) => {
+  const handlePaginate = (queryData: any) => {
     setQuery({ ...query, queryData });
   };
   return (

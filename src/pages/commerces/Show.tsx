@@ -17,15 +17,36 @@ const ShowCommerce = () => {
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(0);
   const [users, setUsers] = useState<Array<UserType>>([]);
+  let isMounted = true;
+  const fetchCommerce = async () => {
+    setIsLoading(true);
+    try {
+      const response = await Api.showCommerce({
+        _token: `${token}`,
+        commerce_id: Number(commerceId),
+      });
 
+      if (!isMounted) return;
+      setCommerce(response as CommerceType);
+      setError(null);
+    } catch (err) {
+      console.error("Error cargando el comercio", err);
+      if (!isMounted) return;
+      setError("No pudimos cargar el comercio");
+    } finally {
+      if (isMounted) {
+        setIsLoading(false);
+      }
+    }
+  };
   const fetchUsers = () => {
-    Api.readUsers({ _token: token, query: { all: "true" } }).then((res) =>
+    Api.readUsers({ _token: `${token}`, query: { all: "true" } }).then((res) =>
       setUsers(res)
     );
   };
-  const detachUser = async (_userId) => {
+  const detachUser = async (_userId: number) => {
     Api.detachUserCommerce({
-      _token: token,
+      _token: `${token}`,
       commerce_id: commerceId,
       user_id: _userId,
     })
@@ -33,20 +54,20 @@ const ShowCommerce = () => {
         notify("success", res.message);
         fetchCommerce();
       })
-      .catch((error) => console.log);
+      .catch((error) => console.log(error));
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     Api.attachUserCommerce({
-      _token: token,
+      _token: `${token}`,
       commerce_id: commerceId,
-      user_id: userId,
+      user_id: userId ?? 0,
     })
       .then((res) => {
         notify("success", res.message);
         fetchCommerce();
       })
-      .catch((error) => console.log);
+      .catch((error) => console.log(error));
   };
   useEffect(() => {
     if (!token) {
@@ -54,30 +75,6 @@ const ShowCommerce = () => {
       setIsLoading(false);
       return;
     }
-
-    let isMounted = true;
-
-    const fetchCommerce = async () => {
-      setIsLoading(true);
-      try {
-        const response = await Api.showCommerce({
-          _token: token,
-          commerce_id: Number(commerceId),
-        });
-
-        if (!isMounted) return;
-        setCommerce(response as CommerceType);
-        setError(null);
-      } catch (err) {
-        console.error("Error cargando el comercio", err);
-        if (!isMounted) return;
-        setError("No pudimos cargar el comercio");
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
 
     fetchCommerce();
     fetchUsers();
@@ -178,7 +175,7 @@ const ShowCommerce = () => {
           <h3>Usuarios</h3>
         </div>
         <div className="card-body">
-          {commerce.users.map((user, indexUser) => (
+          {commerce.users.map((user: any, indexUser: number) => (
             <div
               className="flex mb-3 justify-between"
               key={`commerce-user-${indexUser}`}
@@ -199,8 +196,8 @@ const ShowCommerce = () => {
             >
               <select
                 name=""
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
+                value={`${userId}`}
+                onChange={(e: any) => setUserId(e.target.value as number)}
                 className="input input-sm"
                 id=""
               >

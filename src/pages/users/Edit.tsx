@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useParams } from "@tanstack/react-router";
@@ -21,7 +21,7 @@ const Edit = () => {
   const token = useAuthStore((s) => s.token);
   const [loading, setLoading] = useState(true);
   const handleSubmit = async (values: any) => {
-    Api.updateUser({ ...values, user_id: values.id, _token: token ?? "" })
+    Api.updateUser({ ...values, user_id: values.id, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);
       })
@@ -31,7 +31,7 @@ const Edit = () => {
       });
   };
   useEffect(() => {
-    Api.showUser({ _token: token ?? "", user_id: userId })
+    Api.showUser({ _token: `${token}`, user_id: userId })
       .then((res) => {
         setFormData({ ...res, role: res.roles[0].id });
 

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
-import type { ScheduleType, UserType } from "../../types";
+import type { ScheduleType } from "../../types";
 import { useNotificationStore } from "../../store/notification.store";
 import FormSchedule from "./FormSchedule";
 //  import toast, { Toaster } from "react-hot-toast";
 
-const Edit = ({ scheduleId, userId, onClosex, reload }) => {
+const Edit = ({ scheduleId, userId, onClosex, reload }: any) => {
   const notify = useNotificationStore((state) => state.notify);
   const [formData, setFormData] = useState<ScheduleType>({
     breaks: [],
@@ -26,7 +26,7 @@ const Edit = ({ scheduleId, userId, onClosex, reload }) => {
     Api.updateSchedule({
       ...values,
       schedule_id: scheduleId,
-      _token: token ?? "",
+      _token: `${token}`,
     })
       .then((res) => {
         notify("success", res.message);
@@ -47,7 +47,7 @@ const Edit = ({ scheduleId, userId, onClosex, reload }) => {
   };
 
   useEffect(() => {
-    Api.showSchedule({ _token: token ?? "", schedule_id: scheduleId })
+    Api.showSchedule({ _token: `${token}`, schedule_id: scheduleId })
       .then((res) => {
         setFormData({
           ...res,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Table from "../../components/Table";
 import { Api } from "../../services/api";
@@ -11,8 +11,9 @@ const Index = () => {
   const [commerces, setCommerces] = useState([]);
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
+  const commerce = useAuthStore((s) => s.commerce);
   const handleDeleteCommerce = (id: number) => {
-    Api.deleteCommerce({ commerce_id: id, _token: token })
+    Api.deleteCommerce({ commerce_id: id ?? 0, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);
       })
@@ -71,15 +72,15 @@ const Index = () => {
     },
   ];
   useEffect(() => {
-    Api.readCommerces({ _token: token ?? "" })
+    Api.readCommerces({ _token: `${token}` })
       .then((res: any) => {
         setCommerces(res);
       })
       .catch(console.log);
   }, []);
-  const handleSearch = (query) => {
+  const handleSearch = (query: any) => {
     Api.readCommerces({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { ...query, commerce_id: `${commerce?.id}` },
     })
       .then((res: any) => {
@@ -87,9 +88,9 @@ const Index = () => {
       })
       .catch(console.log);
   };
-  const handlePaginate = (query) => {
+  const handlePaginate = (query: any) => {
     Api.readCommerces({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { ...query, commerce_id: `${commerce?.id}` },
     })
       .then((res: any) => {

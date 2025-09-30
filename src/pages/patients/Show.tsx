@@ -55,7 +55,7 @@ const ShowPatient = () => {
       setIsLoading(true);
       try {
         const response = await Api.showPatient({
-          _token: token,
+          _token: `${token}`,
           patient_id: Number(patientId),
         });
 
@@ -86,9 +86,7 @@ const ShowPatient = () => {
 
   if (error || !patient) {
     return (
-      <div className="card neumo p-6">
-        {error ?? "Paciente no encontrado"}
-      </div>
+      <div className="card neumo p-6">{error ?? "Paciente no encontrado"}</div>
     );
   }
 
@@ -101,8 +99,8 @@ const ShowPatient = () => {
 
       <div className="card-body grid gap-3 md:grid-cols-2">
         <div>
-          <span className="font-semibold">Nombre:</span>{" "}
-          {patient.first_name} {patient.last_name}
+          <span className="font-semibold">Nombre:</span> {patient.first_name}{" "}
+          {patient.last_name}
         </div>
         <div>
           <span className="font-semibold">Correo:</span>{" "}

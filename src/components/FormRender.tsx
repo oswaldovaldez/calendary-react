@@ -1,91 +1,106 @@
 import { Field } from "formik";
-import React from "react";
+import { type ArrayHelpers } from "formik";
 
-const FormRender = ({ arrayHelpers, initialValues }) => {
+interface FormRenderProps {
+  arrayHelpers: ArrayHelpers;
+  initialValues: any; // Replace 'any' with the actual type of your initialValues
+}
+
+const FormRender = ({ arrayHelpers, initialValues }: FormRenderProps) => {
+  console.log(arrayHelpers);
   if ((initialValues.record_templates?.length ?? 0) === 0) {
     return <></>;
   }
   return (
     <>
-      {initialValues.record_templates[0].fields.map((element, indexE) => (
-        <div className="form-group mt-2" key={`element-${indexE}`}>
-          <label htmlFor={`data[${element.name ?? ""}]`} className="form-label">
-            {element.label ?? ""}
-          </label>
-          {element.type === "select" && (
-            <>
-              <Field
-                as="select"
-                className="input input-sm"
-                name={`data[${element.name ?? ""}]`}
-                defaultValue={
-                  initialValues.data === null
-                    ? ""
-                    : initialValues.data[element.name]
-                }
-              >
-                {Object.entries(element.options).map(([key, labelx], index) => (
-                  <option key={`option-${index}`} value={key}>
-                    {labelx ?? ""}
-                  </option>
-                ))}
-              </Field>
-            </>
-          )}
-          {element.type === "multiselect" && (
-            <>
-              <Field
-                as="select"
-                className="input input-sm"
-                name={`data[${element.name ?? ""}]`}
-                multiple
-                defaultValue={
-                  initialValues.data === null
-                    ? ""
-                    : initialValues.data[element.name]
-                }
-              >
-                {Object.entries(element.options).map(([key, labelx], index) => (
-                  <option key={`option-${index}`} value={key}>
-                    {labelx ?? ""}
-                  </option>
-                ))}
-              </Field>
-            </>
-          )}
-          {element.type === "group" && <></>}
-          {element.type === "textarea" && (
-            <>
-              <Field
-                as="textarea"
-                className={`input input-sm ${element.type === "textarea" && "textarea"}`}
-                type={element.type}
-                name={`data[${element.name ?? ""}]`}
-                defaultValue={
-                  initialValues.data === null
-                    ? ""
-                    : (initialValues.data[element.name] ?? "")
-                }
-              />
-            </>
-          )}
-          {element.type !== "select" &&
-            element.type !== "multiselect" &&
-            element.type !== "group" &&
-            element.type !== "textarea" && (
-              <Field
-                className={`input input-sm ${element.type === "checkbox" ? "checkbox" : ""} ${element.type === "radio" ? "radio" : ""}`}
-                type={element.type}
-                name={`data[${element.name ?? ""}]`}
-                defaultValue={
-                  initialValues.data === null
-                    ? ""
-                    : (initialValues.data[element.name] ?? "")
-                }
-              />
+      {initialValues.record_templates[0].fields.map(
+        (element: any, indexE: number) => (
+          <div className="form-group mt-2" key={`element-${indexE}`}>
+            <label
+              htmlFor={`data[${element.name ?? ""}]`}
+              className="form-label"
+            >
+              {element.label ?? ""}
+            </label>
+            {element.type === "select" && (
+              <>
+                <Field
+                  as="select"
+                  className="input input-sm"
+                  name={`data[${element.name ?? ""}]`}
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : initialValues.data[element.name]
+                  }
+                >
+                  {Object.entries(element.options).map(
+                    ([key, labelx], index) => (
+                      <option key={`option-${index}`} value={key}>
+                        {`${labelx}`}
+                      </option>
+                    )
+                  )}
+                </Field>
+              </>
             )}
-        </div>
-      ))}
+            {element.type === "multiselect" && (
+              <>
+                <Field
+                  as="select"
+                  className="input input-sm"
+                  name={`data[${element.name ?? ""}]`}
+                  multiple
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : initialValues.data[element.name]
+                  }
+                >
+                  {Object.entries(element.options).map(
+                    ([key, labelx], index) => (
+                      <option key={`option-${index}`} value={key}>
+                        {`${labelx}`}
+                      </option>
+                    )
+                  )}
+                </Field>
+              </>
+            )}
+            {element.type === "group" && <></>}
+            {element.type === "textarea" && (
+              <>
+                <Field
+                  as="textarea"
+                  className={`input input-sm ${element.type === "textarea" && "textarea"}`}
+                  type={element.type}
+                  name={`data[${element.name ?? ""}]`}
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : (initialValues.data[element.name] ?? "")
+                  }
+                />
+              </>
+            )}
+            {element.type !== "select" &&
+              element.type !== "multiselect" &&
+              element.type !== "group" &&
+              element.type !== "textarea" && (
+                <Field
+                  className={`input input-sm ${element.type === "checkbox" ? "checkbox" : ""} ${element.type === "radio" ? "radio" : ""}`}
+                  type={element.type}
+                  name={`data[${element.name ?? ""}]`}
+                  defaultValue={
+                    initialValues.data === null
+                      ? ""
+                      : (initialValues.data[element.name] ?? "")
+                  }
+                />
+              )}
+          </div>
+        )
+      )}
     </>
   );
 };

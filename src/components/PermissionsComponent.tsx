@@ -1,23 +1,42 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaCheck } from "react-icons/fa";
 
-const PermissionsComponent = ({ user, permissions, handleOnSubmit }) => {
+type Permission = {
+  name: string;
+  value: string;
+};
+
+type User = {
+  permissions?: Permission[];
+};
+
+type PermissionsComponentProps = {
+  user: User;
+  permissions: Permission[];
+  handleOnSubmit: (selected: string[]) => void;
+};
+
+const PermissionsComponent = ({
+  user,
+  permissions,
+  handleOnSubmit,
+}: PermissionsComponentProps) => {
   // Estado para manejar los permisos seleccionados
-  const [selectedPermissions, setSelectedPermissions] = useState([]);
+  const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
 
   // Inicializar con los permisos del usuario
   useEffect(() => {
-      // setSelectedPermissions(user?.permissions || []);
-      const permissionNames = user?.permissions?.map((p) => p.name) || [];
-      setSelectedPermissions(permissionNames);
+    // setSelectedPermissions(user?.permissions || []);
+    const permissionNames = user?.permissions?.map((p: any) => p.name) || [];
+    setSelectedPermissions(permissionNames);
   }, [user]);
 
   // Función para manejar el cambio de checkbox
-  const handlePermissionChange = (permissionValue) => {
-    setSelectedPermissions((prev) => {
+  const handlePermissionChange = (permissionValue: any) => {
+    setSelectedPermissions((prev: any) => {
       if (prev.includes(permissionValue)) {
         // Si ya está seleccionado, lo removemos
-        return prev.filter((permission) => permission !== permissionValue);
+        return prev.filter((permission: any) => permission !== permissionValue);
       } else {
         // Si no está seleccionado, lo agregamos
         return [...prev, permissionValue];
@@ -26,12 +45,12 @@ const PermissionsComponent = ({ user, permissions, handleOnSubmit }) => {
   };
 
   // Función para verificar si un permiso está seleccionado
-  const isPermissionSelected = (permissionValue) => {
-    return selectedPermissions.includes(permissionValue);
+  const isPermissionSelected = (permissionValue: any) => {
+    return selectedPermissions.includes(`${permissionValue}`);
   };
 
   // Función para manejar el submit del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     // console.log("submit");
     //   console.log("Selected permissions:", selectedPermissions);
@@ -51,7 +70,7 @@ const PermissionsComponent = ({ user, permissions, handleOnSubmit }) => {
         <div className="card-body">
           <div className="form-container">
             <div className="mt-2 columns-3 md:columns-4">
-              {permissions.map((element, index) => (
+              {permissions.map((element: any, index: number) => (
                 <div className="form-group" key={`permission-${index}`}>
                   <label
                     htmlFor={`permission-${element.value}`}

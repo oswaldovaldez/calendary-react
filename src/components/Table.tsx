@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -20,7 +20,7 @@ const Table = ({
   handlePage,
   handleSearch,
   handleOpen = () => {},
-  handleReload = () => {},
+  handleReload: _handleReload = () => {},
   isLink = true,
 }: {
   datos: any;
@@ -40,8 +40,8 @@ const Table = ({
     setSearch(values.search);
     handleSearch(values);
   };
-  const handlePagination = ({ selected }) => {
-    let query = { page: selected + 1, search: search };
+  const handlePagination = ({ selected }: any) => {
+    const query = { page: selected + 1, search: search };
     handlePage(query);
   };
   const table = useReactTable({
@@ -54,7 +54,7 @@ const Table = ({
       <div className="flex flex-row justify-between">
         <div className="w-auto flex-1 flex flex-row">
           <Formik initialValues={initialValues} onSubmit={submitSearch}>
-            {({ isSubmitting }) => (
+            {() => (
               <Form className="flex flex-row gap-2 w-full mx-2">
                 <Field className={`input input-sm`} type="text" name="search" />
                 <button className="btn neumo btn-success ml-auto" type="submit">
@@ -74,7 +74,6 @@ const Table = ({
             {createLink.name}
           </button>
         )}
-        
       </div>
       <div className="overflow-x-auto overflow-y-auto min-h-[400px] h-[400px] sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">

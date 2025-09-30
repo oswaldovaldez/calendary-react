@@ -36,12 +36,12 @@ import {
   RecordsIndex,
   RecordsShow,
 } from "../pages/records/index.ts";
-import {
-  SchedulesCreate,
-  SchedulesEdit,
-  SchedulesIndex,
-  SchedulesShow,
-} from "../pages/schedules/index.ts";
+// import {
+//   SchedulesCreate,
+//   SchedulesEdit,
+//   SchedulesIndex,
+//   SchedulesShow,
+// } from "../pages/schedules/index.ts";
 import {
   TemplatesCreate,
   TemplatesEdit,
@@ -80,7 +80,6 @@ const routeTree = rootRoute.addChildren([
     path: "/dashboard",
     component: () => (
       <RouteGuard permission="dashboard.view">
-        
         <Dashboard />
       </RouteGuard>
     ),
@@ -92,7 +91,6 @@ const routeTree = rootRoute.addChildren([
     path: "/users",
     component: () => (
       <RouteGuard permission="users.view">
-        
         <UsersIndex />
       </RouteGuard>
     ),
@@ -132,7 +130,6 @@ const routeTree = rootRoute.addChildren([
     path: "/appointments",
     component: () => (
       <RouteGuard permission="appointments.view">
-        
         <AppointmentsIndex />
       </RouteGuard>
     ),
@@ -171,7 +168,6 @@ const routeTree = rootRoute.addChildren([
     path: "/categories",
     component: () => (
       <RouteGuard permission="categories.view">
-        
         <CategoriesIndex />
       </RouteGuard>
     ),
@@ -210,7 +206,6 @@ const routeTree = rootRoute.addChildren([
     path: "/commerces",
     component: () => (
       <RouteGuard permission="commerces.view">
-        
         <CommercesIndex />
       </RouteGuard>
     ),
@@ -249,7 +244,6 @@ const routeTree = rootRoute.addChildren([
     path: "/patients",
     component: () => (
       <RouteGuard permission="patients.view">
-        
         <PatientsIndex />
       </RouteGuard>
     ),
@@ -288,7 +282,6 @@ const routeTree = rootRoute.addChildren([
     path: "/products",
     component: () => (
       <RouteGuard permission="products.view">
-        
         <ProductsIndex />
       </RouteGuard>
     ),
@@ -327,7 +320,6 @@ const routeTree = rootRoute.addChildren([
     path: "/records",
     component: () => (
       <RouteGuard permission="records.view">
-        
         <RecordsIndex />
       </RouteGuard>
     ),
@@ -366,7 +358,6 @@ const routeTree = rootRoute.addChildren([
     path: "/templates",
     component: () => (
       <RouteGuard permission="records.template.view">
-        
         <TemplatesIndex />
       </RouteGuard>
     ),
@@ -405,7 +396,7 @@ const routeTree = rootRoute.addChildren([
   //   path: "/schedules",
   //   component: () => (
   //     <RouteGuard permission="schedules.view">
-        
+
   //       <SchedulesIndex />
   //     </RouteGuard>
   //   ),
@@ -444,7 +435,6 @@ const routeTree = rootRoute.addChildren([
     path: "/services",
     component: () => (
       <RouteGuard permission="services.view">
-        
         <ServicesIndex />
       </RouteGuard>
     ),

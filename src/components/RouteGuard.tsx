@@ -21,7 +21,7 @@ export function RouteGuard({
   if (roles[0].name === "superadmin") {
     return <>{children}</>;
   }
-  if (permission && !permissions.some((p) => p.name === permission)) {
+  if (permission && !permissions.some((p: any) => p.name === permission)) {
     return <Navigate to="/unauthorized" />;
   }
 

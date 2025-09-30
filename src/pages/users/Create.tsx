@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "@tanstack/react-router"; // 👈
+// import { useEffect, useState } from "react";
+// import { useRouter } from "@tanstack/react-router"; // 👈
 import type { UserType } from "../../types";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
@@ -21,7 +21,7 @@ const Create = () => {
   };
 
   const handleSubmit = async (values: any) => {
-    Api.createUser({ ...values, _token: token ?? "" })
+    Api.createUser({ ...values, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);
       })

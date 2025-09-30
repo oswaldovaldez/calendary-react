@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import Table from "../../components/Table";
 import { Api } from "../../services/api";
@@ -14,7 +14,7 @@ const Index = () => {
   const commerce = useAuthStore((s) => s.commerce);
   const notify = useNotificationStore((state) => state.notify);
   const handleDeleteRecordTemplate = (id: number) => {
-    Api.deleteRecordTemplate({ recordTemplate_id: id, _token: token })
+    Api.deleteRecordTemplate({ recordTemplate_id: id, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);
       })
@@ -75,7 +75,7 @@ const Index = () => {
   ];
   useEffect(() => {
     Api.readRecordTemplates({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { commerce_id: `${commerce?.id}` },
     })
       .then((res) => {
@@ -84,16 +84,19 @@ const Index = () => {
       .catch(console.log);
   }, []);
 
-  const handleSearch = (query) => {
-    Api.readRecordTemplates({ _token: token ?? "", query: {...query,commerce_id: `${commerce?.id}`} })
+  const handleSearch = (query: any) => {
+    Api.readRecordTemplates({
+      _token: `${token}`,
+      query: { ...query, commerce_id: `${commerce?.id}` },
+    })
       .then((res: any) => {
         setTemplates(res);
       })
       .catch(console.log);
   };
-  const handlePaginate = (query) => {
+  const handlePaginate = (query: any) => {
     Api.readRecordTemplates({
-      _token: token ?? "",
+      _token: `${token}`,
       query: { ...query, commerce_id: `${commerce?.id}` },
     })
       .then((res) => {

@@ -14,12 +14,16 @@ const ShowUser = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [permissions, setPermissions] = useState([]);
-  const onSubmit = (values) => {
+  const onSubmit = (values: any) => {
     // console.log("submit");
     // console.log(values);
-    Api.syncPermissions({ _token: token, userId: userId, permissions: values })
+    Api.syncPermissions({
+      _token: `${token}`,
+      userId: userId,
+      permissions: values,
+    })
       .then((res) => notify("success", res.message))
-      .catch((error) => console.error);
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -31,18 +35,18 @@ const ShowUser = () => {
 
     let isMounted = true;
     const handleGetPerssions = async () => {
-      Api.getPermissions({ _token: token })
+      Api.getPermissions({ _token: `${token}` })
         .then((res) => {
           setPermissions(res.data);
         })
-        .catch((err) => console.log);
+        .catch((err) => console.log(err));
     };
     const fetchUser = async () => {
       handleGetPerssions();
       setIsLoading(true);
       try {
         const response = await Api.showUser({
-          _token: token,
+          _token: `${token}`,
           user_id: Number(userId),
         });
 

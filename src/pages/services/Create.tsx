@@ -26,7 +26,7 @@ const CreateService = () => {
     start_offer_at: null,
     end_offer_at: null,
     options: [],
-    _token: token ?? "",
+    _token: `${token}`,
   };
 
   const handleSubmit = async (values: ServiceFormValues) => {
@@ -46,7 +46,7 @@ const CreateService = () => {
         start_offer_at: values.start_offer_at ? values.start_offer_at : null,
         end_offer_at: values.end_offer_at ? values.end_offer_at : null,
         options: values.options,
-        _token: token ?? "",
+        _token: `${token}`,
       };
 
       await Api.createService(payload);

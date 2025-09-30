@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 // import { useN  avigate } from "@tanstack/react-router";
 import FormSchedule, { type ScheduleFormValues } from "./FormSchedule";
 import { useNotificationStore } from "../../store/notification.store";
 
-const CreateSchedule = ({ userId, onClosex, reload }) => {
+const CreateSchedule = ({ userId, onClosex, reload }: any) => {
   const token = useAuthStore((s) => s.token);
   // const user = useAuthStore((s) => s.user);
   // const navigate = useNavigate();
@@ -19,7 +19,7 @@ const CreateSchedule = ({ userId, onClosex, reload }) => {
   //   const fetchUsers = async () => {
   //     try {
   //       const res = await Api.readUsers({
-  //         _token: token ?? "",
+  //         _token: `${token}`,
   //         query: {},
   //       });
   //       const filtered = res.data
@@ -51,7 +51,7 @@ const CreateSchedule = ({ userId, onClosex, reload }) => {
     try {
       await Api.createSchedule({
         ...values,
-        _token: token ?? "",
+        _token: `${token}`,
       });
       notify("success", "Horario creado con éxito");
       reload();

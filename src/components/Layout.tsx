@@ -18,12 +18,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { toggle, isOpen } = useSidebarStore();
 
   const logout = () => {
-    Api.logout({ user_id: user.id, _token: token })
-      .then((res) => {
+    Api.logout({ user_id: user.id, _token: `${token}` })
+      .then(() => {
         clearAuth();
         router.navigate({ to: "/" });
       })
-      .catch((error) => {
+      .catch(() => {
         router.navigate({ to: "/" });
       });
   };

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoChevronDown } from "react-icons/io5";
 import { IoCheckmark } from "react-icons/io5";
 import { useAuthStore } from "../store/auth.store";
@@ -13,13 +13,13 @@ export function CommerceSelector() {
 
   const setCommerce = useAuthStore((s) => s.setCommerce);
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {
     setCommerce(commerces[0]);
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: any) => {
+      if (dropdownRef.current && !dropdownRef.current?.contains(event.target)) {
         setIsOpen(false);
       }
     };
@@ -28,7 +28,7 @@ export function CommerceSelector() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSelect = (commerce) => {
+  const handleSelect = (commerce: any) => {
     setCommerce(commerce);
     setIsOpen(false);
   };
@@ -90,7 +90,7 @@ export function CommerceSelector() {
                 No hay commerces disponibles
               </div>
             ) : (
-              commerces.map((commerce) => (
+              commerces.map((commerce: any) => (
                 <button
                   key={commerce.id}
                   onClick={() => handleSelect(commerce)}
