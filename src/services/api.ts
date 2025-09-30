@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // api.ts
-const API_URL = import.meta.env.API_URL || "http://168.231.69.210:9998/api";
+const API_URL = import.meta.env.API_URL || "https://calendary.srv899715.hstgr.cloud/api";
 import type { Handler } from "@netlify/functions";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE"| "PATCH";
