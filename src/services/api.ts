@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // api.ts
 const API_URL = import.meta.env.API_URL || "http://168.231.69.210:9998/api";
+import type { Handler } from "@netlify/functions";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE"| "PATCH";
 
@@ -42,7 +43,27 @@ export async function apiFetch<T = any, B = any>(
   return res.json();
 }
 
+// ✅ Aquí exportamos el handler de Netlify
+export const handler: Handler = async (event) => {
+  try {
+    // Ejemplo: pasamos el endpoint por query ?endpoint=/patients
+    const endpoint = event.queryStringParameters?.endpoint || "/";
+    const method = event.httpMethod as HttpMethod;
+    const body = event.body ? JSON.parse(event.body) : undefined;
 
+    const data = await apiFetch(endpoint, { method, body });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data),
+    };
+  } catch (error: any) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: error.message }),
+    };
+  }
+};
 
 //create,read,update,delete,show
 // Ejemplos de consultas
