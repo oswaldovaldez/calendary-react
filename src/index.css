@@ -116,7 +116,7 @@ html.dark {
   html:not(.dark) .neumo {
     box-shadow:
       8px 8px 16px #c8d3e0,
-      -8px -8px 16px #ffffff !important;
+      -8px -8px 16px #e8e8e8 !important;
   }
 
   /* Dark mode */
