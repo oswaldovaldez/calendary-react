@@ -105,8 +105,10 @@ html.dark {
   /* 🔲 Neumorphism */
   .neumo {
     border-radius: 16px !important;
-    background-color: var(--color-surface);
-    color: var(--color-text-primary) !important;
+    background-color: var(--color-background-light);
+    color: var(--color-text-primary-light) !important;
+    /*background-color: var(--color-surface);
+    color: var(--color-text-primary) !important;*/
     transition: all 0.2s ease-in-out !important;
   }
 
@@ -268,69 +270,6 @@ html.dark {
   @apply dark:text-white dark:shadow-[0_4px_9px_-4px_rgba(255,255,255,0.2)];
 }
 
-/* Variantes Solid */
-/* .btn-primary {
-  @apply bg-blue-600 text-white shadow-[0_4px_9px_-4px_#2563eb]
-         hover:bg-blue-700 hover:shadow-lg
-         focus:bg-blue-700 focus:shadow-lg
-         active:bg-blue-800;
-  @apply dark:bg-blue-500 dark:hover:bg-blue-600 dark:active:bg-blue-700;
-}
-
-.btn-secondary {
-  @apply bg-gray-600 text-white shadow-[0_4px_9px_-4px_#4b5563]
-         hover:bg-gray-700 hover:shadow-lg
-         focus:bg-gray-700 focus:shadow-lg
-         active:bg-gray-800;
-  @apply dark:bg-gray-500 dark:hover:bg-gray-600 dark:active:bg-gray-700;
-}
-
-.btn-success {
-  @apply bg-[var(--color-alert-success)] text-[var(--color-text-primary)];
-  @apply dark:bg-green-500 dark:hover:bg-green-600 dark:active:bg-green-700;
-}
-.btn-success:hover {
-  /* ligero oscurecimiento para hover /
-  filter: brightness(0.96);
-}
-.btn-success:focus {
-  @apply ring-2 ring-[var(--color-alert-success)] outline-none;
-}
-.btn-success:disabled {
-  @apply bg-[var(--color-button-disabled)] text-[var(--color-text-secondary)] opacity-50 cursor-not-allowed;
-}
-
-.btn-danger {
-  @apply bg-red-600 text-white shadow-[0_4px_9px_-4px_#dc2626]
-         hover:bg-red-700 hover:shadow-lg
-         focus:bg-red-700 focus:shadow-lg
-         active:bg-red-800;
-  @apply dark:bg-red-500 dark:hover:bg-red-600 dark:active:bg-red-700;
-}
-
-.btn-warning {
-  @apply bg-yellow-500 text-black shadow-[0_4px_9px_-4px_#eab308]
-         hover:bg-yellow-600 hover:shadow-lg
-         focus:bg-yellow-600 focus:shadow-lg
-         active:bg-yellow-700;
-  @apply dark:bg-yellow-400 dark:hover:bg-yellow-500 dark:active:bg-yellow-600 dark:text-black;
-}
-
-.btn-info {
-  @apply bg-cyan-600 text-white shadow-[0_4px_9px_-4px_#0891b2]
-         hover:bg-cyan-700 hover:shadow-lg
-         focus:bg-cyan-700 focus:shadow-lg
-         active:bg-cyan-800;
-  @apply dark:bg-cyan-500 dark:hover:bg-cyan-600 dark:active:bg-cyan-700;
-}
-
-.btn-dark {
-  @apply bg-neutral-800 text-white shadow-[0_4px_9px_-4px_#1f2937]
-         hover:bg-neutral-900 hover:shadow-lg
-         focus:bg-neutral-900 focus:shadow-lg
-         active:bg-black;
-  @apply dark:bg-neutral-700 dark:hover:bg-neutral-800 dark:active:bg-black;
-} */
 
 /* Outline genérico */
 .btn-outline {
@@ -381,7 +320,9 @@ html.dark {
 
 /* === Card === */
 .card {
-  @apply bg-white dark:bg-gray-800 rounded-2xl shadow p-4;
+  background-color: var(--color-background-light);
+    color: var(--color-text-primary-light);
+  @apply dark:bg-gray-800 rounded-2xl shadow p-4;
 }
 
 .card-header {
@@ -400,8 +341,10 @@ html.dark {
 .input,
 .textarea,
 .select {
+  background-color: var(--color-background-light);
+    color: var(--color-text-primary-light);
   @apply block w-full px-3 py-2 text-base text-gray-900 
-         bg-white border border-gray-300 rounded-md shadow-sm 
+        border border-gray-300 rounded-md shadow-sm 
          placeholder-gray-400 focus:outline-none focus:ring-2 
          focus:ring-blue-500 focus:border-blue-500;
 }
