@@ -873,3 +873,37 @@ html[data-commerce="consequatur-omnis-esse-ipsa-necessitatibus-labore-cum-dolore
   --sidebar-active-hover: oklch(0.6 0.18 140);
   --sidebar-active-text: #ffffff;
 }
+/* === Scrollbar global con colores dinámicos del comercio === */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px; /* opcional para scroll horizontal */
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--sidebar-active-bg);
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--sidebar-active-hover);
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: var(--sidebar-active-hover);
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+*::-webkit-scrollbar-track:hover,
+*::-webkit-scrollbar-track:active {
+  background: transparent !important;
+}
+
+/* === Firefox support === */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sidebar-active-bg) transparent;
+}
