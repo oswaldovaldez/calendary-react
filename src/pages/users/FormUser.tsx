@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import { userSchema, userSchemaEdit } from "../../schemas/userSchema";
 import FormRender from "../../components/FormRender";
 import { useAuthStore } from "../../store/auth.store";
-// import { SchedulesIndex } from "../schedules";
+import { SchedulesIndex } from "../schedules";
 const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
   const rolesStore = useAuthStore((s) => s.roles);
   const roleUser = useAuthStore((s) => s.user.roles[0]);
@@ -108,7 +108,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
               <>
                 <div className="card neumo">
                   <div className="card-header">
-                    <h3>Otros Datos</h3>
+                    <h3>Detalles</h3>
                   </div>
                   <div className="card-body grid gap-4 md:grid-cols-2">
                     <FieldArray
@@ -116,7 +116,10 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
                       render={(arrayHelpers: any) => (
                         <FormRender
                           arrayHelpers={arrayHelpers}
-                          initialValues={initialValues}
+                          data={initialValues.data}
+                          fields={
+                            initialValues.record_templates?.[0].fields ?? []
+                          }
                         />
                       )}
                     />
@@ -134,16 +137,19 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
           </Form>
         )}
       </Formik>
-      {/* {isEdit && (
+      {isEdit && (
         <div className="card neumo mt-4">
           <div className="card-header">
             <h3>Horarios</h3>
           </div>
           <div className="card-body">
-            <SchedulesIndex userId={initialValues.id} />
+            <SchedulesIndex
+              userId={initialValues.id}
+              scheduleArray={initialValues.schedules}
+            />
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

@@ -20,7 +20,7 @@ const Edit = () => {
   const handleSubmit = async (values: any) => {
     Api.updateRecordTemplate({
       ...values,
-      recordTemplate_id: values.id,
+      recordTemplate_id: templateId,
       _token: `${token}`,
     })
       .then((res) => {

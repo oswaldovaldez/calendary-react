@@ -82,7 +82,7 @@ type Field =
 type FormTemplateProps = {
   initialValues?: any;
   isEdit?: boolean;
-  onSubmit?: (values: any) => void;
+  onSubmit: (values: any) => void;
 };
 
 const FieldEditor = memo(function FieldEditor({
@@ -430,7 +430,11 @@ const FieldEditor = memo(function FieldEditor({
 //   isEdit = false,
 //   onSubmit: any,
 // }) => {
-const FormTemplate: React.FC<FormTemplateProps> = ({ initialValues = {} }) => {
+const FormTemplate: React.FC<FormTemplateProps> = ({
+  initialValues = {},
+  isEdit = false,
+  onSubmit,
+}) => {
   const commercesStore = useAuthStore((s) => s.commerces);
   // use the store value as fallback so variable is used and linter won't complain
   const commerceFallback =
@@ -799,7 +803,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({ initialValues = {} }) => {
         {fields.map((f) => renderFieldEditor(f))}
       </div>
 
-      <div className="rounded-lg p-6 shadow">
+      {/* <div className="rounded-lg p-6 shadow">
         <h2 className="text-lg font-medium mb-4">Array de Fields Generado:</h2>
         <div className="bg-gray-900 text-green-400 p-4 rounded font-mono text-sm overflow-auto max-h-96">
           <pre>{exportFields()}</pre>
@@ -814,6 +818,15 @@ const FormTemplate: React.FC<FormTemplateProps> = ({ initialValues = {} }) => {
           type="button"
         >
           Copiar al portapapeles
+        </button>
+      </div> */}
+      <div className="card-footer flex justify-end mt-4">
+        <button
+          className="btn neumo btn-success ml-auto"
+          type="button"
+          onClick={() => onSubmit(fields && { ...values, fields })}
+        >
+          {isEdit ? "Actualizar Plantilla" : "Registrar Plantilla"}
         </button>
       </div>
     </div>

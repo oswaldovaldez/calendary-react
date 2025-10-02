@@ -145,11 +145,11 @@ const FormRecord: React.FC<FormRecordProps> = ({
               </div>
             </div>
 
-            {/* Otros datos dinámicos (solo en edición o si hay templates) */}
+            {/* Detalles dinámicos (solo en edición o si hay templates) */}
 
             <div className="card neumo">
               <div className="card-header">
-                <h3>Otros Datos</h3>
+                <h3>Detalles</h3>
               </div>
               <div className="card-body">
                 <FieldArray

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useParams } from "@tanstack/react-router";
@@ -15,7 +15,9 @@ const Edit = () => {
     password: "",
     permissions: [],
     data: [],
+    role: 0,
     roles: [],
+    schedules: [],
   });
   const { userId } = useParams({ from: "/users/$userId/edit" });
   const token = useAuthStore((s) => s.token);
@@ -31,10 +33,16 @@ const Edit = () => {
       });
   };
   useEffect(() => {
+    if (!userId) return;
     Api.showUser({ _token: `${token}`, user_id: userId })
       .then((res) => {
-        setFormData({ ...res, role: res.roles[0].id });
-
+        setFormData({
+          ...res,
+          role: res.roles[0].id ?? 0,
+          password: res.password || "",
+          schedules: res.schedules || [],
+        });
+        // console.log("loaded");
         setLoading(false);
       })
       .catch((error) => {
@@ -45,6 +53,9 @@ const Edit = () => {
 
   if (loading) return <div>Cargando...</div>;
 
+  // <div className="container mx-auto p-4">
+  //   <h1 className="text-2xl font-bold mb-4">Editar Usuario</h1>
+  // </div>
   return (
     <div>
       {formData && (

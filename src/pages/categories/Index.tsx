@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import Table from "../../components/Table";
+// import Table from "../../components/Table";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { Link } from "@tanstack/react-router";
 import { useNotificationStore } from "../../store/notification.store";
 import { showConfirm } from "../../utils/alert";
+import Table from "../../components/Table";
 const Index = () => {
   const [categories, setCategories] = useState([]);
   const token = useAuthStore((s) => s.token);

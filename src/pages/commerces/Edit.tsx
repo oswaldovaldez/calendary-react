@@ -36,7 +36,7 @@ const Edit = () => {
   useEffect(() => {
     Api.showCommerce({ _token: `${token}`, commerce_id: commerceId })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setFormData({ ...res });
         setLoading(false);
       })

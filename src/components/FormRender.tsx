@@ -1,38 +1,49 @@
 import { Field } from "formik";
 import { type ArrayHelpers } from "formik";
+import React from "react";
 
 interface FormRenderProps {
   arrayHelpers: ArrayHelpers;
-  initialValues: any; // Replace 'any' with the actual type of your initialValues
+  data: any; // Replace 'any' with the actual type of your initialValues
+  fields: any; // Replace 'any' with the actual type of your initialValues
+  prefix?: string;
 }
 
-const FormRender = ({ arrayHelpers, initialValues }: FormRenderProps) => {
-  console.log(arrayHelpers);
-  if ((initialValues.record_templates?.length ?? 0) === 0) {
-    return <></>;
-  }
-  return (
-    <>
-      {initialValues.record_templates[0].fields.map(
-        (element: any, indexE: number) => (
+const FormRender = React.memo(
+  ({ arrayHelpers, data, fields, prefix = "" }: FormRenderProps) => {
+    // console.log(arrayHelpers);
+
+    console.log("fields", fields, "data", data);
+    if ((fields.length ?? 0) === 0) {
+      return <></>;
+    }
+    return (
+      <>
+        {fields.map((element: any, indexE: number) => (
           <div className="form-group mt-2" key={`element-${indexE}`}>
-            <label
-              htmlFor={`data[${element.name ?? ""}]`}
-              className="form-label"
-            >
-              {element.label ?? ""}
-            </label>
+            {element.type !== "radio" && element.type !== "checkbox" && (
+              <label
+                htmlFor={
+                  prefix === ""
+                    ? `data[${element.name ?? ""}]`
+                    : `data[${prefix}[${element.name ?? ""}]]`
+                }
+                className="form-label"
+              >
+                {element.label ?? ""}
+              </label>
+            )}
             {element.type === "select" && (
               <>
                 <Field
                   as="select"
                   className="input input-sm"
-                  name={`data[${element.name ?? ""}]`}
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : initialValues.data[element.name]
+                  name={
+                    prefix === ""
+                      ? `data[${element.name ?? ""}]`
+                      : `data[${prefix}[${element.name ?? ""}]]`
                   }
+                  defaultValue={data === null ? "" : data[element.name]}
                 >
                   {Object.entries(element.options).map(
                     ([key, labelx], index) => (
@@ -49,13 +60,13 @@ const FormRender = ({ arrayHelpers, initialValues }: FormRenderProps) => {
                 <Field
                   as="select"
                   className="input input-sm"
-                  name={`data[${element.name ?? ""}]`}
-                  multiple
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : initialValues.data[element.name]
+                  name={
+                    prefix === ""
+                      ? `data[${element.name ?? ""}]`
+                      : `data[${prefix}[${element.name ?? ""}]]`
                   }
+                  multiple
+                  defaultValue={data === null ? "" : data[element.name]}
                 >
                   {Object.entries(element.options).map(
                     ([key, labelx], index) => (
@@ -67,42 +78,107 @@ const FormRender = ({ arrayHelpers, initialValues }: FormRenderProps) => {
                 </Field>
               </>
             )}
-            {element.type === "group" && <></>}
+            {element.type === "radio" && (
+              <>
+                <div className="form-control">
+                  <label className="label">{element.label ?? ""}</label>
+                  {Object.entries(element.options).map(
+                    ([key, labelx], index) => (
+                      <label
+                        className="cursor-pointer label"
+                        key={`option-${index}`}
+                      >
+                        <Field
+                          type="radio"
+                          name={
+                            prefix === ""
+                              ? `data[${element.name ?? ""}]`
+                              : `data[${prefix}[${element.name ?? ""}]]`
+                          }
+                          value={key}
+                          className="radio"
+                          defaultChecked={
+                            data === null ? false : data[element.name] === key
+                          }
+                        />
+                        <span className="ml-2">{`${labelx}`}</span>
+                      </label>
+                    )
+                  )}
+                </div>
+              </>
+            )}
+            {element.type === "checkbox" && (
+              <>
+                <div className="form-control">
+                  <label className="cursor-pointer label">
+                    <Field
+                      type="checkbox"
+                      name={
+                        prefix === ""
+                          ? `data[${element.name ?? ""}]`
+                          : `data[${prefix}[${element.name ?? ""}]]`
+                      }
+                      className="checkbox"
+                      defaultChecked={
+                        data === null
+                          ? false
+                          : data[element.name] === true ||
+                            data[element.name] === "true"
+                      }
+                    />
+                    <span className="ml-2">{element.label ?? ""}</span>
+                  </label>
+                </div>
+              </>
+            )}
+            {element.type === "group" && (
+              <div className="ml-6">
+                <FormRender
+                  arrayHelpers={arrayHelpers}
+                  data={data == null ? null : data[element.name]}
+                  fields={element.fields}
+                  prefix={element.name}
+                />
+              </div>
+            )}
             {element.type === "textarea" && (
               <>
                 <Field
                   as="textarea"
                   className={`input input-sm ${element.type === "textarea" && "textarea"}`}
                   type={element.type}
-                  name={`data[${element.name ?? ""}]`}
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : (initialValues.data[element.name] ?? "")
+                  name={
+                    prefix === ""
+                      ? `data[${element.name ?? ""}]`
+                      : `data[${prefix}[${element.name ?? ""}]]`
                   }
+                  defaultValue={data === null ? "" : (data[element.name] ?? "")}
                 />
               </>
             )}
             {element.type !== "select" &&
               element.type !== "multiselect" &&
+              element.type !== "radio" &&
+              element.type !== "checkbox" &&
               element.type !== "group" &&
               element.type !== "textarea" && (
                 <Field
                   className={`input input-sm ${element.type === "checkbox" ? "checkbox" : ""} ${element.type === "radio" ? "radio" : ""}`}
                   type={element.type}
-                  name={`data[${element.name ?? ""}]`}
-                  defaultValue={
-                    initialValues.data === null
-                      ? ""
-                      : (initialValues.data[element.name] ?? "")
+                  name={
+                    prefix === ""
+                      ? `data[${element.name ?? ""}]`
+                      : `data[${prefix}[${element.name ?? ""}]]`
                   }
+                  defaultValue={data === null ? "" : (data[element.name] ?? "")}
                 />
               )}
           </div>
-        )
-      )}
-    </>
-  );
-};
+        ))}
+      </>
+    );
+  }
+);
 
 export default FormRender;

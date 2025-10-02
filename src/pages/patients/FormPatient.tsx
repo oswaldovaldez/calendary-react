@@ -8,7 +8,7 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import FormRender from "../../components/FormRender";
-import { type PatientType } from '../../types/index';
+import { type PatientType } from "../../types/index";
 
 // export interface PatientType {
 //   first_name: string;
@@ -194,11 +194,11 @@ const FormPatient: React.FC<FormPatientProps> = ({
             </div>
           </div>
 
-          {/* Otros datos solo en edición */}
+          {/* Detalles solo en edición */}
           {isEdit && (
             <div className="card neumo mt-4">
               <div className="card-header">
-                <h3 className="text-md font-semibold">Otros Datos</h3>
+                <h3 className="text-md font-semibold">Detalles</h3>
               </div>
               <div className="card-body">
                 <FieldArray
@@ -206,7 +206,8 @@ const FormPatient: React.FC<FormPatientProps> = ({
                   render={(arrayHelpers: any) => (
                     <FormRender
                       arrayHelpers={arrayHelpers}
-                      initialValues={initialValues}
+                      data={initialValues.data}
+                      fields={initialValues.record_templates?.[0].fields ?? []}
                     />
                   )}
                 />

@@ -155,7 +155,7 @@ const ShowCommerce = () => {
             : "-"}
         </div> */}
           {/* <div className="md:col-span-2">
-          <span className="font-semibold">Otros datos:</span>{" "}
+          <span className="font-semibold">Detalles:</span>{" "}
           {commerce.data && commerce.data.length > 0
             ? JSON.stringify(commerce.data)
             : "Sin datos"}
@@ -165,7 +165,7 @@ const ShowCommerce = () => {
       {commerce.data !== null && (
         <div className="card neumo mt-4">
           <div className="card-header">
-            <h3>Otros Datos</h3>
+            <h3>Detalles</h3>
           </div>
           <div className="card-body"></div>
         </div>

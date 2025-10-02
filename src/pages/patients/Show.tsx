@@ -5,7 +5,7 @@ import { useAuthStore } from "../../store/auth.store";
 import type { PatientType } from "../../types";
 
 /**
- * RenderObject imprime objetos JSON en forma de lista. Funciona para "Otros Datos"
+ * RenderObject imprime objetos JSON en forma de lista. Funciona para "Detalles"
  */
 const RenderObject: React.FC<{ obj: Record<string, any>; level?: number }> = ({
   obj,
@@ -145,10 +145,10 @@ const ShowPatient = () => {
             : "-"}
         </div>
 
-        {/* Otros datos bien formateados */}
+        {/* Detalles bien formateados */}
         <div className="md:col-span-2 mt-4">
           <span className="font-semibold text-gray-800 block mb-3 text-lg">
-            Otros datos:
+            Detalles:
           </span>
           {patient.data && Object.keys(patient.data).length > 0 ? (
             <RenderObject obj={patient.data} />
