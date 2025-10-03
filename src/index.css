@@ -96,7 +96,7 @@ body {
   @apply w-full mx-auto space-y-6 flex flex-col p-6;
 }
 .form-group {
-  @apply mb-4;
+  @apply mb-0;
 }
 .form-label {
   @apply block mb-1 text-sm font-medium;

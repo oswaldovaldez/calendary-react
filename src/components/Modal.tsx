@@ -146,7 +146,7 @@ const Modal = React.memo(
             {/* Header */}
             {title && (
               <div className="modal-header flex justify-between items-center border-b border-gray-200 p-3 shrink-0">
-                <h5 className="modal-title text-base font-semibold">{title}</h5>
+                <h5 className="modal-title text-xl font-semibold">{title}</h5>
                 <button
                   type="button"
                   className="text-xl text-gray-500 hover:text-gray-700 cursor-pointer"
