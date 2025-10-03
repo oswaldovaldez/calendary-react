@@ -57,7 +57,7 @@ const Table = ({
             {() => (
               <Form className="flex flex-row gap-2 w-full mx-2">
                 <Field className={`input input-sm`} type="text" name="search" />
-                <button className="btn neumo btn-success ml-auto" type="submit">
+                <button className="btn neumo  ml-auto" type="submit">
                   <FaSearch />
                 </button>
               </Form>
