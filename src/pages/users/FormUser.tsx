@@ -111,6 +111,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
                     <h3>Detalles</h3>
                   </div>
                   <div className="card-body grid gap-4 md:grid-cols-2">
+                    {initialValues.record_templates?.length > 0 && initialValues.record_templates?.[0].fields?.length > 0 && (
                     <FieldArray
                       name="data"
                       render={(arrayHelpers: any) => (
@@ -122,7 +123,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
                           }
                         />
                       )}
-                    />
+                    />)}
                   </div>
                 </div>
               </>

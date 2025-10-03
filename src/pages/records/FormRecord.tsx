@@ -152,15 +152,21 @@ const FormRecord: React.FC<FormRecordProps> = ({
                 <h3>Detalles</h3>
               </div>
               <div className="card-body">
-                <FieldArray
-                  name="data"
-                  render={(arrayHelpers: any) => (
-                    <FormRender
-                      arrayHelpers={arrayHelpers}
-                      initialValues={initialValues}
+                {initialValues.record_templates?.length > 0 &&
+                  initialValues.record_templates?.[0].fields?.length > 0 && (
+                    <FieldArray
+                      name="data"
+                      render={(arrayHelpers: any) => (
+                        <FormRender
+                          arrayHelpers={arrayHelpers}
+                          data={initialValues.data}
+                          fields={
+                            initialValues.record_templates?.[0].fields ?? []
+                          }
+                        />
+                      )}
                     />
                   )}
-                />
               </div>
             </div>
 

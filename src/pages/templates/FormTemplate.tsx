@@ -756,40 +756,63 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
     ]
   );
 
-  const exportFields = useCallback(() => {
-    const clean = fields.map((f) => {
-      const copy = { ...f };
-      if ((copy as GroupField).fields) {
-        (copy as GroupField).fields = (copy as GroupField).fields!.map(
-          (sf) => ({ ...sf })
-        );
-      }
-      return copy;
-    });
-    return JSON.stringify(clean, null, 2);
-  }, [fields]);
+  // const exportFields = useCallback(() => {
+  //   const clean = fields.map((f) => {
+  //     const copy = { ...f };
+  //     if ((copy as GroupField).fields) {
+  //       (copy as GroupField).fields = (copy as GroupField).fields!.map(
+  //         (sf) => ({ ...sf })
+  //       );
+  //     }
+  //     return copy;
+  //   });
+  //   return JSON.stringify(clean, null, 2);
+  // }, [fields]);
 
   return (
     <div className="max-w-4xl mx-auto p-6 min-h-screen">
       <div className="mb-6 card neumo">
         <div className="card-body">
-          <div className="form-group">
-            <label htmlFor="name" className="form-label">
-              Nombre
-            </label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              value={values.name}
-              onChange={(e: any) =>
-                setValues((v) => ({ ...v, name: e.target.value }))
-              }
-              className="form-control form-control-sm"
-            />
-          </div>
-          <input type="hidden" value={values.commerce_id} />
+          {isEdit && (
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">
+                Nombre
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                value={values.name}
+                onChange={(e: any) =>
+                  setValues((v) => ({ ...v, name: e.target.value }))
+                }
+                className="form-control form-control-sm"
+              />
+            </div>
+          )}
+          {!isEdit && (
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">
+                Nombre
+              </label>
+              <select
+                name="name"
+                id="modelo"
+                value={values.name}
+                onChange={(e: any) =>
+                  setValues((v) => ({ ...v, name: e.target.value }))
+                }
+                className="form-control form-control-sm"
+              >
+                <option value="patient">Pacientes</option>
+                <option value="user">Usuarios</option>
+                <option value="commerce">Comercios</option>
+                <option value="record">Registros</option>
+              </select>
+            </div>
+          )}
         </div>
+        <input type="hidden" value={values.commerce_id} />
       </div>
 
       <div className="mb-6 w-full flex flex-row-reverse">

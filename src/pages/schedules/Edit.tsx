@@ -17,8 +17,8 @@ const Edit = ({ scheduleId, userId, onClosex, reload }: any) => {
     start_time: "",
     user_id: 0,
   });
-  const currentCommerce = useAuthStore((s) => s.commerce);
-  const commerceId = currentCommerce?.id ?? 0;
+  // const currentCommerce = useAuthStore((s) => s.commerce);
+  // const commerceId = currentCommerce?.id ?? 0;
   const token = useAuthStore((s) => s.token);
   const [loading, setLoading] = useState(true);
   const handleSubmit = async (values: any) => {
@@ -73,7 +73,6 @@ const Edit = ({ scheduleId, userId, onClosex, reload }: any) => {
           isEdit={true}
           onSubmit={handleSubmit}
           userId={userId}
-          commerceId={commerceId}
         />
       )}
     </div>

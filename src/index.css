@@ -131,7 +131,7 @@ body {
 /* Primary */
 .btn-primary {
   background: var(--color-primary);
-  color: #fff !important; 
+  color: #fff !important;
 }
 .btn-primary:hover {
   background: var(--color-primary-hover);
@@ -151,7 +151,6 @@ body {
 /* Warning */
 .btn-warning {
   background: var(--color-alert-warning);
- 
 }
 
 /* Disabled */
@@ -169,16 +168,14 @@ html.dark .btn:disabled {
 .btn-add {
   background-color: var(--color-surface); /* claro en light, oscuro en dark */
   border: 1px solid var(--color-primary); /* borde dinámico del comercio */
-  color: var(--color-text-primary);       /* negro en light, blanco en dark */
+  color: var(--color-text-primary); /* negro en light, blanco en dark */
   transition: all 0.2s ease-in-out;
 }
 
 .btn-add:hover {
   background-color: var(--color-primary); /* se llena del color del comercio */
-  color: #fff !important;                 /* texto siempre blanco al hover */
+  color: #fff !important; /* texto siempre blanco al hover */
 }
-
-
 
 /* === Tablas === */
 table {
@@ -294,8 +291,7 @@ html.dark .toast {
   background: var(--color-primary);
 }
 
-
-  /* 🎨 Fondo sólido para CommerceSelector */
+/* 🎨 Fondo sólido para CommerceSelector */
 .commerce-dropdown {
   background-color: #ffffff; /* blanco en light */
   color: var(--color-text-primary);
@@ -338,7 +334,7 @@ html.dark .commerce-dropdown {
 }
 */
 
- /* === Dropdown === */
+/* === Dropdown === */
 /* .dropdown {
   @apply relative inline-block;
 }
@@ -355,7 +351,6 @@ html.dark .commerce-dropdown {
 .dark .dropdown-item {
   @apply text-gray-200 hover:bg-gray-700;
 } */
-
 
 /* === Pagination ===
 .pagination {

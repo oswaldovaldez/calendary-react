@@ -1,5 +1,12 @@
-const Create = () => {
-  return <div>Create</div>;
+import FormAppointment from "./FormAppointment";
+
+const AppointmentsCreate = () => {
+  const initialValues = {};
+
+  const onSubmit = (values: any) => {
+    console.log(values);
+  };
+  return <FormAppointment initialValues={initialValues} onSubmit={onSubmit} />;
 };
 
-export default Create;
+export default AppointmentsCreate;

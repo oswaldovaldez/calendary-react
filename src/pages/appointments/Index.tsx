@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
+// import { Link } from "@tanstack/react-router";
 import Calendar from "@toast-ui/calendar";
 import "@toast-ui/calendar/dist/toastui-calendar.min.css";
 import type { AppointmentType } from "../../types";
@@ -8,6 +8,9 @@ import { useDetailPopup } from "../../hooks/useDetailPopup";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNotificationStore } from "../../store/notification.store";
+import Modal from "../../components/Modal";
+
+import AppointmentsCreate from "./Create";
 
 const getMonthRange = (date: Date) => {
   const start = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -28,6 +31,8 @@ const Index = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [visibleCalendars, setVisibleCalendars] = useState(new Set<string>());
   const [showAllCalendars, setShowAllCalendars] = useState(true);
+  // const [openEdit, setOpenEdit] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
   // const [selectedEvent, setSelectedEvent] = useState(null);
   const { isOpen, event, position, openPopup, closePopup } = useDetailPopup();
   const token = useAuthStore((s) => s.token);
@@ -395,9 +400,12 @@ const Index = () => {
             </h1>
           </div>
           <div className="flex items-center space-x-2">
-            <Link to="/appointments/create" className="btn btn-info neumo">
+            <button
+              onClick={() => setOpenCreate(true)}
+              className="btn btn-info neumo"
+            >
               Nueva Cita
-            </Link>
+            </button>
           </div>
         </div>
       </header>
@@ -581,6 +589,31 @@ const Index = () => {
         onEdit={handleEditEvent}
         onDelete={handleDeleteEvent}
       />
+      {/* <Modal
+        isOpen={openEdit}
+        onClosex={() => {
+          setOpenEdit(false);
+        }}
+        title="Editar Horario"
+      >
+        <SchedulesEdit
+          userId={userId}
+          scheduleId={scheduleId}
+          reload={handleGetData}
+          onClosex={() => {
+            setOpenEdit(false);
+          }}
+        />
+      </Modal> */}
+      <Modal
+        isOpen={openCreate}
+        onClosex={() => {
+          setOpenCreate(false);
+        }}
+        title="Nueva Cita"
+      >
+        <AppointmentsCreate />
+      </Modal>
     </div>
   );
 };

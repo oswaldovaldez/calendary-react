@@ -67,7 +67,7 @@ const CreateSchedule = ({ userId, onClosex, reload }: any) => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       userId={userId}
-      commerceId={commerceId}
+      
     />
   );
 };

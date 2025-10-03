@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+// import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   X,
   Edit2,
@@ -78,39 +79,40 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
   onDelete,
 }) => {
   const popupRef = useRef<HTMLDivElement>(null);
-  const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
+  // const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
     if (isOpen && position && popupRef.current) {
-      const popup = popupRef.current;
-      const popupRect = popup.getBoundingClientRect();
-      const windowWidth = window.innerWidth;
-      const windowHeight = window.innerHeight;
+      console.log("Popup opened at position:", position);
+      // const popup = popupRef.current;
+      // const popupRect = popup.getBoundingClientRect();
+      // const windowWidth = window.innerWidth;
+      // const windowHeight = window.innerHeight;
 
-      let top = position.y;
-      let left = position.x;
+      // let top = position.y;
+      // let left = position.x;
 
-      // Ajustar si se sale por la derecha
-      if (left + popupRect.width > windowWidth - 20) {
-        left = windowWidth - popupRect.width - 20;
-      }
+      // // Ajustar si se sale por la derecha
+      // if (left + popupRect.width > windowWidth - 20) {
+      //   left = windowWidth - popupRect.width - 20;
+      // }
 
-      // Ajustar si se sale por abajo
-      if (top + popupRect.height > windowHeight - 20) {
-        top = windowHeight - popupRect.height - 20;
-      }
+      // // Ajustar si se sale por abajo
+      // if (top + popupRect.height > windowHeight - 20) {
+      //   top = windowHeight - popupRect.height - 20;
+      // }
 
-      // Ajustar si se sale por arriba
-      if (top < 20) {
-        top = 20;
-      }
+      // // Ajustar si se sale por arriba
+      // if (top < 20) {
+      //   top = 20;
+      // }
 
-      // Ajustar si se sale por la izquierda
-      if (left < 20) {
-        left = 20;
-      }
+      // // Ajustar si se sale por la izquierda
+      // if (left < 20) {
+      //   left = 20;
+      // }
 
-      setPopupPosition({ top, left });
+      // setPopupPosition({ top, left });
     }
   }, [isOpen, position]);
 
@@ -185,6 +187,8 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
 
   const getStatusLabel = (status?: string) => {
     switch (status?.toLowerCase()) {
+      case "scheduled":
+        return "Programada";
       case "confirmed":
         return "Confirmada";
       case "pending":
@@ -220,8 +224,11 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
       ref={popupRef}
       className="fixed z-50 bg-white rounded-lg shadow-2xl border border-gray-200 w-96 animate-fadeIn nemo"
       style={{
-        top: `${popupPosition.top}px`,
-        left: `${popupPosition.left}px`,
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        zIndex: 1000, // Asegúrate de que esté por encima de otros elementos
+        // ... otros estilos para el popup (background, padding, etc.)
       }}
     >
       {/* Header con color del calendario */}

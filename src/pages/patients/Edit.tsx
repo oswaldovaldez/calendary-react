@@ -21,6 +21,7 @@ const Edit = () => {
   const token = useAuthStore((s) => s.token);
   const [loading, setLoading] = useState(true);
   const handleSubmit = async (values: any) => {
+    console.log("Submitting form with values:", values);
     Api.updatePatient({
       ...values,
       patient_id: values.id,

@@ -13,7 +13,7 @@ const FormRender = React.memo(
   ({ arrayHelpers, data, fields, prefix = "" }: FormRenderProps) => {
     // console.log(arrayHelpers);
 
-    console.log("fields", fields, "data", data);
+    // console.log("fields", fields, "data", data);
     if ((fields.length ?? 0) === 0) {
       return <></>;
     }
@@ -37,7 +37,7 @@ const FormRender = React.memo(
               <>
                 <Field
                   as="select"
-                  className="input input-sm"
+                  className="form-control form-control-sm"
                   name={
                     prefix === ""
                       ? `data[${element.name ?? ""}]`
@@ -59,7 +59,7 @@ const FormRender = React.memo(
               <>
                 <Field
                   as="select"
-                  className="input input-sm"
+                  className="form-control form-control-sm"
                   name={
                     prefix === ""
                       ? `data[${element.name ?? ""}]`
@@ -80,7 +80,7 @@ const FormRender = React.memo(
             )}
             {element.type === "radio" && (
               <>
-                <div className="form-control">
+                <div className="form-control  border-0! shadow-none!">
                   <label className="label">{element.label ?? ""}</label>
                   {Object.entries(element.options).map(
                     ([key, labelx], index) => (
@@ -110,7 +110,7 @@ const FormRender = React.memo(
             )}
             {element.type === "checkbox" && (
               <>
-                <div className="form-control">
+                <div className="form-control border-0! shadow-none!">
                   <label className="cursor-pointer label">
                     <Field
                       type="checkbox"
@@ -146,7 +146,7 @@ const FormRender = React.memo(
               <>
                 <Field
                   as="textarea"
-                  className={`input input-sm ${element.type === "textarea" && "textarea"}`}
+                  className={`form-control form-control-sm ${element.type === "textarea" && "textarea"}`}
                   type={element.type}
                   name={
                     prefix === ""
@@ -164,7 +164,7 @@ const FormRender = React.memo(
               element.type !== "group" &&
               element.type !== "textarea" && (
                 <Field
-                  className={`input input-sm ${element.type === "checkbox" ? "checkbox" : ""} ${element.type === "radio" ? "radio" : ""}`}
+                  className={`form-control form-control-sm ${element.type === "checkbox" ? "checkbox" : ""} ${element.type === "radio" ? "radio" : ""}`}
                   type={element.type}
                   name={
                     prefix === ""

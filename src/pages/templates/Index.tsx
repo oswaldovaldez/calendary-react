@@ -33,7 +33,7 @@ const Index = () => {
       header: "ID",
     },
     { accessorKey: "name", header: "Nombre" },
-    { accessorKey: "email", header: "Email" },
+
     {
       // Nueva columna para las acciones
       header: "Acciones",

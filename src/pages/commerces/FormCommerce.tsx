@@ -170,16 +170,21 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
                 <h3 className="text-md font-semibold">Detalles</h3>
               </div>
               <div className="card-body">
-                <FieldArray
-                  name="data"
-                  render={(arrayHelpers: any) => (
-                    <FormRender
-                      arrayHelpers={arrayHelpers}
-                      data={initialValues.data}
-                      fields={initialValues.record_templates?.[0].fields ?? []}
+                {initialValues.record_templates?.length > 0 &&
+                  initialValues.record_templates?.[0].fields?.length > 0 && (
+                    <FieldArray
+                      name="data"
+                      render={(arrayHelpers: any) => (
+                        <FormRender
+                          arrayHelpers={arrayHelpers}
+                          data={initialValues.data}
+                          fields={
+                            initialValues.record_templates?.[0].fields ?? []
+                          }
+                        />
+                      )}
                     />
                   )}
-                />
               </div>
             </div>
           )}

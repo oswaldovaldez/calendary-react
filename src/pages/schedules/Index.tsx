@@ -8,8 +8,8 @@ import { useNotificationStore } from "../../store/notification.store";
 import { diasES } from "../../types";
 import Modal from "../../components/Modal";
 import { SchedulesCreate, SchedulesEdit } from ".";
-import { Field, Form, Formik } from "formik";
-import { FaSearch } from "react-icons/fa";
+// import { Field, Form, Formik } from "formik";
+// import { FaSearch } from "react-icons/fa";
 
 const Index = React.memo(({ userId, scheduleArray }: any) => {
   const [schedules, setSchedules] = useState([]);
@@ -20,7 +20,8 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
   const [query, setQuery] = useState({});
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
-  const [search, setSearch] = useState("");
+  setQuery({ user_id: userId });
+  // const [search, setSearch] = useState("");
   const handleDeleteSchedule = useCallback(
     (id: number) => {
       Api.deleteSchedule({ schedule_id: id, _token: `${token}` })
@@ -55,18 +56,18 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
       handleGetData();
     }
   }, [query]);
-  const handleSearch = useCallback(
-    (queryData: any) => {
-      setQuery({ ...query, ...queryData });
-    },
-    [setQuery]
-  );
-  const handlePaginate = useCallback(
-    (queryData: any) => {
-      setQuery({ ...query, queryData });
-    },
-    [setQuery]
-  );
+  // const handleSearch = useCallback(
+  //   (queryData: any) => {
+  //     setQuery({ ...query, ...queryData });
+  //   },
+  //   [setQuery]
+  // );
+  // const handlePaginate = useCallback(
+  //   (queryData: any) => {
+  //     setQuery({ ...query, queryData });
+  //   },
+  //   [setQuery]
+  // );
   return (
     <div>
       <div className="flex flex-col">

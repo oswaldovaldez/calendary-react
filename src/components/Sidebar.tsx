@@ -63,7 +63,7 @@ export function Sidebar() {
               key={l.to}
               to={l.to}
               onClick={handleLinkClick}
-              className="px-3 py-2 rounded-lx transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="px-3 py-2 rounded-lx transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg hover:text-white"
               activeProps={{ className: "sidebar-active" }}
             >
               {l.label}
