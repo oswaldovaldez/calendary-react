@@ -20,7 +20,10 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
   const [query, setQuery] = useState({});
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
-  setQuery({ user_id: userId });
+
+  useEffect(() => {
+    setQuery({ user_id: userId });
+  }, []);
   // const [search, setSearch] = useState("");
   const handleDeleteSchedule = useCallback(
     (id: number) => {
@@ -44,13 +47,13 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
       query: query,
     })
       .then((res: any) => {
-        setSchedules(res);
+        setSchedules(res.data);
       })
       .catch(console.log);
   }, [token, query]);
   useEffect(() => {
     setSchedules(scheduleArray);
-  }, []);
+  }, [query, token]);
   useEffect(() => {
     if (Object.keys(query).length > 0) {
       handleGetData();
@@ -68,6 +71,7 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
   //   },
   //   [setQuery]
   // );
+  // return <>sad</>;
   return (
     <div>
       <div className="flex flex-col">
@@ -118,56 +122,67 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {schedules.map((row: any) => (
-                    <tr key={row.id} className="border-b">
-                      <td className="px-6 py-4">{diasES[row.day_of_week]}</td>
-                      <td className="px-6 py-4">
-                        <div>
-                          <span>
-                            {row.start_time} - {row.end_time}
-                          </span>
-                          {row.breaks && row.breaks.length > 0 && (
-                            <div className="text-sm text-gray-400">
-                              {row.breaks.map((b: any, i: number) => (
-                                <div key={i}>
-                                  Descanso: {b.start} - {b.end}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-2">
-                          <button
-                            className="btn neumo btn-warning"
-                            onClick={() => {
-                              setCommerceId(row.commerce_id);
-                              setScheduleId(row.id);
-                              setOpenEdit(true);
-                            }}
-                          >
-                            Editar
-                          </button>
-                          <button
-                            onClick={() =>
-                              showConfirm({
-                                id: row.id ?? 0,
-                                handleConfirm: handleDeleteSchedule,
-                                title: "Eliminar horario",
-                                message: `¿Deseas eliminar el horario <strong>${diasES[row.day_of_week]}</strong>?`,
-                                successText: `El horario <strong>${diasES[row.day_of_week]}</strong> se eliminó correctamente.`,
-                                errorText: `No se pudo eliminar el horario <strong>${row.name}</strong>. Intenta de nuevo.`,
-                              })
-                            }
-                            className="btn neumo btn-danger"
-                          >
-                            Eliminar
-                          </button>
-                        </div>
+                  {schedules.length === 0 && (
+                    <tr className="border-b">
+                      <td
+                        colSpan={3}
+                        className="px-6 py-4 text-center text-gray-500"
+                      >
+                        No hay horarios
                       </td>
                     </tr>
-                  ))}
+                  )}
+                  {schedules.length > 0 &&
+                    schedules.map((row: any) => (
+                      <tr key={row.id} className="border-b">
+                        <td className="px-6 py-4">{diasES[row.day_of_week]}</td>
+                        <td className="px-6 py-4">
+                          <div>
+                            <span>
+                              {row.start_time} - {row.end_time}
+                            </span>
+                            {row.breaks && row.breaks.length > 0 && (
+                              <div className="text-sm text-gray-400">
+                                {row.breaks.map((b: any, i: number) => (
+                                  <div key={i}>
+                                    Descanso: {b.start} - {b.end}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex gap-2">
+                            <button
+                              className="btn neumo btn-warning"
+                              onClick={() => {
+                                setCommerceId(row.commerce_id);
+                                setScheduleId(row.id);
+                                setOpenEdit(true);
+                              }}
+                            >
+                              Editar
+                            </button>
+                            <button
+                              onClick={() =>
+                                showConfirm({
+                                  id: row.id ?? 0,
+                                  handleConfirm: handleDeleteSchedule,
+                                  title: "Eliminar horario",
+                                  message: `¿Deseas eliminar el horario <strong>${diasES[row.day_of_week]}</strong>?`,
+                                  successText: `El horario <strong>${diasES[row.day_of_week]}</strong> se eliminó correctamente.`,
+                                  errorText: `No se pudo eliminar el horario <strong>${row.name}</strong>. Intenta de nuevo.`,
+                                })
+                              }
+                              className="btn neumo btn-danger"
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

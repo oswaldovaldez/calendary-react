@@ -6,7 +6,7 @@ import { SchedulesIndex } from "../schedules";
 const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
   const rolesStore = useAuthStore((s) => s.roles);
   const roleUser = useAuthStore((s) => s.user.roles[0]);
-
+  const commerce = useAuthStore((s) => s.commerce);
   return (
     <div>
       <Formik
@@ -16,6 +16,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
       >
         {({ errors, touched, isSubmitting }) => (
           <Form className="form-container">
+            <Field type="hidden" name="commerce_id" value={commerce?.id ?? 0} />
             <div className="card neumo">
               <div className="card-body grid gap-4 md:grid-cols-2">
                 <div className="form-group md:col-span-2">
@@ -111,19 +112,22 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
                     <h3>Detalles</h3>
                   </div>
                   <div className="card-body grid gap-4 md:grid-cols-2">
-                    {initialValues.record_templates?.length > 0 && initialValues.record_templates?.[0].fields?.length > 0 && (
-                    <FieldArray
-                      name="data"
-                      render={(arrayHelpers: any) => (
-                        <FormRender
-                          arrayHelpers={arrayHelpers}
-                          data={initialValues.data}
-                          fields={
-                            initialValues.record_templates?.[0].fields ?? []
-                          }
+                    {initialValues.record_templates?.length > 0 &&
+                      initialValues.record_templates?.[0].fields?.length >
+                        0 && (
+                        <FieldArray
+                          name="data"
+                          render={(arrayHelpers: any) => (
+                            <FormRender
+                              arrayHelpers={arrayHelpers}
+                              data={initialValues.data}
+                              fields={
+                                initialValues.record_templates?.[0].fields ?? []
+                              }
+                            />
+                          )}
                         />
                       )}
-                    />)}
                   </div>
                 </div>
               </>

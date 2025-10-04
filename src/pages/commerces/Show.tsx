@@ -25,8 +25,8 @@ const ShowCommerce = () => {
         _token: `${token}`,
         commerce_id: Number(commerceId),
       });
-
       if (!isMounted) return;
+
       setCommerce(response as CommerceType);
       setError(null);
     } catch (err) {

@@ -812,7 +812,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
             </div>
           )}
         </div>
-        <input type="hidden" value={values.commerce_id} />
+        <input type="hidden" name="commerce_id" value={values.commerce_id} />
       </div>
 
       <div className="mb-6 w-full flex flex-row-reverse">
