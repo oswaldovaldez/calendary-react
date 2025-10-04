@@ -301,6 +301,16 @@ html.dark .commerce-dropdown {
   background-color: #2a2a2a; /* gris oscuro en dark */
   color: var(--color-text-primary-dark);
 }
+/*paneles ocultos en calendario*/
+.toastui-calendar-allday,
+.toastui-calendar-task,
+.toastui-calendar-milestone{
+  display: none !important;
+}
+
+.toastui-calendar-time{
+  height: 60vh !important;
+}
 
 /* ========================================================= */
 /* 📦 BACKUP DE ESTILOS NO USADOS (del CSS inicial)          */

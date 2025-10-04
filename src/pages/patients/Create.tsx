@@ -5,7 +5,13 @@ import toast from "react-hot-toast";
 import { useNavigate } from "@tanstack/react-router";
 import { type PatientType } from "../../types/index";
 
-const CreatePatient: React.FC = () => {
+interface CreatePatientType{
+  onClosex?:(close:boolean)=>void;
+  setPatient?:(patient:PatientType)=>void;
+  isModal:boolean;
+};
+
+const CreatePatient: React.FC<CreatePatientType> = ({isModal=false,setPatient,onClosex}) => {
   const token = useAuthStore((s) => s.token);
   const commerce = useAuthStore((s) => s.commerce);
   const navigate = useNavigate();
@@ -22,8 +28,8 @@ const CreatePatient: React.FC = () => {
   };
 
   const handleSubmit = async (values: PatientType) => {
-    try {
-      await Api.createPatient({
+    
+      Api.createPatient({
         first_name: values.first_name.trim(),
         last_name: values.last_name.trim(),
         email: values.email.trim() || "",
@@ -32,16 +38,25 @@ const CreatePatient: React.FC = () => {
         gender: values.gender || "",
         commerce_id: values.commerce_id || 0,
         _token: `${token}`,
+      }).then((res)=>{
+        
+        if(!isModal){
+          navigate({ to: "/patients" });
+        }
+        else{
+          setPatient?.(res.data);
+          onClosex?.(true);
+        }
+        toast.success(res.message, { duration: 4000 });
+      }).catch((error)=>{
+        toast.error(error.message || "Error al registrar paciente", {
+          duration: 5000,
+        });
+
       });
 
-      toast.success("Paciente creado con éxito", { duration: 4000 });
-      navigate({ to: "/patients" });
-    } catch (error: any) {
-      console.error(error);
-      toast.error(error.message || "Error al registrar paciente", {
-        duration: 5000,
-      });
-    }
+
+    
   };
 
   return (

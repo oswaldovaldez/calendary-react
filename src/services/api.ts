@@ -140,7 +140,7 @@ export const Api = {
   showSchedule:(data:{schedule_id:number,_token:string,})=>apiFetch(`/schedules/${data.schedule_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
   //crud citas
-  createAppointment:(data:{start_at:string,end_at:string,status:string|null,commerce_id:number|null,patient_id:number,schedule_id:number|null,user_id:number,notes:string|null,name:string|null,description:string|null,_token:string})=>apiFetch('/appointments',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  createAppointment:(data:{start_at:string,end_at:string,status:string|null,commerce_id:number|null,patient_id:number,user_id:number,notes:string|null,name:string|null,description:string|null,_token:string})=>apiFetch('/appointments',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readAppointments:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/appointments`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
   updateAppointment:(data:{start_at:string,end_at:string,status:string|null,commerce_id:number|null,patient_id:number,schedule_id:number|null,user_id:number,notes:string|null,name:string|null,description:string|null,appointment_id:number,_token: string})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteAppointment:(data:{appointment_id:number,_token: string})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),

@@ -5,6 +5,9 @@ import { type PatientType, type ServiceType } from "../../types/index";
 import { useEffect, useState } from "react";
 import { Api } from "../../services/api";
 import { IoIosPersonAdd } from "react-icons/io";
+import Modal from "../../components/Modal";
+import CreatePatient from "../patients/Create";
+
 
 export const appointmentSchema = Yup.object({
   first_name: Yup.string().trim().required("El nombre es obligatorio"),
@@ -28,7 +31,10 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
   const [patients, setPatients] = useState<PatientType[]>([]);
   const [services, setServices] = useState<ServiceType[]>([]);
   const [users, setUsers] = useState<ServiceType[]>([]);
-
+  const [openCreate, setOpenCreate] = useState(false);
+  const setPatient=(patient:PatientType)=>{
+    setPatients([patient]);
+  }  
   useEffect(() => {
     if (isEdit) {
       console.log("Editando cita", initialValues);
@@ -65,17 +71,18 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
         .catch((err) => console.error(err));
     }
   }, [commerce]);
-
+//validationSchema={appointmentSchema}
   return (
+    <>
     <Formik
       initialValues={initialValues}
-      validationSchema={appointmentSchema}
+      
       onSubmit={onSubmit}
       enableReinitialize
     >
       {({ errors, touched }: any) => (
         <Form className="form-container card">
-          <Field type="hidden" name="commerce_id" value={commerce?.id} />
+         
           {/* <Field type="hidden" name="commerce_id" value="scheduled" /> */}
           <div className="card-body grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Nombre */}
@@ -170,7 +177,7 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
                 <button
                   type="button"
                   className="btn btn-add"
-                  onClick={() => console.log("Abrir modal nuevo paciente")}
+                  onClick={() => {setOpenCreate(true);console.log("Abrir modal nuevo paciente")}}
                 >
                   <IoIosPersonAdd size={20} />
                 </button>
@@ -309,6 +316,24 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
         </Form>
       )}
     </Formik>
+
+    <Modal
+        isOpen={openCreate}
+        onClosex={() => {
+          setOpenCreate(false);
+        }}
+        title="Nuevo Paciente"
+      >
+       <CreatePatient onClosex={() => {
+          setOpenCreate(false);
+        }}
+        setPatient={setPatient}
+        isModal={true}
+         /> 
+        
+
+      </Modal>
+    </>
   );
 };
 

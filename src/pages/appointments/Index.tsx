@@ -95,9 +95,10 @@ const Index = () => {
             .map((a) => ({
               id: String(a.id),
               calendarId: String(a.user.id),
-              title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service.name}`,
+              title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service?.name??'-'}`,
               start: a.start_at,
               raw: a,
+              backgroundColor: a.user.data?.calendar_color || "#9e5fff",
               end: a.end_at,
               category: "time",
             }))
@@ -204,10 +205,11 @@ const Index = () => {
           .map((a) => ({
             id: String(a.id),
             calendarId: String(a.user.id),
-            title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service.name}`,
+            title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service?.name??'-'}`,
             start: a.start_at,
             end: a.end_at,
             raw: a,
+            backgroundColor: a.user.data?.calendar_color || "#9e5fff",
             category: "time",
           }))
       );
@@ -612,7 +614,9 @@ const Index = () => {
         }}
         title="Nueva Cita"
       >
-        <AppointmentsCreate />
+        <AppointmentsCreate  onClosex={() => {
+          setOpenCreate(false);
+        }} />
       </Modal>
     </div>
   );

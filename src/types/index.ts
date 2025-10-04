@@ -67,11 +67,11 @@ export interface CommerceType {
 
 export interface CommercePivotType {
  commerce_id: number;
- created_at:  string;
+ created_at?:  string;
  is_active:   boolean;
  permissions: PermissionsType;
  role:        string;
- updated_at:  string;
+ updated_at?:  string;
  user_id:     number;
 }
 export interface PermissionsType {
@@ -82,12 +82,12 @@ export interface PermissionsType {
 }
 
 export interface RoleType {
- created_at: string;
+ created_at?: string;
  guard_name: string;
  id:         number;
  name:       string;
  pivot:      RolePivotType;
- updated_at: string;
+ updated_at?: string;
 }
 
 export interface RolePivotType {
@@ -101,15 +101,15 @@ export interface CategoryType {
  _rgt:        number;
  children:    any[];
  commerce_id: number;
- created_at:  string;
- deleted_at:  Date|null;
+ created_at?:  string;
+ deleted_at?:  Date|null;
  description: string|null;
  id:          number;
  name:        string;
  parent_id:   number|null;
  slug:        string;
  status:      boolean;
- updated_at:  string;
+ updated_at?:  string;
 }
 
 
@@ -161,8 +161,8 @@ export interface ProductType {
  category_id:         number|null;
  commission:          string;
  cost:                string;
- created_at:          string;
- deleted_at:          Date|null;
+ created_at?:          string;
+ deleted_at?:          Date|null;
  description:         string;
  format:              string;
  id:                  number;
@@ -176,7 +176,7 @@ export interface ProductType {
  status:              boolean;
  stock:               number;
  stock_alert:         number;
- updated_at:          string;
+ updated_at?:          string;
 }
 
 
@@ -184,8 +184,8 @@ export interface ServiceType {
  home_service:     boolean;
  category:         CategoryType;
  category_id:      number;
- created_at:       string;
- deleted_at:       Date|null;
+ created_at?:       string;
+ deleted_at?:       Date|null;
  description:      string;
  duration:         number;
  duration_type:    string;
@@ -199,7 +199,7 @@ export interface ServiceType {
  sessions:         boolean;
  slug:             string;
  start_offer_at:   null;
- updated_at:       string;
+ updated_at?:       string;
 }
 
 
@@ -224,25 +224,25 @@ export interface BreakType {
 
 
 export interface AppointmentType {
- commerce:    CommerceType;
+ commerce?:    CommerceType;
  commerce_id: number;
- created_at:  string;
- deleted_at:  Date|null;
+ created_at?:  string;
+ deleted_at?:  Date|null;
  description: string;
  end_at:      string;
- id:          number;
+ id?:          number;
  name:        string;
- notes:       string|null;
- patient:     PatientType;
+ notes?:       string;
+ patient?:     PatientType;
  patient_id:  number;
- schedule:    ScheduleType;
- schedule_id: number;
- service:     ServiceType;
+ schedule?:    ScheduleType;
+ schedule_id?: number;
+ service?:     ServiceType;
  service_id:  number;
  start_at:    string;
  status:      string;
- updated_at:  string;
- user:        UserType;
+ updated_at?:  string;
+ user?:        UserType;
  user_id:     number;
 }
 

@@ -783,6 +783,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
                 type="text"
                 name="name"
                 value={values.name}
+                readOnly
                 onChange={(e: any) =>
                   setValues((v) => ({ ...v, name: e.target.value }))
                 }
