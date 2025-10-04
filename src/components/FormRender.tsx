@@ -171,7 +171,7 @@ const FormRender = React.memo(
                       ? `data[${element.name ?? ""}]`
                       : `data[${prefix}[${element.name ?? ""}]]`
                   }
-                  defaultValue={data === null ? "" : (data[element.name] ?? "")}
+                  defaultValue={data === null ? "" : (data?.[element.name] ?? "")}
                 />
               )}
           </div>

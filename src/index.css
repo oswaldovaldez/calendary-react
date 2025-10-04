@@ -114,6 +114,7 @@ body {
   color: var(--color-text-primary);
 }
 /* === Inputs focus === */
+.form-control:focus,
 .input:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 2px var(--color-primary-hover);
@@ -122,6 +123,12 @@ body {
   @apply mt-1 text-sm text-red-600;
 }
 
+
+input[type="color"].form-control {
+  @apply w-12 h-12 p-0 rounded-md border cursor-pointer shadow-sm transition-colors;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
 /* === Botones === */
 .btn {
   @apply inline-flex items-center px-4 py-2 font-medium rounded-md shadow-sm 

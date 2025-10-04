@@ -302,7 +302,7 @@ const Index = () => {
         },
       });
       calendarInstance.current.on("clickEvent", ({ event }: any) => {
-        console.log(event);
+        //console.log(event);
         // const _eventData = {
         //   id: event.id,
         //   title: event.title,

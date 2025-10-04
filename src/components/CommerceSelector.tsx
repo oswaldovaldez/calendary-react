@@ -65,6 +65,21 @@ export function CommerceSelector() {
 
 	const handleSelect = (commerce: any) => {
 		setCommerce(commerce);
+		const root = document.documentElement;
+		//console.log(root,commerce);
+		root.style.removeProperty('--color-primary');
+		root.style.removeProperty('--color-primary-hover');
+		if(commerce.data.hasOwnProperty("colors")){
+			if(commerce.data.colors.hasOwnProperty("background")){
+				root.style.setProperty('--color-primary', commerce.data.colors.background);
+
+			}
+			if(commerce.data.colors.hasOwnProperty("active")){
+
+				root.style.setProperty('--color-primary-hover', commerce.data.colors.active);
+				
+			}
+		}
 		setIsOpen(false);
 	};
 
