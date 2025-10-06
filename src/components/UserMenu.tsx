@@ -15,27 +15,18 @@ const UserMenu: React.FC<UserMenuProps> = ({
 	onSettings,
 	onLogout,
 }) => {
+	const { user } = useAuthStore();
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const [isDark, setIsDark] = useState(false);
 
-	const user = useAuthStore((state) => state.user);
-	const clearAuth = useAuthStore((state) => state.clearAuth);
-
-	//
-	const getShortName = (fullName: string): string => {
-		if (!fullName) return "Administrador";
-		const parts = fullName.trim().split(" ");
-		if (parts.length === 1) return parts[0]; // solo un nombre
-		return `${parts[0]} ${parts[1]}`; // primer nombre y primer apellido
+	const getDisplayName = (name?: string) => {
+		if (!name) return "Usuario";
+		const parts = name.trim().split(" ");
+		return parts.slice(0, 2).join(" "); // Primer nombre y apellido
 	};
 
-	const username = getShortName(
-		user?.name || user?.userName || "Administrador"
-	);
-	const userEmail = user?.email || "usuario@correo.com";
-
-	// Detectar modo actual según la clase en <html>
+	// Detectar modo actual
 	useEffect(() => {
 		const observer = new MutationObserver(() => {
 			setIsDark(document.documentElement.classList.contains("dark"));
@@ -48,7 +39,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 		return () => observer.disconnect();
 	}, []);
 
-	// Cerrar el menú al hacer clic fuera
+	// Cerrar menú al hacer clic fuera
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
@@ -73,15 +64,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
 		}
 	};
 
-	const handleLogout = () => {
-		clearAuth();
-		onLogout?.();
-		setOpen(false);
-	};
-
 	return (
 		<div className="relative inline-block text-left" ref={dropdownRef}>
-			{/* Botón principal */}
 			{/* Botón principal */}
 			<button
 				className="flex items-center gap-2 px-3 py-2 rounded-md transition duration-200 cursor-pointer select-none"
@@ -99,12 +83,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
 					(e.currentTarget.style.backgroundColor = "transparent")
 				}
 			>
-				<ShieldUser
-					style={{
-						color: "var(--color-text-secondary)",
-					}}
-				/>
-				<span className="hidden md:inline font-medium">{username}</span>
+				<ShieldUser style={{ color: "var(--color-text-secondary)" }} />
+				<span className="hidden md:inline font-medium">
+					{getDisplayName(user?.name)}
+				</span>
 			</button>
 
 			{open && (
@@ -121,16 +103,16 @@ const UserMenu: React.FC<UserMenuProps> = ({
 					{/* Header */}
 					<div className="px-4 pb-2">
 						<h3
-							className="text-base font-semibold truncate"
+							className="text-base font-semibold"
 							style={{ color: "var(--color-text-primary)" }}
 						>
-							{username}
+							{getDisplayName(user?.name)}
 						</h3>
 						<p
 							className="text-xs truncate"
 							style={{ color: "var(--color-text-secondary)" }}
 						>
-							{userEmail}
+							{user?.email || "correo@usuario.com"}
 						</p>
 					</div>
 
@@ -152,10 +134,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 							}}
 							className="w-full text-left flex items-center gap-2 px-4 py-2 rounded-md transition"
 							style={{
-								backgroundColor: "transparent",
 								color: "var(--color-text-primary)",
-								transition:
-									"background-color 0.2s ease, color 0.2s ease",
 							}}
 							onMouseEnter={(e) =>
 								(e.currentTarget.style.backgroundColor =
@@ -177,10 +156,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 							}}
 							className="w-full text-left flex items-center gap-2 px-4 py-2 rounded-md transition"
 							style={{
-								backgroundColor: "transparent",
 								color: "var(--color-text-primary)",
-								transition:
-									"background-color 0.2s ease, color 0.2s ease",
 							}}
 							onMouseEnter={(e) =>
 								(e.currentTarget.style.backgroundColor =
@@ -198,9 +174,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 						<div
 							className="flex items-center justify-between px-4 py-2 rounded-md mt-1 transition"
 							style={{
-								backgroundColor: "transparent",
 								color: "var(--color-text-primary)",
-								transition: "background-color 0.2s ease",
 							}}
 							onMouseEnter={(e) =>
 								(e.currentTarget.style.backgroundColor =
@@ -221,7 +195,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 								<span>Tema</span>
 							</div>
 
-							{/* Toggle según color del comercio */}
+							{/* Toggle dinámico */}
 							<div
 								className="w-12 h-6 rounded-full relative transition cursor-pointer"
 								onClick={toggleTheme}
@@ -229,7 +203,6 @@ const UserMenu: React.FC<UserMenuProps> = ({
 									backgroundColor: isDark
 										? "color-mix(in srgb, var(--color-primary) 80%, black)"
 										: "var(--color-primary)",
-									transition: "background-color 0.3s ease",
 								}}
 							>
 								<div
@@ -254,22 +227,25 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
 					{/* LOGOUT */}
 					<button
-						onClick={handleLogout}
-						className="w-[90%] mx-auto flex items-center justify-center gap-2 py-2 rounded-lg font-medium transition"
+						onClick={() => {
+							onLogout?.();
+							setOpen(false);
+						}}
+						className="w-[90%] mx-auto flex items-center justify-center gap-2 py-2 rounded-lg font-medium transition-colors"
 						style={{
-							color: "var(--color-alert-error-dark)",
+							color: "oklch(0.55 0.25 25)", // rojo sobrio (letras)
 							backgroundColor: "transparent",
 							transition:
 								"background-color 0.25s ease, color 0.25s ease",
 						}}
-						onMouseEnter={(e) =>
-							(e.currentTarget.style.backgroundColor =
-								"color-mix(in srgb, var(--color-alert-error-dark) 20%, transparent)")
-						}
-						onMouseLeave={(e) =>
-							(e.currentTarget.style.backgroundColor =
-								"transparent")
-						}
+						onMouseEnter={(e) => {
+							e.currentTarget.style.backgroundColor =
+								"color-mix(in srgb, var(--color-text-secondary) 10%, transparent)";
+						}}
+						onMouseLeave={(e) => {
+							e.currentTarget.style.backgroundColor =
+								"transparent";
+						}}
 					>
 						<IoMdClose /> Cerrar sesión
 					</button>
