@@ -12,6 +12,7 @@ import {
   AlertCircle,
   Building2,
 } from "lucide-react";
+import { FaEye } from "react-icons/fa";
 
 interface EventData {
   id: string;
@@ -64,7 +65,7 @@ interface EventData {
 interface DetailPopupProps {
   event: EventData | null;
   isOpen: boolean;
-  position?: { x: number; y: number };
+
   onClose: () => void;
   onEdit?: (event: EventData) => void;
   onDelete?: (eventId: string) => void;
@@ -73,48 +74,12 @@ interface DetailPopupProps {
 const DetailPopup: React.FC<DetailPopupProps> = ({
   event,
   isOpen,
-  position,
+
   onClose,
   onEdit,
   onDelete,
 }) => {
   const popupRef = useRef<HTMLDivElement>(null);
-  // const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
-
-  useEffect(() => {
-    if (isOpen && position && popupRef.current) {
-      console.log("Popup opened at position:", position);
-      // const popup = popupRef.current;
-      // const popupRect = popup.getBoundingClientRect();
-      // const windowWidth = window.innerWidth;
-      // const windowHeight = window.innerHeight;
-
-      // let top = position.y;
-      // let left = position.x;
-
-      // // Ajustar si se sale por la derecha
-      // if (left + popupRect.width > windowWidth - 20) {
-      //   left = windowWidth - popupRect.width - 20;
-      // }
-
-      // // Ajustar si se sale por abajo
-      // if (top + popupRect.height > windowHeight - 20) {
-      //   top = windowHeight - popupRect.height - 20;
-      // }
-
-      // // Ajustar si se sale por arriba
-      // if (top < 20) {
-      //   top = 20;
-      // }
-
-      // // Ajustar si se sale por la izquierda
-      // if (left < 20) {
-      //   left = 20;
-      // }
-
-      // setPopupPosition({ top, left });
-    }
-  }, [isOpen, position]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -222,7 +187,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
   return (
     <div
       ref={popupRef}
-      className="fixed z-50 bg-white rounded-lg shadow-2xl border border-gray-200 w-96 animate-fadeIn nemo"
+      className="fixed z-50 bg-white rounded-lg shadow-2xl border border-gray-200 w-96 animate-fadeIn"
       style={{
         top: "50%",
         left: "50%",
@@ -263,7 +228,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
         </div>
 
         {/* Información del evento */}
-        <div className="space-y-3 mb-4">
+        <div className="space-y-3 mb-4 h-auto max-h-[60vh] overflow-y-auto">
           {/* Fecha y hora */}
           <div className="flex items-start space-x-3">
             <Clock size={18} className="text-gray-500 mt-0.5 flex-shrink-0" />
@@ -405,6 +370,10 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
               <span className="text-sm font-medium">Eliminar</span>
             </button>
           )}
+          <button className="btn">
+            <FaEye />
+            <span className="text-sm font-medium">Ver Cita</span>
+          </button>
         </div>
       </div>
 

@@ -255,3 +255,59 @@ export const diasES: Record<string, string> = {
   saturday: "Sábado",
   sunday: "Domingo",
 };
+
+export const RECORD_TYPES = [
+  // 🩺 Salud / Médico
+  { value: "medico", label: "Consulta médica" },
+  { value: "odontologia", label: "Tratamiento odontológico" },
+  { value: "psicologia", label: "Sesión psicológica" },
+  { value: "nutricion", label: "Consulta de nutrición" },
+  { value: "fisioterapia", label: "Sesión de fisioterapia" },
+  { value: "estetica", label: "Tratamiento estético" },
+  { value: "laboratorio", label: "Estudio de laboratorio" },
+  { value: "seguimiento_postquirurgico", label: "Seguimiento post quirúrgico" },
+  { value: "control_paciente", label: "Control de paciente" },
+
+  // 🏢 Empresa / Recursos Humanos / Administración
+  { value: "recursos_humanos", label: "Recursos Humanos" },
+  { value: "entrevista", label: "Entrevista laboral" },
+  { value: "evaluacion_desempeno", label: "Evaluación de desempeño" },
+  { value: "capacitacion", label: "Capacitación o entrenamiento" },
+  { value: "cliente", label: "Seguimiento de cliente" },
+  { value: "proveedor", label: "Gestión de proveedor" },
+  { value: "reunion", label: "Reunión de trabajo" },
+  { value: "ticket_soporte", label: "Ticket de soporte" },
+
+  // 🏠 Inmobiliario
+  { value: "inmobiliario", label: "Gestión inmobiliaria" },
+  { value: "propiedad", label: "Ficha de propiedad" },
+  { value: "visita", label: "Visita a propiedad" },
+  { value: "contrato", label: "Contrato de renta o venta" },
+  { value: "mantenimiento", label: "Registro de mantenimiento" },
+  { value: "avaluo", label: "Avalúo o tasación" },
+
+  // 🎓 Educación
+  { value: "clase", label: "Clase o sesión" },
+  { value: "curso", label: "Curso o programa" },
+  { value: "alumno", label: "Ficha de alumno" },
+  { value: "evaluacion", label: "Evaluación académica" },
+  { value: "asistencia", label: "Registro de asistencia" },
+  { value: "tutoria", label: "Sesión de tutoría" },
+
+  // 💼 Servicios / Profesionales
+  { value: "asesoria", label: "Asesoría profesional" },
+  { value: "consultoria", label: "Consultoría" },
+  { value: "cita_tecnica", label: "Cita técnica" },
+  { value: "proyecto", label: "Proyecto o actividad" },
+  { value: "servicio_cliente", label: "Atención al cliente" },
+  { value: "instalacion", label: "Instalación o configuración" },
+
+  // ⚙️ General / Otros
+  { value: "agenda_general", label: "Agenda general" },
+  { value: "tarea", label: "Tarea o pendiente" },
+  { value: "seguimiento", label: "Seguimiento general" },
+  { value: "nota", label: "Nota libre" },
+  { value: "evento", label: "Evento o recordatorio" },
+  { value: "reporte", label: "Reporte o bitácora" },
+  { value: "otro", label: "Otro tipo de registro" },
+];

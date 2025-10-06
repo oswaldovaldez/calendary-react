@@ -11,6 +11,7 @@ import { useNotificationStore } from "../../store/notification.store";
 import Modal from "../../components/Modal";
 
 import AppointmentsCreate from "./Create";
+import { AppointmentsEdit } from ".";
 
 const getMonthRange = (date: Date) => {
   const start = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -26,15 +27,17 @@ const Index = () => {
   const calendarInstance = useRef<any>(null);
   const [appointments, setAppointments] = useState<AppointmentType[]>([]);
   const [calendars, setCalendars] = useState<any[]>([]);
-  const [viewType, setViewType] = useState("month");
+  const [viewType, setViewType] = useState("week");
   const [currentDateRange, setCurrentDateRange] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [visibleCalendars, setVisibleCalendars] = useState(new Set<string>());
   const [showAllCalendars, setShowAllCalendars] = useState(true);
-  // const [openEdit, setOpenEdit] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
-  // const [selectedEvent, setSelectedEvent] = useState(null);
-  const { isOpen, event, position, openPopup, closePopup } = useDetailPopup();
+  const [selectedEvent, setSelectedEvent] = useState<AppointmentType | null>(
+    null
+  );
+  const { isOpen, event, openPopup, closePopup } = useDetailPopup();
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
   const commerce = useAuthStore((s) => s.commerce);
@@ -86,19 +89,20 @@ const Index = () => {
 
         // Solo mostrar eventos de calendarios visibles
         const filteredEvents = data.filter(
-          (a) => showAllCalendars || visibleCalendars.has(String(a.user.id))
+          (a: any) =>
+            showAllCalendars || visibleCalendars.has(String(a.user?.id))
         );
 
         calendarInstance.current.createEvents(
           filteredEvents
-            .filter((a) => a.patient?.first_name != null)
-            .map((a) => ({
+            .filter((a: any) => a.patient?.first_name != null)
+            .map((a: any) => ({
               id: String(a.id),
-              calendarId: String(a.user.id),
-              title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service?.name??'-'}`,
+              calendarId: String(a.user?.id),
+              title: `${a.patient?.first_name} ${a.patient?.last_name} - ${a.service?.name ?? "-"}`,
               start: a.start_at,
               raw: a,
-              backgroundColor: a.user.data?.calendar_color || "#9e5fff",
+              backgroundColor: a.user?.data?.calendar_color || "#9e5fff",
               end: a.end_at,
               category: "time",
             }))
@@ -195,21 +199,21 @@ const Index = () => {
     // Actualizar eventos visibles solo si hay instancia de calendario
     if (calendarInstance.current && appointments.length > 0) {
       const filteredEvents = appointments.filter(
-        (a) => showAllCalendars || newVisibleCalendars.has(String(a.user.id))
+        (a) => showAllCalendars || newVisibleCalendars.has(String(a.user?.id))
       );
 
       calendarInstance.current.clear();
       calendarInstance.current.createEvents(
         filteredEvents
-          .filter((a) => a.patient?.first_name != null)
-          .map((a) => ({
+          .filter((a: AppointmentType) => a.patient?.first_name != null)
+          .map((a: any) => ({
             id: String(a.id),
-            calendarId: String(a.user.id),
-            title: `${a.patient.first_name} ${a.patient.last_name} - ${a.service?.name??'-'}`,
+            calendarId: String(a.user?.id),
+            title: `${a.patient?.first_name} ${a.patient?.last_name} - ${a.service?.name ?? "-"}`,
             start: a.start_at,
             end: a.end_at,
             raw: a,
-            backgroundColor: a.user.data?.calendar_color || "#9e5fff",
+            backgroundColor: a.user?.data?.calendar_color ?? "#9e5fff",
             category: "time",
           }))
       );
@@ -248,53 +252,33 @@ const Index = () => {
     closePopup();
 
     // Buscar el appointment completo
-    const appointment = appointments.find((a) => String(a.id) === eventData.id);
+    // const appointment: AppointmentType = appointments.find(
+    const appointment: any = appointments.find(
+      (a) => String(a.id) === eventData.id
+    );
     if (appointment) {
-      // setSelectedEvent(appointment);
-      // setIsEditModalOpen(true);
+      setSelectedEvent(appointment);
+      setOpenEdit(true);
     }
   };
 
-  // const handleUpdateEvent = async () => {
-  // const handleUpdateEvent = async (updatedData: any) => {
-  // try {
-  //   // await Api.updateAppointment({ _token: `${token}`, id: selectedEvent.id, ...updatedData });
-  //   if (calendarInstance.current) {
-  //     calendarInstance.current.updateEvent(selectedEvent.id, "", {
-  //       title: `${updatedData.patient?.first_name ?? selectedEvent.patient.first_name} ${updatedData.patient?.last_name ?? selectedEvent.patient.last_name} - ${updatedData.service?.name ?? selectedEvent.service.name}`,
-  //       start:
-  //         updatedData.start_at ??
-  //         (selectedEvent ? selectedEvent.start_at : ""),
-  //       end:
-  //         updatedData.end_at ?? (selectedEvent ? selectedEvent.end_at : ""),
-  //     });
-  //   }
-  //   setAppointments((prev) =>
-  //     prev.map((a) =>
-  //       a.id === selectedEvent.id ? { ...a, ...updatedData } : a
-  //     )
-  //   );
-  //   // setIsEditModalOpen(false);
-  //   setSelectedEvent(null);
-  //   notify("success", "La cita ha sido actualizada correctamente.");
-  // } catch (error) {
-  //   console.error("Error al actualizar cita:", error);
-  //   notify("error", "No se pudo actualizar la cita. Intenta nuevamente.");
-  // }
-  // };
-
-  // Inicializar calendario
+  const handleGetData = () => {
+    // Refrescar datos y cerrar modal
+    if (token) {
+      fetchAppointments(new Date());
+    }
+  };
   useEffect(() => {
     if (calendarContainerRef.current && !calendarInstance.current) {
       calendarInstance.current = new Calendar(calendarContainerRef.current, {
         defaultView: viewType,
         useFormPopup: false,
         useDetailPopup: false,
-        isReadOnly: false,
+        isReadOnly: true,
         calendars: [],
         gridSelection: {
           enableDblClick: false,
-          enableClick: true,
+          enableClick: false,
         },
         week: {
           showTimezoneCollapseButton: true,
@@ -441,6 +425,14 @@ const Index = () => {
                     key={calendar.id}
                     className="flex items-center space-x-2"
                   >
+                    <span
+                      className="w-3 h-3 rounded-full flex-shrink-0 cursor-pointer"
+                      style={{
+                        backgroundColor: visibleCalendars.has(calendar.id)
+                          ? calendar.backgroundColor
+                          : "#ccc",
+                      }}
+                    />
                     <input
                       type="checkbox"
                       id={`calendar-${calendar.id}`}
@@ -449,11 +441,7 @@ const Index = () => {
                       }
                       onChange={() => handleCalendarToggle(calendar.id)}
                       disabled={showAllCalendars}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span
-                      className="w-3 h-3 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: calendar.backgroundColor }}
+                      className="hidden"
                     />
                     <label
                       htmlFor={`calendar-${calendar.id}`}
@@ -586,27 +574,25 @@ const Index = () => {
       <DetailPopup
         event={event}
         isOpen={isOpen}
-        position={position}
         onClose={closePopup}
         onEdit={handleEditEvent}
         onDelete={handleDeleteEvent}
       />
-      {/* <Modal
+      <Modal
         isOpen={openEdit}
         onClosex={() => {
           setOpenEdit(false);
         }}
-        title="Editar Horario"
+        title="Editar Cita"
       >
-        <SchedulesEdit
-          userId={userId}
-          scheduleId={scheduleId}
+        <AppointmentsEdit
+          event={selectedEvent}
           reload={handleGetData}
           onClosex={() => {
             setOpenEdit(false);
           }}
         />
-      </Modal> */}
+      </Modal>
       <Modal
         isOpen={openCreate}
         onClosex={() => {
@@ -614,9 +600,12 @@ const Index = () => {
         }}
         title="Nueva Cita"
       >
-        <AppointmentsCreate  onClosex={() => {
-          setOpenCreate(false);
-        }} />
+        <AppointmentsCreate
+          reload={handleGetData}
+          onClosex={() => {
+            setOpenCreate(false);
+          }}
+        />
       </Modal>
     </div>
   );

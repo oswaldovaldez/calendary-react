@@ -9,6 +9,7 @@ import {
 import * as Yup from "yup";
 import FormRender from "../../components/FormRender";
 import { type PatientType } from "../../types/index";
+import { RecordsIndex } from "../records";
 
 // export interface PatientType {
 //   first_name: string;
@@ -52,6 +53,7 @@ const FormPatient: React.FC<FormPatientProps> = ({
   onSubmit,
 }) => {
   return (
+    <>
     <Formik
       initialValues={initialValues}
       validationSchema={patientSchema}
@@ -232,7 +234,14 @@ const FormPatient: React.FC<FormPatientProps> = ({
           </div>
         </Form>
       )}
-    </Formik>
+      </Formik>
+      <div className="card">
+        <div className="card-hearder">Registros</div>
+        <div className="card-body">
+          <RecordsIndex patient={initialValues} />
+        </div>
+      </div>
+    </>
   );
 };
 

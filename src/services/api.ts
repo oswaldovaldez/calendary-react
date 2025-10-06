@@ -26,7 +26,7 @@ export async function apiFetch<T = any, B = any>(
 ): Promise<T> {
   const { method = "GET", body, headers = {}, query = {} } = options;
   const params = buildQueryParams(query);
-  const res = await fetch(`${API_URL}${endpoint}${params}`, {
+  const res = await fetch(`${API_URL}${endpoint}${params==="?"?"":params}`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export const Api = {
   //crud registros
   createRecord:(data:{patient_id:number,commerce_id:number,record_template_id:number|null,type:string|null,data:object|null,_token:string})=>apiFetch('/records',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readRecords:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/records`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
-  updateRecord:(data:{patient_id:number,commerce_id:number,record_template_id:number|null,type:string|null,data:object|null,record_id:number,_token: string})=>apiFetch(`/records/${data.record_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  updateRecord:(data:{type:string|null,data:object|null,record_id:number,_token: string})=>apiFetch(`/records/${data.record_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteRecord:(data:{record_id:number,_token: string})=>apiFetch(`/records/${data.record_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showRecord:(data:{record_id:number,_token:string,})=>apiFetch(`/records/${data.record_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
@@ -142,7 +142,7 @@ export const Api = {
   //crud citas
   createAppointment:(data:{start_at:string,end_at:string,status:string|null,commerce_id:number|null,patient_id:number,user_id:number,notes:string|null,name:string|null,description:string|null,_token:string})=>apiFetch('/appointments',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readAppointments:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/appointments`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
-  updateAppointment:(data:{start_at:string,end_at:string,status:string|null,commerce_id:number|null,patient_id:number,schedule_id:number|null,user_id:number,notes:string|null,name:string|null,description:string|null,appointment_id:number,_token: string})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  updateAppointment:(data:{start_at:string,end_at:string,status:string|null,commerce_id:number|null,patient_id:number,user_id:number,notes:string|null,name:string|null,description:string|null,_token:string,appointment_id:number})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteAppointment:(data:{appointment_id:number,_token: string})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showAppointment:(data:{appointment_id:number,_token:string,})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   

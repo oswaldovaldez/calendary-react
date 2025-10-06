@@ -11,7 +11,7 @@ interface FormRenderProps {
 
 const FormRender = React.memo(
   ({ arrayHelpers, data, fields, prefix = "" }: FormRenderProps) => {
-    // console.log(arrayHelpers);
+    // console.log(data);
 
     // console.log("fields", fields, "data", data);
     if ((fields.length ?? 0) === 0) {
@@ -43,7 +43,11 @@ const FormRender = React.memo(
                       ? `data[${element.name ?? ""}]`
                       : `data[${prefix}[${element.name ?? ""}]]`
                   }
-                  defaultValue={data === null ? "" : data[element.name]}
+                  defaultValue={
+                    data === null || data === undefined
+                      ? ""
+                      : data[element.name]
+                  }
                 >
                   {Object.entries(element.options).map(
                     ([key, labelx], index) => (
@@ -66,7 +70,11 @@ const FormRender = React.memo(
                       : `data[${prefix}[${element.name ?? ""}]]`
                   }
                   multiple
-                  defaultValue={data === null ? "" : data[element.name]}
+                  defaultValue={
+                    data === null || data === undefined
+                      ? ""
+                      : data[element.name]
+                  }
                 >
                   {Object.entries(element.options).map(
                     ([key, labelx], index) => (
@@ -98,7 +106,9 @@ const FormRender = React.memo(
                           value={key}
                           className="radio"
                           defaultChecked={
-                            data === null ? false : data[element.name] === key
+                            data === null || data === undefined
+                              ? false
+                              : data[element.name] === key
                           }
                         />
                         <span className="ml-2">{`${labelx}`}</span>
@@ -153,7 +163,11 @@ const FormRender = React.memo(
                       ? `data[${element.name ?? ""}]`
                       : `data[${prefix}[${element.name ?? ""}]]`
                   }
-                  defaultValue={data === null ? "" : (data[element.name] ?? "")}
+                  defaultValue={
+                    data === null || data === undefined
+                      ? ""
+                      : (data[element.name] ?? "")
+                  }
                 />
               </>
             )}
@@ -171,7 +185,11 @@ const FormRender = React.memo(
                       ? `data[${element.name ?? ""}]`
                       : `data[${prefix}[${element.name ?? ""}]]`
                   }
-                  defaultValue={data === null ? "" : (data?.[element.name] ?? "")}
+                  defaultValue={
+                    data === null || data === undefined
+                      ? ""
+                      : (data?.[element.name] ?? "")
+                  }
                 />
               )}
           </div>

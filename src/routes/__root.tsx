@@ -2,9 +2,7 @@ import { Router, Route, RootRoute, Outlet } from "@tanstack/react-router";
 import { Layout } from "../components/Layout.tsx";
 import {
   AppointmentsIndex,
-  AppointmentsCreate,
   AppointmentsShow,
-  AppointmentsEdit,
 } from "../pages/appointments/index.ts";
 import {
   CategoriesIndex,
@@ -30,12 +28,12 @@ import {
   ProductsIndex,
   ProductsShow,
 } from "../pages/products/index.ts";
-import {
-  RecordsCreate,
-  RecordsEdit,
-  RecordsIndex,
-  RecordsShow,
-} from "../pages/records/index.ts";
+// import {
+//   RecordsCreate,
+//   RecordsEdit,
+//   RecordsIndex,
+//   RecordsShow,
+// } from "../pages/records/index.ts";
 // import {
 //   SchedulesCreate,
 //   SchedulesEdit,
@@ -134,15 +132,15 @@ const routeTree = rootRoute.addChildren([
       </RouteGuard>
     ),
   }),
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/appointments/create",
-    component: () => (
-      <RouteGuard permission="appointments.create">
-        <AppointmentsCreate />
-      </RouteGuard>
-    ),
-  }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/appointments/create",
+  //   component: () => (
+  //     <RouteGuard permission="appointments.create">
+  //       <AppointmentsCreate />
+  //     </RouteGuard>
+  //   ),
+  // }),
   new Route({
     getParentRoute: () => rootRoute,
     path: "/appointments/$appointmentId",
@@ -152,15 +150,15 @@ const routeTree = rootRoute.addChildren([
       </RouteGuard>
     ),
   }),
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/appointments/$appointmentId/edit",
-    component: () => (
-      <RouteGuard permission="appointments.edit">
-        <AppointmentsEdit />
-      </RouteGuard>
-    ),
-  }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/appointments/$appointmentId/edit",
+  //   component: () => (
+  //     <RouteGuard permission="appointments.edit">
+  //       <AppointmentsEdit />
+  //     </RouteGuard>
+  //   ),
+  // }),
 
   // Categories
   new Route({
@@ -315,42 +313,42 @@ const routeTree = rootRoute.addChildren([
   }),
 
   // Records
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/records",
-    component: () => (
-      <RouteGuard permission="records.view">
-        <RecordsIndex />
-      </RouteGuard>
-    ),
-  }),
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/records/create",
-    component: () => (
-      <RouteGuard permission="records.create">
-        <RecordsCreate />
-      </RouteGuard>
-    ),
-  }),
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/records/$recordId",
-    component: () => (
-      <RouteGuard permission="records.view">
-        <RecordsShow />
-      </RouteGuard>
-    ),
-  }),
-  new Route({
-    getParentRoute: () => rootRoute,
-    path: "/records/$recordId/edit",
-    component: () => (
-      <RouteGuard permission="records.edit">
-        <RecordsEdit />
-      </RouteGuard>
-    ),
-  }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/records",
+  //   component: () => (
+  //     <RouteGuard permission="records.view">
+  //       <RecordsIndex />
+  //     </RouteGuard>
+  //   ),
+  // }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/records/create",
+  //   component: () => (
+  //     <RouteGuard permission="records.create">
+  //       <RecordsCreate />
+  //     </RouteGuard>
+  //   ),
+  // }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/records/$recordId",
+  //   component: () => (
+  //     <RouteGuard permission="records.view">
+  //       <RecordsShow />
+  //     </RouteGuard>
+  //   ),
+  // }),
+  // new Route({
+  //   getParentRoute: () => rootRoute,
+  //   path: "/records/$recordId/edit",
+  //   component: () => (
+  //     <RouteGuard permission="records.edit">
+  //       <RecordsEdit />
+  //     </RouteGuard>
+  //   ),
+  // }),
 
   // Records Template
   new Route({

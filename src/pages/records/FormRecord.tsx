@@ -1,12 +1,13 @@
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import type { FormikHelpers } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import FormRender from "../../components/FormRender";
+import { RECORD_TYPES } from "../../types";
 
 export interface RecordFormValues {
   patient_id: number;
   commerce_id: number;
-  record_template_id: number | null;
+  record_template_id?: number | null;
   type: string | null;
   data: Record<string, any>;
   record_templates: {
@@ -19,7 +20,7 @@ export interface RecordFormValues {
   }[];
 }
 
-export const recordSchema = Yup.object({
+/*export const recordSchema = Yup.object({
   patient_id: Yup.number().required("El ID del paciente es obligatorio"),
   commerce_id: Yup.number().required("El ID del comercio es obligatorio"),
   record_template_id: Yup.number().nullable(),
@@ -34,7 +35,7 @@ export const recordSchema = Yup.object({
       }
     })
     .required("La data es obligatoria"),
-});
+});*/
 
 interface FormRecordProps {
   initialValues: RecordFormValues;
@@ -52,90 +53,52 @@ const FormRecord: React.FC<FormRecordProps> = ({
 }) => {
   return (
     <div>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={recordSchema}
-        onSubmit={onSubmit}
-      >
+      <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ errors, touched, isSubmitting }) => (
           <Form className="form-container">
             <div className="card neumo">
               <div className="card-body">
-                {/* ID de Paciente */}
-                <div className="form-group">
-                  <label htmlFor="patient_id" className="form-label">
-                    ID de Paciente
-                  </label>
-                  <Field
-                    className={`input input-sm ${
-                      errors.patient_id && touched.patient_id
-                        ? "input-invalid"
-                        : ""
-                    }`}
-                    type="number"
-                    name="patient_id"
-                  />
-                  <ErrorMessage
-                    name="patient_id"
-                    component="div"
-                    className="form-text-invalid"
-                  />
-                </div>
-
-                {/* ID de Comercio */}
-                <div className="form-group">
-                  <label htmlFor="commerce_id" className="form-label">
-                    ID de Comercio
-                  </label>
-                  <Field
-                    className={`input input-sm ${
-                      errors.commerce_id && touched.commerce_id
-                        ? "input-invalid"
-                        : ""
-                    }`}
-                    type="number"
-                    name="commerce_id"
-                  />
-                  <ErrorMessage
-                    name="commerce_id"
-                    component="div"
-                    className="form-text-invalid"
-                  />
-                </div>
-
-                {/* ID de Plantilla */}
-                <div className="form-group">
-                  <label htmlFor="record_template_id" className="form-label">
-                    ID de Plantilla (opcional)
-                  </label>
-                  <Field
-                    className={`input input-sm ${
-                      errors.record_template_id && touched.record_template_id
-                        ? "input-invalid"
-                        : ""
-                    }`}
-                    type="number"
-                    name="record_template_id"
-                  />
-                  <ErrorMessage
-                    name="record_template_id"
-                    component="div"
-                    className="form-text-invalid"
-                  />
-                </div>
-
                 {/* Tipo */}
                 <div className="form-group">
                   <label htmlFor="type" className="form-label">
                     Tipo (opcional)
                   </label>
-                  <Field
-                    className={`input input-sm ${
-                      errors.type && touched.type ? "input-invalid" : ""
-                    }`}
-                    type="text"
-                    name="type"
-                  />
+                  <Field name="type">
+                    {({ field, form }: any) => (
+                      <>
+                        <input
+                          type="text"
+                          {...field}
+                          list="types"
+                          className={`input ${
+                            errors.patient_id && touched.patient_id
+                              ? "input-invalid"
+                              : ""
+                          }`}
+                          style={{
+                            textTransform: "uppercase",
+                          }}
+                          placeholder="Seleccionar un tipo"
+                          onChange={(e: any) =>
+                            form.setFieldValue(
+                              field.name,
+                              e.target.value.toUpperCase()
+                            )
+                          }
+                        />
+                        <datalist id="types">
+                          {RECORD_TYPES?.map((t: any) => (
+                            <option
+                              key={`type-option-${t.value}`}
+                              value={`${t.value}`}
+                            >
+                              {t.label}
+                            </option>
+                          ))}
+                        </datalist>
+                      </>
+                    )}
+                  </Field>
                   <ErrorMessage
                     name="type"
                     component="div"
@@ -175,7 +138,7 @@ const FormRecord: React.FC<FormRecordProps> = ({
               type="submit"
               disabled={isSubmitting}
             >
-              {isEdit ? "Editar Record" : "Registrar Record"}
+              {isEdit ? "Editar Registro" : "Añadir Registro"}
             </button>
           </Form>
         )}

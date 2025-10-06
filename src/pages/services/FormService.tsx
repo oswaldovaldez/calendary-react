@@ -44,16 +44,12 @@ export const serviceSchema = Yup.object().shape({
     .positive("La duración debe ser mayor que 0")
     .required("La duración es obligatoria"),
   duration_type: Yup.string()
-    .oneOf(["minutes", "hours"], "Debe ser Minutos u Horas")
+    .oneOf(["minutes"], "Debe ser Minutos")
     .required("El tipo de duración es obligatorio"),
   price: Yup.number()
     .typeError("El precio debe ser un número")
     .positive("El precio debe ser mayor que 0")
     .required("El precio es obligatorio"),
-  price_offer: Yup.number()
-    .typeError("El precio de oferta debe ser un número")
-    .positive("El precio de oferta debe ser mayor que 0")
-    .max(Yup.ref("price"), "Debe ser menor o igual al precio"),
   session_number: Yup.number()
     .min(1, "El número de sesiones debe ser al menos 1")
     .required("El número de sesiones es obligatorio"),

@@ -1,11 +1,12 @@
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
-import { useNavigate } from "@tanstack/react-router";
+import { useNotificationStore } from "../../store/notification.store";
+
 import FormRecord, { type RecordFormValues } from "./FormRecord";
 
-const CreateRecord = () => {
+const CreateRecord = ({ template, onClosex }: any) => {
   const token = useAuthStore((s) => s.token);
-  const navigate = useNavigate();
+  const notify = useNotificationStore((state) => state.notify);
 
   const initialValues: RecordFormValues = {
     patient_id: 0,
@@ -13,11 +14,11 @@ const CreateRecord = () => {
     record_template_id: null,
     type: null,
     data: {},
-    record_templates: [{ fields: [] }],
+    record_templates: [template],
   };
 
   const handleSubmit = async (values: RecordFormValues) => {
-    await Api.createRecord({
+    Api.createRecord({
       patient_id: Number(values.patient_id),
       commerce_id: Number(values.commerce_id),
       record_template_id: values.record_template_id
@@ -26,9 +27,17 @@ const CreateRecord = () => {
       type: values.type || null,
       data: values.data,
       _token: `${token}`,
-    });
-    alert("Record creado con éxito");
-    navigate({ to: "/records" });
+    })
+      .then((res) => {
+        onClosex(false);
+        setTimeout(() => {
+          
+          notify("success", res.message);
+        }, 100);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return <FormRecord initialValues={initialValues} onSubmit={handleSubmit} />;

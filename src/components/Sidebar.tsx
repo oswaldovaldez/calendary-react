@@ -2,18 +2,18 @@ import { Link } from "@tanstack/react-router";
 import { useSidebarStore } from "../store/sidebar.store";
 import { CommerceSelector } from "./CommerceSelector";
 import { IoMdClose } from "react-icons/io";
+import { CalendarDays, ChartBarStacked, LayoutDashboard, LayoutTemplate, Package, ShieldUser, Store, Truck, User } from "lucide-react";
 
 const links = [
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/appointments", label: "Citas" },
-  { to: "/categories", label: "Categorías" },
-  { to: "/commerces", label: "Comercios" },
-  { to: "/patients", label: "Pacientes" },
-  { to: "/products", label: "Productos" },
-  { to: "/records", label: "Registros" },
-  { to: "/services", label: "Servicios" },
-  { to: "/users", label: "Usuarios" },
-  { to: "/templates", label: "Plantillas" },
+  { icon: <LayoutDashboard />, to: "/dashboard", label: "Dashboard" },
+  { icon: <CalendarDays />, to: "/appointments", label: "Citas" },
+  { icon: <ChartBarStacked />, to: "/categories", label: "Categorías" },
+  { icon: <Store />, to: "/commerces", label: "Comercios" },
+  { icon: <User />, to: "/patients", label: "Pacientes" },
+  { icon: <Package />, to: "/products", label: "Productos" },
+  { icon: <Truck />, to: "/services", label: "Servicios" },
+  { icon: <ShieldUser />, to: "/users", label: "Usuarios" },
+  { icon: <LayoutTemplate />, to: "/templates", label: "Plantillas" },
 ];
 
 export function Sidebar() {
@@ -66,6 +66,7 @@ export function Sidebar() {
               className="px-3 py-2 rounded-lx transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg hover:text-white"
               activeProps={{ className: "sidebar-active" }}
             >
+              <span className="inline-block mr-2 align-middle">{l.icon}</span>
               {l.label}
             </Link>
           ))}

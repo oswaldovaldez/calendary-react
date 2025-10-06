@@ -17,7 +17,7 @@ const ShowCommerce = () => {
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(0);
   const [users, setUsers] = useState<Array<UserType>>([]);
-  let isMounted = true;
+  const [isMounted, setIsMounted] = useState(true);
   const fetchCommerce = async () => {
     setIsLoading(true);
     try {
@@ -25,8 +25,8 @@ const ShowCommerce = () => {
         _token: `${token}`,
         commerce_id: Number(commerceId),
       });
-      if (!isMounted) return;
 
+      if (!isMounted) return;
       setCommerce(response as CommerceType);
       setError(null);
     } catch (err) {
@@ -79,7 +79,7 @@ const ShowCommerce = () => {
     fetchCommerce();
     fetchUsers();
     return () => {
-      isMounted = false;
+      setIsMounted(false);
     };
   }, [commerceId, token]);
 
@@ -136,30 +136,6 @@ const ShowCommerce = () => {
               "Sin imagen"
             )}
           </div>
-          {/* <div>
-          <span className="font-semibold">Tienda Creada:</span>{" "}
-          {commerce.created_at
-            ? new Date(commerce.created_at).toLocaleString("es-MX", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })
-            : "-"}
-        </div>
-        <div>
-          <span className="font-semibold">Última actualización:</span>{" "}
-          {commerce.updated_at
-            ? new Date(commerce.updated_at).toLocaleString("es-MX", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })
-            : "-"}
-        </div> */}
-          {/* <div className="md:col-span-2">
-          <span className="font-semibold">Detalles:</span>{" "}
-          {commerce.data && commerce.data.length > 0
-            ? JSON.stringify(commerce.data)
-            : "Sin datos"}
-        </div> */}
         </div>
       </div>
       {commerce.data !== null && (
