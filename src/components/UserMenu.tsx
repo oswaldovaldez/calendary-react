@@ -1,17 +1,16 @@
 import { ShieldUser } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { FaCog, FaUser, FaSun, FaMoon } from "react-icons/fa";
+import { FaCog, FaUser, FaSun } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
+import { useAuthStore } from "../store/auth.store";
 
 interface UserMenuProps {
-	username?: string;
 	onProfile?: () => void;
 	onSettings?: () => void;
 	onLogout?: () => void;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
-	username = "Administrador",
 	onProfile,
 	onSettings,
 	onLogout,
@@ -19,6 +18,22 @@ const UserMenu: React.FC<UserMenuProps> = ({
 	const [open, setOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const [isDark, setIsDark] = useState(false);
+
+	const user = useAuthStore((state) => state.user);
+	const clearAuth = useAuthStore((state) => state.clearAuth);
+
+	//
+	const getShortName = (fullName: string): string => {
+		if (!fullName) return "Administrador";
+		const parts = fullName.trim().split(" ");
+		if (parts.length === 1) return parts[0]; // solo un nombre
+		return `${parts[0]} ${parts[1]}`; // primer nombre y primer apellido
+	};
+
+	const username = getShortName(
+		user?.name || user?.userName || "Administrador"
+	);
+	const userEmail = user?.email || "usuario@correo.com";
 
 	// Detectar modo actual según la clase en <html>
 	useEffect(() => {
@@ -58,18 +73,37 @@ const UserMenu: React.FC<UserMenuProps> = ({
 		}
 	};
 
+	const handleLogout = () => {
+		clearAuth();
+		onLogout?.();
+		setOpen(false);
+	};
+
 	return (
 		<div className="relative inline-block text-left" ref={dropdownRef}>
 			{/* Botón principal */}
+			{/* Botón principal */}
 			<button
-				className="flex items-center gap-2 px-3 py-2 rounded-md transition duration-200"
+				className="flex items-center gap-2 px-3 py-2 rounded-md transition duration-200 cursor-pointer select-none"
 				style={{
 					color: "var(--color-text-primary)",
 					backgroundColor: "transparent",
+					transition: "background-color 0.2s ease, opacity 0.2s ease",
 				}}
 				onClick={() => setOpen(!open)}
+				onMouseEnter={(e) =>
+					(e.currentTarget.style.backgroundColor =
+						"color-mix(in srgb, var(--color-text-secondary) 15%, transparent)")
+				}
+				onMouseLeave={(e) =>
+					(e.currentTarget.style.backgroundColor = "transparent")
+				}
 			>
-				<ShieldUser style={{ color: "var(--color-text-secondary)" }} />
+				<ShieldUser
+					style={{
+						color: "var(--color-text-secondary)",
+					}}
+				/>
 				<span className="hidden md:inline font-medium">{username}</span>
 			</button>
 
@@ -87,16 +121,16 @@ const UserMenu: React.FC<UserMenuProps> = ({
 					{/* Header */}
 					<div className="px-4 pb-2">
 						<h3
-							className="text-base font-semibold"
+							className="text-base font-semibold truncate"
 							style={{ color: "var(--color-text-primary)" }}
 						>
-							{username || "Administrador"}
+							{username}
 						</h3>
 						<p
 							className="text-xs truncate"
 							style={{ color: "var(--color-text-secondary)" }}
 						>
-							usuario@correo.com
+							{userEmail}
 						</p>
 					</div>
 
@@ -220,10 +254,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
 					{/* LOGOUT */}
 					<button
-						onClick={() => {
-							onLogout?.();
-							setOpen(false);
-						}}
+						onClick={handleLogout}
 						className="w-[90%] mx-auto flex items-center justify-center gap-2 py-2 rounded-lg font-medium transition"
 						style={{
 							color: "var(--color-alert-error-dark)",
