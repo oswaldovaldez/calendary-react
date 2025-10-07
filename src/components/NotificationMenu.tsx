@@ -12,18 +12,9 @@ export interface Notification {
   read?: boolean;
 }
 
-interface NotificationMenuProps {
-  notifications?: Notification[];
-  onNotificationClick?: (notification: Notification) => void;
-  onClearAll?: () => void;
-  onViewAll?: () => void;
-}
 
-const NotificationMenu: React.FC<NotificationMenuProps> = ({
-  onNotificationClick,
-  onClearAll,
-  onViewAll,
-}) => {
+
+const NotificationMenu = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isDark, setIsDark] = useState(false);
@@ -123,7 +114,7 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
             {notifications.length > 0 && (
               <button
                 onClick={() => {
-                  onClearAll?.();
+                  
                   setOpen(false);
                 }}
                 className="transition text-sm"
@@ -159,11 +150,11 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
                 Sin notificaciones
               </p>
             ) : (
-              notifications.map((n, idx) => (
+              notifications.map((n:any, idx:number) => (
                 <button
-                  key={n.id}
+                  key={`${n.id}-${idx}`}
                   onClick={() => {
-                    onNotificationClick?.(n);
+                    
                     setOpen(false);
                   }}
                   className={`w-full text-left px-4 py-3 flex flex-col border-b transition`}
@@ -207,7 +198,7 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
             <div
               className="text-center py-2 mt-1 border-t text-sm font-medium cursor-pointer"
               onClick={() => {
-                onViewAll?.();
+                
                 setOpen(false);
               }}
               style={{

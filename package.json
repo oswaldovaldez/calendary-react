@@ -17,6 +17,7 @@
     "@tanstack/react-virtual": "^3.13.12",
     "@toast-ui/calendar": "^2.1.3",
     "@toast-ui/react-calendar": "^2.1.3",
+    "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",

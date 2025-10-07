@@ -1,6 +1,6 @@
 // Layout.tsx
 import { Sidebar } from "./Sidebar";
-import ThemeSwitch from "./ThemeSwitch";
+//import ThemeSwitch from "./ThemeSwitch";
 import { useLocation } from "@tanstack/react-router";
 import { useSidebarStore } from "../store/sidebar.store";
 import { TiThMenu } from "react-icons/ti";
@@ -9,8 +9,8 @@ import { Api } from "../services/api";
 import { useAuthStore } from "../store/auth.store";
 import { router } from "../routes/__root";
 import UserMenu from "./UserMenu";
-import NotificationMenu, { type Notification } from "./NotificationMenu";
-import { useState } from "react";
+import NotificationMenu from "./NotificationMenu";
+//import { useState } from "react";
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const token = useAuthStore((s) => s.token);
@@ -67,15 +67,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 onLogout={logout}
               />
               <NotificationMenu
-                
-                onNotificationClick={(n) => {
-                  setNotifications((prev) =>
-                    prev.map((item) =>
-                      item.id === n.id ? { ...item, read: true } : item
-                    )
-                  );
-                }}
-                onClearAll={() => setNotifications([])}
+               
               />
               {/* <ThemeSwitch /> */}
               {/* <button onClick={logout} className="ml-2 btn neumo btn-danger">
