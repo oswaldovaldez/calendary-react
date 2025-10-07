@@ -13,18 +13,35 @@ interface NotificationMenuProps {
   notifications?: Notification[];
   onNotificationClick?: (notification: Notification) => void;
   onClearAll?: () => void;
+  onViewAll?: () => void;
 }
 
 const NotificationMenu: React.FC<NotificationMenuProps> = ({
   notifications = [],
   onNotificationClick,
   onClearAll,
+  onViewAll,
 }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isDark, setIsDark] = useState(false);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
+  // Detectar el tema actual (oscuro o claro)
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    setIsDark(document.documentElement.classList.contains("dark"));
+    return () => observer.disconnect();
+  }, []);
+
+  // Cerrar el menú al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -39,37 +56,78 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
   }, []);
 
   return (
-    <div className="relative inline-block text-left mr-2" ref={dropdownRef}>
+    <div className="relative inline-block text-left mr-3" ref={dropdownRef}>
+      {/* Botón de campana */}
       <button
         onClick={() => setOpen(!open)}
-        className="relative flex items-center justify-center px-3 py-2 
-                   rounded-md hover:bg-gray-700 transition duration-200 bg-gray-800 text-white border border-gray-700"
+        className="relative flex items-center justify-center px-3 py-2 rounded-md border transition duration-200"
+        style={{
+          backgroundColor: isDark
+            ? "var(--color-surface-dark)"
+            : "var(--color-surface-light)",
+          borderColor:
+            "color-mix(in srgb, var(--color-text-secondary) 30%, transparent)",
+          color: "var(--color-text-primary)",
+          cursor: "pointer",
+        }}
       >
         <FaBell className="text-lg" />
         {unreadCount > 0 && (
           <span
-            className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold 
-                           px-1.5 py-0.5 rounded-full"
+            className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full"
+            style={{
+              boxShadow: "0 0 4px rgba(0,0,0,0.3)",
+            }}
           >
             {unreadCount}
           </span>
         )}
       </button>
 
+      {/* Dropdown */}
       {open && (
         <div
-          className="absolute right-0 mt-2 w-80 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50 
-                     py-2 animate-fade-in text-sm"
+          className="absolute right-0 mt-2 w-80 rounded-xl shadow-lg z-50 py-2 animate-fade-in text-sm"
+          style={{
+            backgroundColor: "var(--color-surface)",
+            border:
+              "1px solid color-mix(in srgb, var(--color-text-secondary) 25%, transparent)",
+            color: "var(--color-text-primary)",
+            backdropFilter: "blur(10px)",
+            boxShadow: "0 6px 25px rgba(0,0,0,0.15)",
+          }}
         >
-          <div className="flex justify-between items-center px-3 py-2 border-b border-gray-700">
-            <span className="font-semibold text-gray-200">Notificaciones</span>
+          {/* Header */}
+          <div
+            className="flex justify-between items-center px-3 py-2"
+            style={{
+              borderBottom:
+                "1px solid color-mix(in srgb, var(--color-text-secondary) 25%, transparent)",
+            }}
+          >
+            <span className="font-semibold">Notificaciones</span>
             {notifications.length > 0 && (
               <button
                 onClick={() => {
                   onClearAll?.();
                   setOpen(false);
                 }}
-                className="text-gray-400 hover:text-red-400 transition"
+                className="transition text-sm"
+                style={{
+                  color: "var(--color-text-secondary)",
+                  transition: "color 0.2s ease, background-color 0.2s ease",
+                  borderRadius: "6px",
+                  padding: "4px 6px",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--color-alert-error-dark)";
+                  e.currentTarget.style.backgroundColor =
+                    "color-mix(in srgb, var(--color-text-secondary) 15%, transparent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--color-text-secondary)";
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }}
                 title="Borrar todas"
               >
                 <FaTrashAlt />
@@ -77,9 +135,13 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
             )}
           </div>
 
+          {/* Lista de notificaciones */}
           <div className="max-h-64 overflow-y-auto custom-scroll">
             {notifications.length === 0 ? (
-              <p className="text-gray-400 text-center py-6">
+              <p
+                className="text-center py-6"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
                 Sin notificaciones
               </p>
             ) : (
@@ -90,13 +152,34 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
                     onNotificationClick?.(n);
                     setOpen(false);
                   }}
-                  className={`w-full text-left px-4 py-3 flex flex-col border-b border-gray-800 hover:bg-gray-800 
-                              transition ${n.read ? "text-gray-400" : "text-gray-200"}`}
+                  className={`w-full text-left px-4 py-3 flex flex-col border-b transition`}
+                  style={{
+                    borderColor:
+                      "color-mix(in srgb, var(--color-text-secondary) 15%, transparent)",
+                    color: n.read
+                      ? "var(--color-text-secondary)"
+                      : "var(--color-text-primary)",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor =
+                      "color-mix(in srgb, var(--color-primary) 15%, transparent)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "transparent")
+                  }
                 >
                   <span className="font-medium">{n.title}</span>
-                  <span className="text-xs text-gray-500">{n.message}</span>
+                  <span
+                    className="text-xs"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
+                    {n.message}
+                  </span>
                   {n.time && (
-                    <span className="text-[10px] text-gray-500 mt-1">
+                    <span
+                      className="text-[10px] mt-1"
+                      style={{ color: "var(--color-text-secondary)" }}
+                    >
                       {n.time}
                     </span>
                   )}
@@ -104,6 +187,32 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
               ))
             )}
           </div>
+
+          {/* Ver todas */}
+          {notifications.length > 0 && (
+            <div
+              className="text-center py-2 mt-1 border-t text-sm font-medium cursor-pointer"
+              onClick={() => {
+                onViewAll?.();
+                setOpen(false);
+              }}
+              style={{
+                borderColor:
+                  "color-mix(in srgb, var(--color-text-secondary) 25%, transparent)",
+                color: "var(--color-primary)",
+                transition: "color 0.2s ease",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color =
+                  "color-mix(in srgb, var(--color-primary) 70%, white)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--color-primary)")
+              }
+            >
+              Ver todas las notificaciones
+            </div>
+          )}
         </div>
       )}
     </div>
