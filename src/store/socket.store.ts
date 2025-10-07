@@ -26,9 +26,10 @@ export const useSocketStore = create<SocketState>()(
 
     connectSocket: (userId: number) => {
       if (get().socket) return;
-
-      const socket = io(import.meta.env.VITE_SOCKET_URL || "http://168.231.69.210:3131", {
-        transports: ["websocket"],
+//
+      const socket = io("https://socket.srv899715.hstgr.cloud", {
+         transports: ["websocket", "polling"],
+         reconnection: true,
       });
 
       socket.on("connect", () => {
