@@ -1,16 +1,17 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useParams, useNavigate } from "@tanstack/react-router";
 import FormService, { type ServiceFormValues } from "./FormService";
 import toast from "react-hot-toast";
+import { useNotificationStore } from "../../store/notification.store";
 
 const EditService = () => {
   const token = useAuthStore((s) => s.token);
   const commerce = useAuthStore((s) => s.commerce);
   const navigate = useNavigate();
   const { serviceId } = useParams({ from: "/services/$serviceId/edit" });
-
+  const notify = useNotificationStore((state) => state.notify);
   const currentCommerceId = commerce?.id ?? 0;
 
   const [formData, setFormData] = useState<ServiceFormValues>({
@@ -39,39 +40,34 @@ const EditService = () => {
   };
 
   const handleSubmit = async (values: ServiceFormValues) => {
-    try {
-      const payload = {
-        name: values.name.trim(),
-        description: values.description,
-        commerce_id: currentCommerceId,
-        category_id: Number(values.category_id),
-        duration: Number(values.duration),
-        duration_type: values.duration_type,
-        price: values.price,
-        price_offer: values.price_offer,
-        session_number: Number(values.session_number),
-        sessions: Boolean(values.sessions),
-        home_service: Boolean(values.home_service),
-        start_offer_at: values.start_offer_at ? values.start_offer_at : null,
-        end_offer_at: values.end_offer_at ? values.end_offer_at : null,
-        options: values.options,
-        service_id: Number(serviceId),
-        _token: `${token}`,
-      };
+    const payload = {
+      name: values.name.trim(),
+      description: values.description,
+      commerce_id: currentCommerceId,
+      category_id: Number(values.category_id),
+      duration: Number(values.duration),
+      duration_type: values.duration_type,
+      price: values.price,
+      price_offer: values.price_offer,
+      session_number: Number(values.session_number),
+      sessions: Boolean(values.sessions),
+      home_service: Boolean(values.home_service),
+      start_offer_at: values.start_offer_at ? values.start_offer_at : null,
+      end_offer_at: values.end_offer_at ? values.end_offer_at : null,
+      options: values.options,
+      service_id: Number(serviceId),
+      _token: `${token}`,
+    };
 
-      await Api.updateService(payload);
-
-      toast.success("Servicio actualizado con éxito", {
-        duration: 4000,
+    Api.updateService(payload)
+      .then((res) => {
+        notify("success", res.message || "Servicio actualizado con éxito");
+        navigate({ to: "/services" });
+      })
+      .catch((error) => {
+        console.error("Error al actualizar servicio", error);
+        notify("error", error.message || "Error al actualizar servicio");
       });
-
-      navigate({ to: "/services" });
-    } catch (error: any) {
-      console.error("Error al actualizar servicio", error);
-      toast.error(error.message || "Error al actualizar servicio", {
-        duration: 5000,
-      });
-    }
   };
 
   useEffect(() => {

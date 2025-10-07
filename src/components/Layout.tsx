@@ -17,22 +17,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const user = useAuthStore((s) => s.user);
   const clearAuth = useAuthStore((s) => s.clearAuth);
   const isNotRootPath = location.pathname !== "/";
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: 1,
-      title: "Nuevo pedido",
-      message: "Orden #1245 confirmada",
-      time: "Hace 2 min",
-      read: false,
-    },
-    {
-      id: 2,
-      title: "Mensaje recibido",
-      message: "Cliente: ¿Cuánto tarda el envío?",
-      time: "Hace 10 min",
-      read: true,
-    },
-  ]);
+  // const [notifications, setNotifications] = useState<Notification[]>([
+  //   {
+  //     id: 1,
+  //     title: "Nuevo pedido",
+  //     message: "Orden #1245 confirmada",
+  //     time: "Hace 2 min",
+  //     read: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Mensaje recibido",
+  //     message: "Cliente: ¿Cuánto tarda el envío?",
+  //     time: "Hace 10 min",
+  //     read: true,
+  //   },
+  // ]);
 
   const { toggle, isOpen } = useSidebarStore();
 
@@ -62,13 +62,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </button>
             <div>
               <UserMenu
-                username="oz"
                 onProfile={() => console.log("Perfil")}
                 onSettings={() => console.log("Configuración")}
                 onLogout={logout}
               />
               <NotificationMenu
-                notifications={notifications}
+                
                 onNotificationClick={(n) => {
                   setNotifications((prev) =>
                     prev.map((item) =>
@@ -78,7 +77,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 }}
                 onClearAll={() => setNotifications([])}
               />
-              <ThemeSwitch />
+              {/* <ThemeSwitch /> */}
               {/* <button onClick={logout} className="ml-2 btn neumo btn-danger">
                 <AiOutlineLogout />
               </button> */}

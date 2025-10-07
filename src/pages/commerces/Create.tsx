@@ -3,28 +3,24 @@ import FormCommerce from "./FormCommerce";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate } from "@tanstack/react-router";
-import toast from "react-hot-toast";
+import { useNotificationStore } from "../../store/notification.store";
 
 const CreateCommerce = () => {
   const token = useAuthStore((s) => s.token);
   const navigate = useNavigate();
-
+  const notify = useNotificationStore((state) => state.notify);
   const handleSubmit = async (values: any) => {
-    try {
-      await Api.createCommerce({
-        ...values,
-        _token: `${token}`,
+    Api.createCommerce({
+      ...values,
+      _token: `${token}`,
+    })
+      .then((res) => {
+        notify("success", res.message);
+        navigate({ to: "/commerces" });
+      })
+      .catch((error: any) => {
+        console.error(error);
       });
-
-      toast.success("Comercio creado con éxito", { duration: 4000 });
-      navigate({ to: "/commerces" });
-    } catch (error: any) {
-      console.error("Error al crear comercio:", error);
-
-      toast.error(error.message || "Error al crear comercio", {
-        duration: 5000,
-      });
-    }
   };
 
   return <FormCommerce initialValues={{}} onSubmit={handleSubmit} />;

@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { FaBell, FaTrashAlt } from "react-icons/fa";
+import { useSocketStore } from "../store/socket.store";
+import { useAuthStore } from "../store/auth.store";
+import { timeAgo } from "../utils/timeAgo";
 
 export interface Notification {
   id: string | number;
@@ -17,7 +20,6 @@ interface NotificationMenuProps {
 }
 
 const NotificationMenu: React.FC<NotificationMenuProps> = ({
-  notifications = [],
   onNotificationClick,
   onClearAll,
   onViewAll,
@@ -25,9 +27,21 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isDark, setIsDark] = useState(false);
+  const { connectSocket, disconnectSocket, notifications } = useSocketStore();
+  const { user } = useAuthStore(); // Ejemplo: user = { id, name, ... }
 
   const unreadCount = notifications.filter((n) => !n.read).length;
+  console.log(notifications);
+  // const unreadCount = 100;
+  useEffect(() => {
+    if (user?.id) {
+      connectSocket(user.id);
+    }
 
+    return () => {
+      disconnectSocket();
+    };
+  }, [user]);
   // Detectar el tema actual (oscuro o claro)
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -145,7 +159,7 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
                 Sin notificaciones
               </p>
             ) : (
-              notifications.map((n) => (
+              notifications.map((n, idx) => (
                 <button
                   key={n.id}
                   onClick={() => {
@@ -175,12 +189,12 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
                   >
                     {n.message}
                   </span>
-                  {n.time && (
+                  {n.date && (
                     <span
                       className="text-[10px] mt-1"
                       style={{ color: "var(--color-text-secondary)" }}
                     >
-                      {n.time}
+                      {timeAgo(n.date)}
                     </span>
                   )}
                 </button>

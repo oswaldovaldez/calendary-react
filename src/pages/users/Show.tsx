@@ -14,6 +14,7 @@ const ShowUser = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [permissions, setPermissions] = useState([]);
+  const [isMounted, setIsMounted] = useState(true);
   const onSubmit = (values: any) => {
     // console.log("submit");
     // console.log(values);
@@ -33,7 +34,6 @@ const ShowUser = () => {
       return;
     }
 
-    let isMounted = true;
     const handleGetPerssions = async () => {
       Api.getPermissions({ _token: `${token}` })
         .then((res) => {
@@ -67,7 +67,7 @@ const ShowUser = () => {
     fetchUser();
 
     return () => {
-      isMounted = false;
+      setIsMounted(false);
     };
   }, [userId, token]);
 

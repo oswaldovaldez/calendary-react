@@ -2,13 +2,13 @@ import FormCategory, { type CategoryFormValues } from "./FormCategory";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate } from "@tanstack/react-router";
-import toast from "react-hot-toast";
+import { useNotificationStore } from "../../store/notification.store";
 
 const CreateCategory = () => {
   const token = useAuthStore((s) => s.token);
   const commerce = useAuthStore((s) => s.commerce);
   const navigate = useNavigate();
-
+  const notify = useNotificationStore((state) => state.notify);
   const currentCommerceId = commerce?.id ?? 0;
 
   const initialValues: CategoryFormValues = {
@@ -19,30 +19,26 @@ const CreateCategory = () => {
   };
 
   const handleSubmit = async (values: CategoryFormValues) => {
-    try {
-      const payload: CategoryFormValues = {
-        ...values,
-        name: values.name.trim().toUpperCase(),
-        parent_id: null,
-        commerce_id: currentCommerceId,
-      };
+    const payload: CategoryFormValues = {
+      ...values,
+      name: values.name.trim().toUpperCase(),
+      parent_id: null,
+      commerce_id: currentCommerceId,
+    };
 
-      await Api.createCategory({
-        ...payload,
-        _token: `${token}`,
-      });
+    Api.createCategory({
+      ...payload,
+      _token: `${token}`,
+    })
+      .then((res) => {
+        notify("success", res.message);
 
-      toast.success("Categoría creada con éxito", {
-        duration: 4000,
-      });
+        navigate({ to: "/categories" });
+      })
 
-      navigate({ to: "/categories" });
-    } catch (error: any) {
-      console.error(error);
-      toast.error(error.message || "Error al crear categoría", {
-        duration: 5000,
+      .catch((error: any) => {
+        console.error(error);
       });
-    }
   };
 
   return <FormCategory initialValues={initialValues} onSubmit={handleSubmit} />;

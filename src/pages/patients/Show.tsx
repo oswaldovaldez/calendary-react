@@ -41,7 +41,7 @@ const ShowPatient = () => {
   const [patient, setPatient] = useState<PatientType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+const [isMounted, setIsMounted] = useState(true);
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
@@ -49,7 +49,7 @@ const ShowPatient = () => {
       return;
     }
 
-    let isMounted = true;
+    
 
     const fetchPatient = async () => {
       setIsLoading(true);
@@ -76,7 +76,7 @@ const ShowPatient = () => {
     fetchPatient();
 
     return () => {
-      isMounted = false;
+      setIsMounted(false);
     };
   }, [patientId, token]);
 

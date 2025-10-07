@@ -12,7 +12,7 @@ const ShowCategory = () => {
   const [category, setCategory] = useState<CategoryType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+const [isMounted, setIsMounted] = useState(true);
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
@@ -20,7 +20,7 @@ const ShowCategory = () => {
       return;
     }
 
-    let isMounted = true;
+    
 
     const fetchCategory = async () => {
       setIsLoading(true);
@@ -47,7 +47,7 @@ const ShowCategory = () => {
     fetchCategory();
 
     return () => {
-      isMounted = false;
+      setIsMounted(false);
     };
   }, [categoryId, token]);
 

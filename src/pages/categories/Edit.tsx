@@ -4,6 +4,7 @@ import { Api } from "../../services/api";
 import { useParams, useNavigate } from "@tanstack/react-router";
 import FormCategory, { type CategoryFormValues } from "./FormCategory";
 import toast from "react-hot-toast";
+import { useNotificationStore } from "../../store/notification.store";
 
 const EditCategory = () => {
   const token = useAuthStore((s) => s.token);
@@ -12,7 +13,7 @@ const EditCategory = () => {
   const { categoryId } = useParams({ from: "/categories/$categoryId/edit" });
 
   const currentCommerceId = commerce?.id ?? 0;
-
+  const notify = useNotificationStore((state) => state.notify);
   const [formData, setFormData] = useState<CategoryFormValues>({
     name: "",
     description: "",
@@ -23,31 +24,28 @@ const EditCategory = () => {
   const [loading, setLoading] = useState(true);
 
   const handleSubmit = async (values: CategoryFormValues) => {
-    try {
-      const payload: CategoryFormValues = {
-        ...values,
-        name: values.name.trim().toUpperCase(),
-        commerce_id: currentCommerceId,
-        parent_id: null,
-      };
+    const payload: CategoryFormValues = {
+      ...values,
+      name: values.name.trim().toUpperCase(),
+      commerce_id: currentCommerceId,
+      parent_id: null,
+    };
 
-      await Api.updateCategory({
-        ...payload,
-        _token: `${token}`,
-        category_id: categoryId,
+    Api.updateCategory({
+      ...payload,
+      _token: `${token}`,
+      category_id: categoryId,
+    })
+      .then((res) => {
+        notify("success", res.message);
+        navigate({ to: "/categories" });
+      })
+      .catch((error: any) => {
+        console.error(error);
+        toast.error(error.message || "Error al actualizar categoría", {
+          duration: 5000,
+        });
       });
-
-      toast.success("Categoría actualizada con éxito", {
-        duration: 4000,
-      });
-
-      navigate({ to: "/categories" });
-    } catch (error: any) {
-      console.error(error);
-      toast.error(error.message || "Error al actualizar categoría", {
-        duration: 5000,
-      });
-    }
   };
 
   useEffect(() => {

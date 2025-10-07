@@ -3,27 +3,30 @@ import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useNavigate } from "@tanstack/react-router";
 import FormProduct, { type ProductFormValues } from "./FormProduct";
-import toast from "react-hot-toast";
+
+import { useNotificationStore } from "../../store/notification.store";
 
 const CreateProduct = () => {
   const token = useAuthStore((s) => s.token);
   const commerce = useAuthStore((s) => s.commerce);
   const navigate = useNavigate();
-
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const notify = useNotificationStore((state) => state.notify);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {
-      try {
-        const response = await Api.readCategories({
-          _token: `${token}`,
-          query: {},
+      Api.readCategories({
+        _token: `${token}`,
+        query: {},
+      })
+        .then((response) => {
+          setCategories(response.data ?? []);
+        })
+        .catch((error) => {
+          console.error("Error al cargar categorías:", error);
         });
-        setCategories(response.data ?? []);
-      } catch (error) {
-        console.error("Error al cargar categorías:", error);
-        toast.error("No se pudieron cargar las categorías");
-      }
     };
 
     fetchCategories();
@@ -50,18 +53,18 @@ const CreateProduct = () => {
   };
 
   const handleSubmit = async (values: ProductFormValues) => {
-    try {
-      await Api.createProduct({
-        ...values,
-        commerce_id: commerce?.id ?? 0,
-        _token: `${token}`,
+    Api.createProduct({
+      ...values,
+      commerce_id: commerce?.id ?? 0,
+      _token: `${token}`,
+    })
+      .then((res) => {
+        notify("success", res.message);
+        navigate({ to: "/products" });
+      })
+      .catch((error: any) => {
+        console.error(error);
       });
-      toast.success("Producto creado con éxito");
-      navigate({ to: "/products" });
-    } catch (error) {
-      console.error("Error al crear producto:", error);
-      toast.error("Hubo un error al crear el producto");
-    }
   };
 
   return (

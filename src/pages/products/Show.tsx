@@ -11,7 +11,7 @@ const ShowProduct = () => {
   const [product, setProduct] = useState<ProductType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+const [isMounted, setIsMounted] = useState(true);
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
@@ -19,7 +19,7 @@ const ShowProduct = () => {
       return;
     }
 
-    let isMounted = true;
+    
 
     const fetchProduct = async () => {
       setIsLoading(true);
@@ -46,7 +46,7 @@ const ShowProduct = () => {
     fetchProduct();
 
     return () => {
-      isMounted = false;
+      setIsMounted(false);
     };
   }, [productId, token]);
 

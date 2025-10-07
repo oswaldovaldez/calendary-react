@@ -48,19 +48,23 @@ const CreateSchedule = ({ userId, onClosex, reload }: any) => {
     onClosex();
     // console.log(values);
     // return;
-    try {
-      await Api.createSchedule({
+    Api.createSchedule({
         ...values,
         _token: `${token}`,
+    })
+      .then((res) => {
+        notify("success", res.message);
+        reload();
+        // navigate({ to: "/schedules" });
+      })
+      .catch((error: any) => {
+        console.error(error);
+        notify("error", error.message || "Error al crear horario");
       });
-      notify("success", "Horario creado con éxito");
-      reload();
-      // navigate({ to: "/schedules" });
-    } catch (error) {
-      console.error(error);
-      notify("error", "Error al crear el horario");
-    }
-  };
+  
+   
+    
+  }
 
   return (
     <FormSchedule
