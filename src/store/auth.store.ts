@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // store/auth.store.ts
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import {  persist } from "zustand/middleware";
 import type { CommerceType } from "../types";
 
 
@@ -17,7 +17,7 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>()(
-  devtools(persist(
+persist(
   (set) => ({
   user: null,
   token: null,
@@ -50,4 +50,4 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage", // nombre en localStorage
     }
-)));
+));

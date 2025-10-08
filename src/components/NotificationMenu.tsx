@@ -12,17 +12,21 @@ export interface Notification {
   read?: boolean;
 }
 
-
-
 const NotificationMenu = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isDark, setIsDark] = useState(false);
-  const { connectSocket, disconnectSocket, notifications } = useSocketStore();
+  const {
+    connectSocket,
+    disconnectSocket,
+    notifications,
+    clearNotifications,
+    markAsRead,
+  } = useSocketStore();
   const { user } = useAuthStore(); // Ejemplo: user = { id, name, ... }
 
   const unreadCount = notifications.filter((n) => !n.read).length;
-  console.log(notifications);
+  // console.log(notifications);
   // const unreadCount = 100;
   useEffect(() => {
     if (user?.id) {
@@ -114,7 +118,7 @@ const NotificationMenu = () => {
             {notifications.length > 0 && (
               <button
                 onClick={() => {
-                  
+                  clearNotifications();
                   setOpen(false);
                 }}
                 className="transition text-sm"
@@ -150,11 +154,11 @@ const NotificationMenu = () => {
                 Sin notificaciones
               </p>
             ) : (
-              notifications.map((n:any, idx:number) => (
+              notifications.map((n: any, idx: number) => (
                 <button
                   key={`${n.id}-${idx}`}
                   onClick={() => {
-                    
+                    markAsRead(n.id);
                     setOpen(false);
                   }}
                   className={`w-full text-left px-4 py-3 flex flex-col border-b transition`}
@@ -198,7 +202,6 @@ const NotificationMenu = () => {
             <div
               className="text-center py-2 mt-1 border-t text-sm font-medium cursor-pointer"
               onClick={() => {
-                
                 setOpen(false);
               }}
               style={{

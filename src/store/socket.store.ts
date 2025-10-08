@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 export interface NotificationPayload {
   id: string;
@@ -8,71 +8,142 @@ export interface NotificationPayload {
   title: string;
   date: string;
   read: boolean;
+  type: "private" | "public";
 }
 
 interface SocketState {
   socket: Socket | null;
   notifications: NotificationPayload[];
+  reloadCalendar: boolean;
+  bufferedNotifications: Omit<NotificationPayload, "id" | "read">[];
   connectSocket: (userId: number) => void;
   disconnectSocket: () => void;
+  setReloadCalendar: (value:boolean) => void;
   clearNotifications: () => void;
   markAsRead: (id: string) => void;
 }
 
 export const useSocketStore = create<SocketState>()(
-  devtools((set, get) => ({
-    socket: null,
-    notifications: [],
+  persist(
+    (set, get) => ({
+      socket: null,
+      notifications: [],
+      reloadCalendar: false,
+      bufferedNotifications: [],
 
-    connectSocket: (userId: number) => {
-      if (get().socket) return;
-//
-      const socket = io("https://socket.srv899715.hstgr.cloud", {
-         transports: ["websocket", "polling"],
-         reconnection: true,
-      });
+      connectSocket: (userId: number) => {
+        if (get().socket) return;
 
-      socket.on("connect", () => {
-        console.log("🟢 Conectado:", socket.id);
-        socket.emit("set_user_id", userId);
-      });
+        const socket = io("https://socket.srv899715.hstgr.cloud", {
+          transports: ["websocket", "polling"],
+          reconnection: true,
+          reconnectionAttempts: Infinity,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 5000,
+        });
 
-      socket.on("user.notification", (data) => {
-        const notification: NotificationPayload = {
-          id: crypto.randomUUID(),
-          read: false,
-          ...data,
+        // Conectado
+        socket.on("connect", () => {
+          console.log("🟢 Conectado:", socket.id);
+          socket.emit("set_user_id", userId);
+
+          // Procesar notificaciones buffer
+          const buffered = get().bufferedNotifications;
+          if (buffered.length > 0) {
+            buffered.forEach((data) => {
+              const notification: NotificationPayload = {
+                id: crypto.randomUUID(),
+                read: false,
+                ...data,
+              };
+              set((state) => ({
+                notifications: [notification, ...state.notifications],
+              }));
+            });
+            set({ bufferedNotifications: [] }); // Limpiar buffer
+          }
+        });
+
+        // Reconexión
+        socket.on("reconnect_attempt", (attempt) => {
+          console.log(`🔄 Intento de reconexión #${attempt}`);
+        });
+
+        socket.on("reconnect", (attempt) => {
+          console.log(`✅ Reconectado después de ${attempt} intentos`);
+          socket.emit("set_user_id", userId); // Reasignamos userId
+        });
+
+        // Notificaciones
+        const notificationHandler = (data: Omit<NotificationPayload, "id" | "read">) => {
+          
+          const socketConnected = get().socket?.connected;
+          if (socketConnected) {
+            if (data.type === "private") {
+
+              const notification: NotificationPayload = {
+                id: crypto.randomUUID(),
+                read: false,
+                ...data,
+              };
+              set((state) => ({
+                notifications: [notification, ...state.notifications],
+              }));
+            }
+            else { 
+              const { title } = data;
+              if (title === 'refresh_calendary') { 
+                set({ reloadCalendar: true });
+              }
+              // console.log("Notificación pública recibida, no se muestra en este contexto.");
+            }
+          } else {
+            // Guardar en buffer si no hay conexión
+            set((state) => ({
+              bufferedNotifications: [data, ...state.bufferedNotifications],
+            }));
+          }
         };
+      
+
+        socket.on("user.notification", notificationHandler);
+
+        socket.on("disconnect", (reason) => {
+          console.log("🔴 Desconectado del servidor Socket.IO:", reason);
+        });
+
+        set({ socket });
+      },
+
+      disconnectSocket: () => {
+        const socket = get().socket;
+        if (socket) {
+          socket.removeAllListeners();
+          socket.disconnect();
+          set({ socket: null });
+        }
+      },
+
+      clearNotifications: () => {
+        set({ notifications: [] });
+      },
+      setReloadCalendar: (value: boolean) => {
+        set({ reloadCalendar: value });
+      },
+      markAsRead: (id: string) => {
         set((state) => ({
-          notifications: [notification, ...state.notifications],
-        }), false, "ADD_NOTIFICATION");
-      });
-
-      socket.on("disconnect", () => {
-        console.log("🔴 Desconectado del servidor Socket.IO");
-      });
-
-      set({ socket }, false, "SET_SOCKET");
-    },
-
-    disconnectSocket: () => {
-      const socket = get().socket;
-      if (socket) {
-        socket.disconnect();
-        set({ socket: null }, false, "DISCONNECT_SOCKET");
-      }
-    },
-
-    clearNotifications: () => {
-      set({ notifications: [] }, false, "CLEAR_NOTIFICATIONS");
-    },
-
-    markAsRead: (id: string) => {
-      set((state) => ({
-        notifications: state.notifications.map((n) =>
-          n.id === id ? { ...n, read: true } : n
-        ),
-      }), false, "MARK_AS_READ");
-    },
-  }), { name: "SocketStore" })
+          notifications: state.notifications.map((n) =>
+            n.id === id ? { ...n, read: true } : n
+          ),
+        }));
+      },
+    }),
+    {
+      name: "SocketStore",
+      partialize: (state) => ({
+        notifications: state.notifications,
+        bufferedNotifications: state.bufferedNotifications, // Persistimos también buffer
+      }),
+    }
+  )
 );

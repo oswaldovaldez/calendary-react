@@ -12,6 +12,7 @@ import Modal from "../../components/Modal";
 
 import AppointmentsCreate from "./Create";
 import { AppointmentsEdit } from ".";
+import { useSocketStore } from "../../store/socket.store";
 
 const getMonthRange = (date: Date) => {
   const start = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -39,8 +40,16 @@ const Index = () => {
   );
   const { isOpen, event, openPopup, closePopup } = useDetailPopup();
   const token = useAuthStore((s) => s.token);
+  const { reloadCalendar, setReloadCalendar } = useSocketStore();
   const notify = useNotificationStore((state) => state.notify);
   const commerce = useAuthStore((s) => s.commerce);
+
+  useEffect(() => {
+    if (reloadCalendar && token) {
+      fetchAppointments(new Date());
+      setReloadCalendar(false);
+    }
+  }, [reloadCalendar]);
   const fetchAppointments = async (date: Date) => {
     // Verificar que el token existe antes de hacer la llamada
     if (!token) {
@@ -261,6 +270,8 @@ const Index = () => {
       setOpenEdit(true);
     }
   };
+
+  
 
   const handleGetData = () => {
     // Refrescar datos y cerrar modal
