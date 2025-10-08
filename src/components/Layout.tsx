@@ -10,6 +10,7 @@ import { useAuthStore } from "../store/auth.store";
 import { router } from "../routes/__root";
 import UserMenu from "./UserMenu";
 import NotificationMenu from "./NotificationMenu";
+import { IoIosArrowBack } from "react-icons/io";
 //import { useState } from "react";
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -57,18 +58,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div
             className={`w-full h-[40px] flex flex-row justify-between px-4 py-2 gap-3 ${isOpen ? "sm:pl-64" : ""}`}
           >
-            <button onClick={toggle} className="ml-2 btn neumo btn-secondary">
-              <TiThMenu />
-            </button>
+            <div>
+              <button onClick={toggle} className="mx-2 btn neumo btn-secondary">
+                <TiThMenu />
+              </button>
+              <button
+                className="btn btn-outline-secondary"
+                onClick={() => router.history.back()}
+              >
+                <IoIosArrowBack />
+              </button>
+            </div>
             <div>
               <UserMenu
                 onProfile={() => console.log("Perfil")}
-                onSettings={() => console.log("Configuración")}
+                
                 onLogout={logout}
               />
-              <NotificationMenu
-               
-              />
+              <NotificationMenu />
               {/* <ThemeSwitch /> */}
               {/* <button onClick={logout} className="ml-2 btn neumo btn-danger">
                 <AiOutlineLogout />

@@ -195,7 +195,7 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
               type="submit"
               disabled={isSubmitting}
             >
-              {isEdit ? "Actualizar Comercio" : "Registrar Comercio"}
+              {isEdit ? "Actualizar" : "Registrar"}
             </button>
           </div>
         </Form>

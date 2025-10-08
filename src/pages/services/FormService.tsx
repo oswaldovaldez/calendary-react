@@ -358,13 +358,16 @@ const FormService: React.FC<FormServiceProps> = ({
             </div>
 
             <div className="card-footer">
+              <div className="flex justify-end mt-6">
+
               <button
                 type="submit"
                 className="btn neumo btn-success"
                 disabled={isSubmitting}
               >
-                {isEdit ? "Editar Servicio" : "Registrar Servicio"}
+                {isEdit ? "Actualizar" : "Registrar"}
               </button>
+              </div>
             </div>
           </Form>
         </div>

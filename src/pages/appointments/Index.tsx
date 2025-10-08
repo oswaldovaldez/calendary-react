@@ -246,10 +246,25 @@ const Index = () => {
       if (calendarInstance.current) {
         calendarInstance.current.deleteEvent(eventId, "");
       }
-
-      setAppointments((prev) => prev.filter((a) => String(a.id) !== eventId));
-
-      notify("success", "La cita ha sido eliminada correctamente.");
+      Api.deleteAppointment({
+        _token: `${token}`,
+        appointment_id: parseInt(eventId),
+      })
+        .then((res) => {
+          notify(
+            "success",
+            res.message ?? "La cita ha sido eliminada correctamente."
+          );
+          handleGetData();
+        })
+        .catch((err) => {
+          console.error("Error al eliminar cita:", err);
+          notify(
+            "error",
+            err.message ?? "No se pudo eliminar la cita. Intenta nuevamente."
+          );
+        });
+      // setAppointments((prev) => prev.filter((a) => String(a.id) !== eventId))
     } catch (error) {
       console.error("Error al eliminar cita:", error);
       notify("error", "No se pudo eliminar la cita. Intenta nuevamente.");
@@ -270,8 +285,6 @@ const Index = () => {
       setOpenEdit(true);
     }
   };
-
-  
 
   const handleGetData = () => {
     // Refrescar datos y cerrar modal

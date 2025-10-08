@@ -229,7 +229,7 @@ const FormPatient: React.FC<FormPatientProps> = ({
               type="submit"
               disabled={isSubmitting}
             >
-              {isEdit ? "Actualizar Paciente" : "Registrar Paciente"}
+              {isEdit ? "Actualizar" : "Registrar"}
             </button>
           </div>
         </Form>

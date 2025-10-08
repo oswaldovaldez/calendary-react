@@ -8,7 +8,8 @@ import type { CommerceType } from "../types";
 interface AuthState {
   user: any | null;
   token: string | null;
-  roles: string[];  permissions: string[];
+  roles: string[];
+  permissions: string[];
   commerces: any[];
   commerce: CommerceType|null;
   setAuth: (data: any) => void;

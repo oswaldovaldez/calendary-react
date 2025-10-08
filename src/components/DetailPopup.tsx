@@ -13,7 +13,8 @@ import {
   Building2,
 } from "lucide-react";
 import { FaEye } from "react-icons/fa";
-
+import { showConfirm } from "../utils/alert";
+import { Link } from "@tanstack/react-router";
 interface EventData {
   id: string;
   calendarId: string;
@@ -175,13 +176,14 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
   };
 
   const handleDelete = () => {
-    if (
-      onDelete &&
-      window.confirm("¿Estás seguro de que deseas eliminar esta cita?")
-    ) {
-      onDelete(event.id);
-      onClose();
-    }
+    showConfirm({
+      id: parseInt(event.id),
+      handleConfirm: () => onDelete?.(event.id),
+      title: "Eliminar Cita",
+      message: `¿Deseas eliminar la Cita <strong>${event.raw?.name}</strong>?`,
+      successText: `La Cita <strong>${event.raw?.name}</strong> se eliminó correctamente.`,
+      errorText: `No se pudo eliminar la Cita <strong>${event.raw?.name}</strong>. Intenta de nuevo.`,
+    });
   };
 
   return (
@@ -370,10 +372,10 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
               <span className="text-sm font-medium">Eliminar</span>
             </button>
           )}
-          <button className="btn">
+          <Link className="btn" to={`/appointments/${event.id}`}>
             <FaEye />
             <span className="text-sm font-medium">Ver Cita</span>
-          </button>
+          </Link>
         </div>
       </div>
 

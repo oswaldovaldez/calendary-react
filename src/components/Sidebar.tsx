@@ -3,17 +3,63 @@ import { useSidebarStore } from "../store/sidebar.store";
 import { CommerceSelector } from "./CommerceSelector";
 import { IoMdClose } from "react-icons/io";
 import { CalendarDays, ChartBarStacked, LayoutDashboard, LayoutTemplate, Package, ShieldUser, Store, Truck, User } from "lucide-react";
+import { RouteGuard } from "./RouteGuard";
 
 const links = [
-  { icon: <LayoutDashboard />, to: "/dashboard", label: "Dashboard" },
-  { icon: <CalendarDays />, to: "/appointments", label: "Citas" },
-  { icon: <ChartBarStacked />, to: "/categories", label: "Categorías" },
-  { icon: <Store />, to: "/commerces", label: "Comercios" },
-  { icon: <User />, to: "/patients", label: "Pacientes" },
-  { icon: <Package />, to: "/products", label: "Productos" },
-  { icon: <Truck />, to: "/services", label: "Servicios" },
-  { icon: <ShieldUser />, to: "/users", label: "Usuarios" },
-  { icon: <LayoutTemplate />, to: "/templates", label: "Plantillas" },
+  {
+    permission: "dashboard.view",
+    icon: <LayoutDashboard />,
+    to: "/dashboard",
+    label: "Dashboard",
+  },
+  {
+    permission: "appointments.view",
+    icon: <CalendarDays />,
+    to: "/appointments",
+    label: "Citas",
+  },
+  {
+    permission: "categories.view",
+    icon: <ChartBarStacked />,
+    to: "/categories",
+    label: "Categorías",
+  },
+  {
+    permission: "commerces.view",
+    icon: <Store />,
+    to: "/commerces",
+    label: "Comercios",
+  },
+  {
+    permission: "patients.view",
+    icon: <User />,
+    to: "/patients",
+    label: "Pacientes",
+  },
+  {
+    permission: "products.view",
+    icon: <Package />,
+    to: "/products",
+    label: "Productos",
+  },
+  {
+    permission: "services.view",
+    icon: <Truck />,
+    to: "/services",
+    label: "Servicios",
+  },
+  {
+    permission: "users.view",
+    icon: <ShieldUser />,
+    to: "/users",
+    label: "Usuarios",
+  },
+  {
+    permission: "templates.view",
+    icon: <LayoutTemplate />,
+    to: "/templates",
+    label: "Plantillas",
+  },
 ];
 
 export function Sidebar() {
@@ -59,6 +105,7 @@ export function Sidebar() {
 
         <nav className="flex flex-col gap-2 p-2 overflow-y-auto">
           {links.map((l) => (
+            <RouteGuard key={l.to} permission={l.permission}>
             <Link
               key={l.to}
               to={l.to}
@@ -68,7 +115,8 @@ export function Sidebar() {
             >
               <span className="inline-block mr-2 align-middle">{l.icon}</span>
               {l.label}
-            </Link>
+              </Link>
+              </RouteGuard>
           ))}
         </nav>
       </aside>

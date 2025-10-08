@@ -56,6 +56,7 @@ import { UsersIndex, UsersCreate, UsersShow, UsersEdit } from "../pages/users";
 import Home from "../Home.tsx";
 import Dashboard from "../pages/Dashboard.tsx";
 import { RouteGuard } from "../components/RouteGuard.tsx";
+import Profile from "../pages/Profile.tsx";
 // ... importa los demás
 
 const rootRoute = new RootRoute({
@@ -81,6 +82,11 @@ const routeTree = rootRoute.addChildren([
         <Dashboard />
       </RouteGuard>
     ),
+  }),
+  new Route({
+    getParentRoute: () => rootRoute,
+    path: "/profile",
+    component: () => <Profile />,
   }),
 
   //usuarios

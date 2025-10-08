@@ -457,8 +457,8 @@ const FormProduct: React.FC<FormProductProps> = ({
 							disabled={isSubmitting}
 						>
 							{isEdit
-								? "Actualizar Producto"
-								: "Registrar Producto"}
+								? "Actualizar"
+								: "Registrar"}
 						</button>
 					</div>
 				</Form>

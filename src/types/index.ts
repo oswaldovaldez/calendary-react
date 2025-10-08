@@ -127,7 +127,8 @@ export interface PatientType {
  phone:       string;
  records?:     any[];
  record_templates?: RecordTemplateType[];
- updated_at?:  string;
+  updated_at?: string;
+  wallet?:      any;
 }
 
 export interface PatientDataType {
@@ -243,7 +244,8 @@ export interface AppointmentType {
  status:      string;
  updated_at?:  string;
  user?:        UserType;
- user_id:     number;
+  user_id: number;
+  
 }
 
 export const diasES: Record<string, string> = {

@@ -309,7 +309,7 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
             {/* Botón submit */}
             <div className="flex justify-end mt-6">
               <button type="submit" className="btn btn-primary">
-                {isEdit ? "Actualizar Cita" : "Guardar Cita"}
+                {isEdit ? "Actualizar" : "Registrar"}
               </button>
             </div>
           </Form>

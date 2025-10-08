@@ -850,7 +850,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
           type="button"
           onClick={() => onSubmit(fields && { ...values, fields })}
         >
-          {isEdit ? "Actualizar Plantilla" : "Registrar Plantilla"}
+          {isEdit ? "Actualizar" : "Registrar"}
         </button>
       </div>
     </div>

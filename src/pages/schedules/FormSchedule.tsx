@@ -180,12 +180,13 @@ const FormSchedule: React.FC<FormScheduleProps> = ({
             </div>
           </div>
 
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-6 flex justify-end">
+          {/* <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-6 flex justify-end"> */}
+          <div className="flex justify-end mt-6">
             <button
               className="btn btn-primary btn-sm w-auto px-4"
               type="submit"
             >
-              {isEdit ? "Editar Horario" : "Registrar Horario"}
+              {isEdit ? "Actualizar" : "Registrar"}
             </button>
           </div>
         </Form>

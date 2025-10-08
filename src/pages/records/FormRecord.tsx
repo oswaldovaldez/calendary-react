@@ -132,14 +132,16 @@ const FormRecord: React.FC<FormRecordProps> = ({
                   )}
               </div>
             </div>
-
+            <div className="flex justify-end mt-6">
+              
             <button
               className="btn neumo btn-success ml-auto"
               type="submit"
               disabled={isSubmitting}
-            >
-              {isEdit ? "Editar Registro" : "Añadir Registro"}
+              >
+              {isEdit ? "Actualizar" : "Registrar"}
             </button>
+              </div>
           </Form>
         )}
       </Formik>

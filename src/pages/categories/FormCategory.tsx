@@ -78,13 +78,15 @@ const FormCategory: React.FC<FormCategoryProps> = ({
             </div>
 
             <div className="card-footer">
-              <button
-                className="btn neumo btn-success ml-auto"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isEdit ? "Editar Categoría" : "Registrar Categoría"}
-              </button>
+              <div className="flex justify-end mt-6">
+                <button
+                  className="btn neumo btn-success ml-auto"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isEdit ? "Actualizar" : "Registrar"}
+                </button>
+              </div>
             </div>
           </Form>
         </div>

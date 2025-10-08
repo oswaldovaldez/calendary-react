@@ -132,13 +132,16 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
                 </div>
               </>
             )}
+            <div className="flex justify-end mt-6">
+            </div>
             <button
               className="btn neumo btn-success ml-auto"
               type="submit"
               disabled={isSubmitting}
             >
-              {isEdit ? "Editar" : "Registrar"}
+              {isEdit ? "Actualizar" : "Registrar"}
             </button>
+              
           </Form>
         )}
       </Formik>
