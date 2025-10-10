@@ -44,7 +44,7 @@ export const useSocketStore = create<SocketState>()(
 
         // Conectado
         socket.on("connect", () => {
-          console.log("🟢 Conectado:", socket.id);
+          // console.log("🟢 Conectado:", socket.id);
           socket.emit("set_user_id", userId);
 
           // Procesar notificaciones buffer
@@ -65,12 +65,12 @@ export const useSocketStore = create<SocketState>()(
         });
 
         // Reconexión
-        socket.on("reconnect_attempt", (attempt) => {
-          console.log(`🔄 Intento de reconexión #${attempt}`);
-        });
+        // socket.on("reconnect_attempt", (attempt) => {
+        //   console.log(`🔄 Intento de reconexión #${attempt}`);
+        // });
 
         socket.on("reconnect", (attempt) => {
-          console.log(`✅ Reconectado después de ${attempt} intentos`);
+           console.log(`✅ Reconectado después de ${attempt} intentos`);
           socket.emit("set_user_id", userId); // Reasignamos userId
         });
 
@@ -109,7 +109,7 @@ export const useSocketStore = create<SocketState>()(
         socket.on("user.notification", notificationHandler);
 
         socket.on("disconnect", (reason) => {
-          console.log("🔴 Desconectado del servidor Socket.IO:", reason);
+          console.log("🔴 Desconectado:", reason);
         });
 
         set({ socket });

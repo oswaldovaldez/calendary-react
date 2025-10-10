@@ -11,8 +11,10 @@ export function RouteGuard({
   permission?: string;
 }) {
   const user = useAuthStore((s) => s.user);
-  const permissionsT = useAuthStore((s) => s.user.roles[0].permissions);
-  const role = useAuthStore((s) => s.user.roles[0]);
+  const permissionsT = useAuthStore(
+    (s) => s.user?.roles?.[0].permissions ?? []
+  );
+  const role = useAuthStore((s) => s.user?.roles?.[0]??{ name: "", permissions: [] });
   const permissions = [...(permissionsT || []), ...(role?.permissions || [])];
   // console.log(
   //   permissions,

@@ -156,24 +156,24 @@ export interface InsuranceType {
 
 export interface ProductType {
  active:              boolean;
- barcode:             string|null;
+ barcode?:             string|null;
  brand:               string;
- category:            CategoryType|null;
- category_id:         number|null;
+ categories:            Array<CategoryType|number>|null;
+ category_id?:         number|null;
  commission:          string;
  cost:                string;
  created_at?:          string;
  deleted_at?:          Date|null;
  description:         string;
  format:              string;
- id:                  number;
+ id?:                  number;
  image:               string|null;
  iva:                 number;
  name:                string;
  price:               string;
  price_with_discount: string;
  sku:                 string;
- slug:                string;
+ slug?:                string;
  status:              boolean;
  stock:               number;
  stock_alert:         number;
@@ -183,23 +183,24 @@ export interface ProductType {
 
 export interface ServiceType {
  home_service:     boolean;
- category:         CategoryType;
- category_id:      number;
+ categories:         Array<CategoryType|number>;
+ category_id?:      number;
  created_at?:       string;
  deleted_at?:       Date|null;
  description:      string;
  duration:         number;
  duration_type:    string;
- end_offer_at:     Date|null;
- id:               number;
+ end_offer_at:     string|Date|null;
+ id?:               number;
  name:             string;
- options:          any[]|null;
- price:            string;
- price_offer:      string|null;
+  options: any[] | null;
+  commerce_id:      number;
+ price:            string|number;
+ price_offer:      string|number|null;
  session_number:   number;
  sessions:         boolean;
- slug:             string;
- start_offer_at:   null;
+ slug?:             string;
+ start_offer_at:   string|Date|null;
  updated_at?:       string;
 }
 

@@ -4,16 +4,16 @@ import Login from "./pages/Login.tsx";
 import RegisterForm from "./pages/Register.tsx";
 import { Api } from "./services/api.ts";
 import { useAuthStore } from "./store/auth.store.ts";
-import { useRouter } from "@tanstack/react-router";
+// import { useRouter } from "@tanstack/react-router";
 
 const Home = () => {
   const [isRegister, setIsRegister] = useState(false);
   const user = useAuthStore((s) => s.user);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     if (user !== null) {
-      router.navigate({ to: "/dashboard" });
+      // router.navigate({ to: "/dashboard" });
       return;
     }
 

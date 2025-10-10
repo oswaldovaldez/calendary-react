@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useNavigate } from "@tanstack/react-router";
-import FormProduct, { type ProductFormValues } from "./FormProduct";
+import FormProduct from "./FormProduct";
 
 import { useNotificationStore } from "../../store/notification.store";
+import type { ProductType } from "../../types";
 
 const CreateProduct = () => {
   const token = useAuthStore((s) => s.token);
@@ -32,8 +33,8 @@ const CreateProduct = () => {
     fetchCategories();
   }, [token]);
 
-  const initialValues: ProductFormValues = {
-    category_id: 0,
+  const initialValues: ProductType = {
+    categories: [],
     sku: "",
     name: "",
     barcode: null,
@@ -41,10 +42,10 @@ const CreateProduct = () => {
     status: true,
     description: "",
     format: "",
-    cost: 0,
-    price: 0,
-    price_with_discount: 0,
-    commission: 0,
+    cost: "0",
+    price: "0",
+    price_with_discount: "0",
+    commission: "0",
     iva: 16,
     stock: 0,
     stock_alert: 0,
@@ -52,7 +53,7 @@ const CreateProduct = () => {
     image: null,
   };
 
-  const handleSubmit = async (values: ProductFormValues) => {
+  const handleSubmit = async (values: any) => {
     Api.createProduct({
       ...values,
       commerce_id: commerce?.id ?? 0,

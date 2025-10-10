@@ -11,15 +11,13 @@ const ShowProduct = () => {
   const [product, setProduct] = useState<ProductType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-const [isMounted, setIsMounted] = useState(true);
+  const [isMounted, setIsMounted] = useState(true);
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
       setIsLoading(false);
       return;
     }
-
-    
 
     const fetchProduct = async () => {
       setIsLoading(true);
@@ -137,8 +135,12 @@ const [isMounted, setIsMounted] = useState(true);
 
         {/* Solo el nombre de la categoría */}
         <div className="md:col-span-2 mt-4">
-          <span className="font-semibold">Categoría:</span>{" "}
-          {product.category?.name ?? "Sin categoría"}
+          <span className="font-semibold">Categorías:</span>{" "}
+          {product.categories?.length === 0
+            ? "Sin categoría"
+            : product.categories
+                ?.map((cat) => (typeof cat === "number" ? cat : cat.name))
+                .join(", ")}
         </div>
       </div>
     </div>

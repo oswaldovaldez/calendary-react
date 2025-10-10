@@ -98,16 +98,16 @@ export const Api = {
   showCategory:(data:{category_id:number,_token:string,})=>apiFetch(`/categories/${data.category_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
   //crud servicios
-  createService:(data:{name:string,description:string,commerce_id:number,category_id: number,duration:number,duration_type: string,price:number,price_offer:number,session_number: number,sessions: boolean,home_service: boolean,start_offer_at: string | null,end_offer_at: string | null,options: any[],_token:string})=>apiFetch('/services',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  createService:(data:{name:string,description:string,commerce_id:number,categories: Array<number>,duration:number,duration_type: string,price:number,price_offer:number,session_number: number,sessions: boolean,home_service: boolean,start_offer_at: string | null,end_offer_at: string | null,options: any[],_token:string})=>apiFetch('/services',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readServices:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/services`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
-  updateService:(data:{name:string,description:string,commerce_id:number,category_id: number,duration:number,duration_type: string,price:number,price_offer:number,session_number: number, sessions: boolean,home_service: boolean,start_offer_at: string | null,end_offer_at: string | null,options: object,service_id:number,_token: string})=>apiFetch(`/services/${data.service_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  updateService:(data:{name:string,description:string,commerce_id:number,categories: Array<number>,duration:number,duration_type: string,price:number,price_offer:number,session_number: number, sessions: boolean,home_service: boolean,start_offer_at: string | null,end_offer_at: string | null,options: object,service_id:number,_token: string})=>apiFetch(`/services/${data.service_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteService:(data:{service_id:number,_token: string})=>apiFetch(`/services/${data.service_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showService:(data:{service_id:number,_token:string,})=>apiFetch(`/services/${data.service_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
   //crud Productos
-  createProduct:(data: {name: string,description: string,commerce_id: number,category_id: number,sku: string,barcode: string | null,brand: string,status: boolean,format: string,cost: number,price: number,price_with_discount: number|null,commission: number|null,iva: number,stock: number,stock_alert: number|null,active: boolean,image: string | null,  _token: string})=>apiFetch('/products',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  createProduct:(data: {name: string,description: string,commerce_id: number,categories: Array<number>,sku: string,barcode: string | null,brand: string,status: boolean,format: string,cost: number,price: number,price_with_discount: number|null,commission: number|null,iva: number,stock: number,stock_alert: number|null,active: boolean,image: string | null,  _token: string})=>apiFetch('/products',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readProducts:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/products`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
-  updateProduct:(data: { product_id: number, commerce_id: number, sku: string, name: string, barcode: string | null, brand: string, status: boolean, description: string, format: string, cost: number, price: number, price_with_discount: number | null, commission: number | null, iva: number, stock: number, stock_alert: number | null, active: boolean, image: string | null, category_id: number, _token: string })=>apiFetch(`/products/${data.product_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  updateProduct:(data: { product_id: number, commerce_id: number, sku: string, name: string, barcode: string | null, brand: string, status: boolean, description: string, format: string, cost: number, price: number, price_with_discount: number | null, commission: number | null, iva: number, stock: number, stock_alert: number | null, active: boolean, image: string | null, categories: Array<number>, _token: string })=>apiFetch(`/products/${data.product_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteProduct:(data:{product_id:number,_token: string})=>apiFetch(`/products/${data.product_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showProduct:(data:{product_id:number,_token:string,})=>apiFetch(`/products/${data.product_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
@@ -157,6 +157,8 @@ export const Api = {
   
   getPermissions: (data: { _token: string, }) => apiFetch(`/permissions`, { method: 'GET', headers: { Authorization: `Bearer ${data._token}` } }),
   
-  syncPermissions: (data: { permissions: Array<string>, _token: string, userId: number }) => apiFetch(`/users/${data.userId}/sync-permissions`, { method: 'POST', headers: { Authorization: `Bearer ${data._token}` }, body: {permissions:data.permissions} }),
+  syncPermissions: (data: { permissions: Array<string>, _token: string, userId: number }) => apiFetch(`/users/${data.userId}/sync-permissions`, { method: 'POST', headers: { Authorization: `Bearer ${data._token}` }, body: { permissions: data.permissions } }),
+  
+  checkToken: (data: {_token: string})=>apiFetch('/check-token',{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
 };

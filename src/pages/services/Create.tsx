@@ -1,9 +1,10 @@
 import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useNavigate } from "@tanstack/react-router";
-import FormService, { type ServiceFormValues } from "./FormService";
+import FormService from "./FormService";
 
 import { useNotificationStore } from "../../store/notification.store";
+import type { ServiceType } from "../../types";
 
 const CreateService = () => {
   const token = useAuthStore((s) => s.token);
@@ -12,11 +13,11 @@ const CreateService = () => {
   const notify = useNotificationStore((state) => state.notify);
   const currentCommerceId = commerce?.id ?? 0;
 
-  const initialValues: ServiceFormValues = {
+  const initialValues: ServiceType = {
     name: "",
     description: "",
     commerce_id: currentCommerceId,
-    category_id: 0,
+    categories: [],
     duration: 0,
     duration_type: "minutes",
     price: 0,
@@ -27,15 +28,14 @@ const CreateService = () => {
     start_offer_at: null,
     end_offer_at: null,
     options: [],
-    _token: `${token}`,
   };
 
-  const handleSubmit = async (values: ServiceFormValues) => {
+  const handleSubmit = async (values: any) => {
     const payload = {
       name: values.name.trim(),
       description: values.description,
       commerce_id: currentCommerceId,
-      category_id: Number(values.category_id),
+      categories: values.categories,
       duration: Number(values.duration),
       duration_type: values.duration_type,
       price: values.price,
@@ -46,10 +46,9 @@ const CreateService = () => {
       start_offer_at: values.start_offer_at ? values.start_offer_at : null,
       end_offer_at: values.end_offer_at ? values.end_offer_at : null,
       options: values.options,
-      _token: `${token}`,
     };
 
-    Api.createService(payload)
+    Api.createService({ ...payload, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);
         navigate({ to: "/services" });

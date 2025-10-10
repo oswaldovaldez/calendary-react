@@ -3,6 +3,7 @@
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./routes/__root"; // lo armamos con tus rutas
 import { Toaster } from "react-hot-toast";
+import { startAuthChecker } from "./store/initAuthChecker";
 //import "react-toastify/dist/ReactToastify.css";
 
 // const queryClient = new QueryClient();
@@ -11,7 +12,7 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
 
-  
+  startAuthChecker();
 
   return (
     <>

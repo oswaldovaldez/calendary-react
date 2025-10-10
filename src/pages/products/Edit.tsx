@@ -2,9 +2,10 @@ import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import FormProduct, { type ProductFormValues } from "./FormProduct";
+import FormProduct from "./FormProduct";
 import toast from "react-hot-toast";
 import { useNotificationStore } from "../../store/notification.store";
+import type { ProductType } from "../../types";
 
 const EditProduct = () => {
   const token = useAuthStore((s) => s.token);
@@ -12,9 +13,7 @@ const EditProduct = () => {
   const navigate = useNavigate();
   const { productId } = useParams({ from: "/products/$productId/edit" });
   const notify = useNotificationStore((state) => state.notify);
-  const [initialValues, setInitialValues] = useState<ProductFormValues | null>(
-    null
-  );
+  const [initialValues, setInitialValues] = useState<ProductType | null>(null);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
     []
   );
@@ -35,7 +34,7 @@ const EditProduct = () => {
 
         setCategories(catResponse.data ?? []);
         setInitialValues({
-          category_id: product.category_id,
+          categories: product.categories?.map((cat: any) => cat.id) || [],
           sku: product.sku,
           name: product.name,
           barcode: product.barcode,
@@ -62,7 +61,7 @@ const EditProduct = () => {
     fetchData();
   }, [productId, token]);
 
-  const handleSubmit = async (values: ProductFormValues) => {
+  const handleSubmit = async (values: any) => {
     Api.updateProduct({
       ...values,
       product_id: Number(productId),

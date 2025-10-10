@@ -3,42 +3,43 @@ import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
+import type { ServiceType } from "../../types";
 
 export interface CategoryOption {
   id: number;
   name: string;
 }
 
-export interface ServiceFormValues {
-  name: string;
-  description: string;
-  commerce_id: number;
-  category_id: number;
-  duration: number;
-  duration_type: string;
-  price: number;
-  price_offer: number;
-  session_number: number;
-  sessions: boolean;
-  home_service: boolean;
-  start_offer_at: string | null;
-  end_offer_at: string | null;
-  options: { name: string; extra_price: number }[];
-  _token: string;
-}
+// category_id: number;
+// export interface ServiceFormValues {
+//   name: string;
+//   description: string;
+//   commerce_id: number;
+//   duration: number;
+//   duration_type: string;
+//   price: number;
+//   price_offer: number;
+//   session_number: number;
+//   sessions: boolean;
+//   home_service: boolean;
+//   start_offer_at: string | null;
+//   end_offer_at: string | null;
+//   options: { name: string; extra_price: number }[];
+//   _token: string;
+// }
 
 export const serviceSchema = Yup.object().shape({
   name: Yup.string()
     .trim()
     .min(3, "El nombre debe tener al menos 3 caracteres")
     .required("El nombre es obligatorio"),
-  description: Yup.string()
-    .trim()
-    .max(500, "La descripción no puede exceder los 500 caracteres")
-    .required("La descripción es obligatoria"),
-  category_id: Yup.number()
-    .typeError("La categoría es obligatoria")
-    .required("La categoría es obligatoria"),
+  // description: Yup.string()
+  //   .trim()
+  //   .max(500, "La descripción no puede exceder los 500 caracteres")
+  //   .required("La descripción es obligatoria"),
+  // category_id: Yup.number()
+  // .typeError("La categoría es obligatoria")
+  // .required("La categoría es obligatoria"),
   duration: Yup.number()
     .typeError("La duración debe ser un número")
     .positive("La duración debe ser mayor que 0")
@@ -48,11 +49,11 @@ export const serviceSchema = Yup.object().shape({
     .required("El tipo de duración es obligatorio"),
   price: Yup.number()
     .typeError("El precio debe ser un número")
-    .positive("El precio debe ser mayor que 0")
+    .min(0, "El precio no puede ser negativo")
     .required("El precio es obligatorio"),
-  session_number: Yup.number()
-    .min(1, "El número de sesiones debe ser al menos 1")
-    .required("El número de sesiones es obligatorio"),
+  // session_number: Yup.number()
+  //   .min(1, "El número de sesiones debe ser al menos 1")
+  //   .required("El número de sesiones es obligatorio"),
   sessions: Yup.boolean().required("El campo sesiones es obligatorio"),
   home_service: Yup.boolean().required(
     "El campo servicio a domicilio es obligatorio"
@@ -61,15 +62,14 @@ export const serviceSchema = Yup.object().shape({
   end_offer_at: Yup.string().nullable(),
   options: Yup.array(),
   _token: Yup.string().required(),
-  commerce_id: Yup.number().required(),
 });
 
 interface FormServiceProps {
-  initialValues: ServiceFormValues;
+  initialValues: ServiceType;
   isEdit?: boolean;
   onSubmit: (
-    values: ServiceFormValues,
-    helpers: FormikHelpers<ServiceFormValues>
+    values: ServiceType,
+    helpers: FormikHelpers<ServiceType>
   ) => void | Promise<void>;
 }
 
@@ -155,22 +155,57 @@ const FormService: React.FC<FormServiceProps> = ({
               </div>
 
               {/* Categoría */}
-              <div className="form-group">
-                <label htmlFor="category_id">Categoría</label>
-                <Field
-                  as="select"
-                  name="category_id"
-                  className="input input-sm"
-                >
-                  <option value="">Selecciona una categoría</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </Field>
+              <div className="form-group py-2">
+                <label htmlFor="categories">Categorías</label>
+                <div className="columns-3 gap-3">
+                  {categories.length > 0 ? (
+                    categories.map((category) => (
+                      <div key={category.id} className="form-checkbox">
+                        <label className="flex items-center space-x-2">
+                          <Field name="categories">
+                            {({ field, form }: any) => {
+                              // Aseguramos que siempre sea un array
+                              const value = Array.isArray(field.value)
+                                ? field.value
+                                : [];
+                              const isChecked = value.includes(category.id);
+
+                              return (
+                                <input
+                                  type="checkbox"
+                                  value={category.id}
+                                  checked={isChecked}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      form.setFieldValue("categories", [
+                                        ...value,
+                                        category.id,
+                                      ]);
+                                    } else {
+                                      form.setFieldValue(
+                                        "categories",
+                                        value.filter(
+                                          (id: number) => id !== category.id
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  className="checkbox checkbox-sm"
+                                />
+                              );
+                            }}
+                          </Field>
+                          <span>{category.name}</span>
+                        </label>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No hay categorías disponibles.</p>
+                  )}
+                </div>
+
                 <ErrorMessage
-                  name="category_id"
+                  name="categories"
                   component="div"
                   className="form-text-invalid"
                 />
@@ -252,7 +287,7 @@ const FormService: React.FC<FormServiceProps> = ({
                   type="number"
                   className="input input-sm"
                   name="session_number"
-                  min={1}
+                  min={0}
                   placeholder="Ej. 1"
                 />
                 <ErrorMessage
@@ -337,7 +372,7 @@ const FormService: React.FC<FormServiceProps> = ({
               </div>
 
               {/* Options */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="options">Opciones (JSON)</label>
                 <Field
                   as="textarea"
@@ -350,7 +385,7 @@ const FormService: React.FC<FormServiceProps> = ({
                   component="div"
                   className="form-text-invalid"
                 />
-              </div>
+              </div> */}
 
               {/* Ocultos */}
               <Field type="hidden" name="commerce_id" />
@@ -359,14 +394,13 @@ const FormService: React.FC<FormServiceProps> = ({
 
             <div className="card-footer">
               <div className="flex justify-end mt-6">
-
-              <button
-                type="submit"
-                className="btn neumo btn-success"
-                disabled={isSubmitting}
-              >
-                {isEdit ? "Actualizar" : "Registrar"}
-              </button>
+                <button
+                  type="submit"
+                  className="btn neumo btn-success"
+                  disabled={isSubmitting}
+                >
+                  {isEdit ? "Actualizar" : "Registrar"}
+                </button>
               </div>
             </div>
           </Form>

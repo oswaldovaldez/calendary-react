@@ -4,9 +4,15 @@ import { useAuthStore } from "../store/auth.store";
 import { useNavigate } from "@tanstack/react-router";
 
 export function CommerceSelector() {
-  const role = useAuthStore((s) => s.user.roles[0]);
+  const role = useAuthStore((s) => s.user?.roles[0] ?? []);
   const commerces = useAuthStore((s) =>
-    role.name === "superadmin" ? s.commerces : s.user.commerces
+    role.name === "superadmin"
+      ? s.commerces !== null
+        ? s.commerces
+        : []
+      : s.user?.commerces !== null
+        ? s.user?.commerces
+        : []
   );
 
   const currentCommerce = useAuthStore((s) => s.commerce);
@@ -25,17 +31,14 @@ export function CommerceSelector() {
         const stillExists = commerces.find((c: any) => c.id === parsed.id);
         if (stillExists) {
           setCommerce(parsed);
-          navigate({ to: "/dashboard" });
-          
+          // navigate({ to: "/dashboard" });
         } else {
           setCommerce(commerces[0]);
           navigate({ to: "/dashboard" });
-          
         }
       } else {
         setCommerce(commerces[0]);
         navigate({ to: "/dashboard" });
-        
       }
     }
 
@@ -66,7 +69,7 @@ export function CommerceSelector() {
 
   const handleSelect = (commerce: any) => {
     setCommerce(commerce);
-    
+
     const root = document.documentElement;
     //console.log(root,commerce);
     root.style.removeProperty("--color-primary");

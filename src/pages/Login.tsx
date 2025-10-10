@@ -3,6 +3,7 @@ import { useAuthStore } from "../store/auth.store";
 import { useRouter } from "@tanstack/react-router"; // 👈
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import logo from "../assets/logo.png";
 
 type LoginFormValues = {
   email: string;
@@ -36,6 +37,7 @@ function Login() {
     <div className="flex justify-center items-center min-h-screen max-w-lg w-lg mx-auto">
       <div className="w-full max-w-md p-6 rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h2>
+        <img src={logo} alt="logo" />
         <Formik
           initialValues={values}
           validationSchema={loginSchema}

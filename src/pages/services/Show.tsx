@@ -3,33 +3,14 @@ import { useAuthStore } from "../../store/auth.store";
 import { Api } from "../../services/api";
 import { useParams, useNavigate } from "@tanstack/react-router";
 import toast from "react-hot-toast";
-
-interface ServiceData {
-  id: number;
-  name: string;
-  description: string;
-  category_id: number;
-  category?: { id: number; name: string };
-  price: string;
-  price_offer: string | null;
-  duration: number;
-  duration_type: string;
-  session_number: number;
-  sessions: boolean;
-  home_service: boolean;
-  start_offer_at: string | null;
-  end_offer_at: string | null;
-  options: { name: string; extra_price: number }[];
-  created_at: string;
-  updated_at: string;
-}
+import type { ServiceType } from "../../types";
 
 const ShowService: React.FC = () => {
   const token = useAuthStore((s) => s.token);
   const { serviceId } = useParams({ from: "/services/$serviceId" });
   const navigate = useNavigate();
 
-  const [service, setService] = useState<ServiceData | null>(null);
+  const [service, setService] = useState<ServiceType | null>(null);
   const [loading, setLoading] = useState(true);
 
   const formatDate = (date: string | null) => {
@@ -73,8 +54,12 @@ const ShowService: React.FC = () => {
           <strong>Descripción:</strong> {service.description}
         </p>
         <p>
-          <strong>Categoría:</strong>{" "}
-          {service.category?.name ?? "Sin categoría"}
+          <strong>Categoría:</strong>
+          {service.categories?.length === 0
+            ? "Sin categoría"
+            : service.categories
+                ?.map((cat) => (typeof cat === "number" ? cat : cat.name))
+                .join(", ")}
         </p>
         <p>
           <strong>Precio:</strong> ${service.price}
@@ -86,25 +71,39 @@ const ShowService: React.FC = () => {
           <strong>Duración:</strong> {service.duration} {service.duration_type}
         </p>
         <p>
-          <strong>Sesiones:</strong>{" "}
+          <strong>Sesiones:</strong>
           {service.sessions
             ? `${service.session_number} sesiones`
             : "Servicio único"}
         </p>
         <p>
-          <strong>Servicio a domicilio:</strong>{" "}
+          <strong>Servicio a domicilio:</strong>
           {service.home_service ? "Sí" : "No"}
         </p>
         <p>
-          <strong>Inicio oferta:</strong> {formatDate(service.start_offer_at)}
+          <strong>Inicio oferta:</strong>
+          {formatDate(
+            service.start_offer_at instanceof Date
+              ? service.start_offer_at.toISOString()
+              : service.start_offer_at
+          ) || "—"}
         </p>
         <p>
-          <strong>Fin oferta:</strong> {formatDate(service.end_offer_at)}
+          <strong>Fin oferta:</strong>
+          {formatDate(
+            service.end_offer_at instanceof Date
+              ? service.end_offer_at.toISOString()
+              : service.end_offer_at
+          ) || "—"}
         </p>
 
-        {service.options?.length > 0 && (
+        {/* {service.options?.length > 0 && (
           <div>
-            <strong>Opciones:</strong>
+            <strong>Opciones:</strong> {product.categories?.length === 0
+            ? "Sin categoría"
+            : product.categories
+                ?.map((cat) => (typeof cat === "number" ? cat : cat.name))
+                .join(", ")}
             <ul className="list-disc pl-6">
               {service.options.map((opt, i) => (
                 <li key={i}>
@@ -113,12 +112,12 @@ const ShowService: React.FC = () => {
               ))}
             </ul>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="card-footer text-sm text-gray-500">
-        Creado: {formatDate(service.created_at)} | Última actualización:{" "}
-        {formatDate(service.updated_at)}
+        {/* Creado: {formatDate(service.created_at)} | Última actualización:
+        {formatDate(service.updated_at)} */}
       </div>
     </div>
   );
