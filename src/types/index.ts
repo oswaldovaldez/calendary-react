@@ -10,6 +10,7 @@ export interface UserType {
  name:              string;
  permissions?:       any[];
  record_templates?:  RecordTemplateType[];
+ services?:  ServiceType[];
  roles?:             RoleType|any[];
  role?:               number;
  schedules?:          ScheduleType[];

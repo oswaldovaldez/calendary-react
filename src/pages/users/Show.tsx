@@ -6,6 +6,8 @@ import type { UserType } from "../../types";
 import PermissionsComponent from "../../components/PermissionsComponent";
 import { useNotificationStore } from "../../store/notification.store";
 
+import UserServicesComponent from "../../components/UserServicesComponent";
+
 const ShowUser = () => {
   const { userId } = useParams({ from: "/users/$userId" });
   const token = useAuthStore((s) => s.token);
@@ -14,7 +16,10 @@ const ShowUser = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [permissions, setPermissions] = useState([]);
+  const [services, setServices] = useState([]);
+  const commerce = useAuthStore((s) => s.commerce);
   const [isMounted, setIsMounted] = useState(true);
+
   const onSubmit = (values: any) => {
     // console.log("submit");
     // console.log(values);
@@ -27,12 +32,34 @@ const ShowUser = () => {
       .catch((err) => console.log(err));
   };
 
+  const syncService = (values: any) => {
+    console.log("sync", values);
+    Api.syncServices({
+      _token: `${token}`,
+      userId: userId,
+      services: values,
+    })
+      .then((res) => {
+        setUser(res.data);
+        notify("success", res.message);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
       setIsLoading(false);
       return;
     }
+    Api.readServices({
+      _token: `${token}`,
+      query: { commerce_id: `${commerce?.id}`, all: "true" },
+    })
+      .then((res: any) => {
+        setServices(res);
+      })
+      .catch(console.log);
 
     const handleGetPerssions = async () => {
       Api.getPermissions({ _token: `${token}` })
@@ -130,6 +157,11 @@ const ShowUser = () => {
         user={user}
         permissions={permissions}
         handleOnSubmit={onSubmit}
+      />
+      <UserServicesComponent
+        user={user}
+        services={services}
+        handleOnSubmit={syncService}
       />
     </>
   );

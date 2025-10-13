@@ -158,6 +158,7 @@ export const Api = {
   getPermissions: (data: { _token: string, }) => apiFetch(`/permissions`, { method: 'GET', headers: { Authorization: `Bearer ${data._token}` } }),
   
   syncPermissions: (data: { permissions: Array<string>, _token: string, userId: number }) => apiFetch(`/users/${data.userId}/sync-permissions`, { method: 'POST', headers: { Authorization: `Bearer ${data._token}` }, body: { permissions: data.permissions } }),
+  syncServices: (data: { services: Array<string>, _token: string, userId: number }) => apiFetch(`/users/${data.userId}/sync-services`, { method: 'POST', headers: { Authorization: `Bearer ${data._token}` }, body: { services: data.services } }),
   
   checkToken: (data: {_token: string})=>apiFetch('/check-token',{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   
