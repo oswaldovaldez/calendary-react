@@ -41,15 +41,13 @@ const ShowPatient = () => {
   const [patient, setPatient] = useState<PatientType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-const [isMounted, setIsMounted] = useState(true);
+  const [isMounted, setIsMounted] = useState(true);
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
       setIsLoading(false);
       return;
     }
-
-    
 
     const fetchPatient = async () => {
       setIsLoading(true);
@@ -97,7 +95,7 @@ const [isMounted, setIsMounted] = useState(true);
         <p className="text-sm text-gray-500">ID: {patient.id}</p>
       </div>
 
-      <div className="card-body grid gap-3 md:grid-cols-2">
+      <div className="card-body grid gap-3 grid-cols-1 md:grid-cols-2">
         <div>
           <span className="font-semibold">Nombre:</span> {patient.first_name}{" "}
           {patient.last_name}

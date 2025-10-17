@@ -45,7 +45,7 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
       {({ errors, touched, isSubmitting }) => (
         <Form className="form-container">
           <div className="card neumo">
-            <div className="card-body grid gap-4 md:grid-cols-2">
+            <div className="card-body grid gap-4 grid-cols-1 md:grid-cols-2">
               {/* Nombre */}
               <div className="form-group md:col-span-2">
                 <label htmlFor="name" className="form-label">

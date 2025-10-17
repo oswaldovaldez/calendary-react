@@ -12,15 +12,13 @@ const ShowCategory = () => {
   const [category, setCategory] = useState<CategoryType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-const [isMounted, setIsMounted] = useState(true);
+  const [isMounted, setIsMounted] = useState(true);
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
       setIsLoading(false);
       return;
     }
-
-    
 
     const fetchCategory = async () => {
       setIsLoading(true);
@@ -67,7 +65,7 @@ const [isMounted, setIsMounted] = useState(true);
         <h2 className="text-lg font-semibold">Detalle de categoría</h2>
         <p className="text-sm text-gray-500">ID: {category.id}</p>
       </div>
-      <div className="card-body grid gap-3 md:grid-cols-2">
+      <div className="card-body grid gap-3 grid-cols-1 md:grid-cols-2">
         <div>
           <span className="font-semibold">Nombre:</span> {category.name}
         </div>

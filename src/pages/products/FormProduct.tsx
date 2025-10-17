@@ -81,7 +81,7 @@ const FormProduct: React.FC<FormProductProps> = ({
       {({ errors, touched, isSubmitting, setFieldValue }) => (
         <Form className="form-container">
           <div className="card neumo">
-            <div className="card-body grid gap-4 md:grid-cols-2">
+            <div className="card-body md:grid gap-4 grid-cols-1 md:grid-cols-2">
               {/* Nombre */}
               <div className="form-group md:col-span-2">
                 <label htmlFor="name" className="form-label">
@@ -103,7 +103,7 @@ const FormProduct: React.FC<FormProductProps> = ({
               {/* Categoría */}
               <div className="form-group py-2 col-span-2">
                 <label htmlFor="categories">Categorías</label>
-                <div className="columns-3 gap-3">
+                <div className="md:columns-3 gap-3">
                   {categories.length > 0 ? (
                     categories.map((category) => (
                       <div key={category.id} className="form-checkbox">

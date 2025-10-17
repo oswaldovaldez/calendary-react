@@ -412,7 +412,7 @@ const Index = () => {
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setOpenCreate(true)}
-              className="btn btn-info neumo"
+              className="btn btn-primary neumo"
             >
               Nueva Cita
             </button>
@@ -420,9 +420,9 @@ const Index = () => {
         </div>
       </header>
 
-      <div className="flex flex-1">
+      <div className="flex flex-col md:flex-row flex-1">
         {/* Sidebar */}
-        <aside className="w-64 bg-white border-r border-gray-200 p-4">
+        <aside className="md:w-64 bg-white border-r border-gray-200 p-4">
           <div className="space-y-4">
             <div>
               <div className="flex items-center space-x-2">
@@ -485,7 +485,7 @@ const Index = () => {
           {/* Navigation Bar */}
           <nav className="bg-white border-b border-gray-200 p-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-wrap items-center space-x-4">
                 {/* View Selector Dropdown */}
                 <div className="relative">
                   <button

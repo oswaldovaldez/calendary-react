@@ -57,6 +57,7 @@ html.dark {
 }
 
 /* === Fondo global === */
+.bg-content,
 body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
@@ -145,21 +146,46 @@ html.dark .btn {
 .btn-primary:hover {
   background: var(--color-primary-hover);
 }
+.btn-info {
+  @apply bg-sky-500;
+  color: #fff !important;
+}
+.btn-info:hover {
+  @apply bg-sky-600;
+}
 
 /* Danger */
 .btn-danger {
-  background: var(--color-alert-error);
+  /* background: var(--color-alert-error); */
+  @apply bg-red-500;
+  color: #fff !important;
+}
+.btn-danger:hover {
+  /* background: var(--color-alert-error); */
+  @apply bg-red-600;
 }
 
 /* Success */
 .btn-success {
-  background: var(--color-alert-success);
+  /* background: var(--color-alert-success); */
+  @apply bg-emerald-700;
+  color: #fff !important;
+}
+.btn-success:hover {
+  /* background: var(--color-alert-success); */
+  @apply bg-emerald-800;
   /*color: #fff !important;*/
 }
 
 /* Warning */
 .btn-warning {
-  background: var(--color-alert-warning);
+  /* background: var(--color-alert-warning); */
+  @apply bg-amber-500;
+  color: #fff !important;
+}
+.btn-warning:hover {
+  /* background: var(--color-alert-warning); */
+  @apply bg-amber-600;
 }
 
 /* Disabled */
@@ -332,14 +358,14 @@ html.dark .commerce-dropdown {
   }
 }
 
- .custom-scroll::-webkit-scrollbar {
-    width: 6px;
-  }
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
 
-  .custom-scroll::-webkit-scrollbar-thumb {
-    background-color: #3b3b3b;
-    border-radius: 10px;
-  }
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #3b3b3b;
+  border-radius: 10px;
+}
 
 /* ========================================================= */
 /* 📦 BACKUP DE ESTILOS NO USADOS (del CSS inicial)          */

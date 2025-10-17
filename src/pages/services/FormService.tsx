@@ -157,7 +157,7 @@ const FormService: React.FC<FormServiceProps> = ({
               {/* Categoría */}
               <div className="form-group py-2">
                 <label htmlFor="categories">Categorías</label>
-                <div className="columns-3 gap-3">
+                <div className="md:columns-3 gap-3">
                   {categories.length > 0 ? (
                     categories.map((category) => (
                       <div key={category.id} className="form-checkbox">

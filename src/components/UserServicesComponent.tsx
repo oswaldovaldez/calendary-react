@@ -51,7 +51,7 @@ const UserServicesComponent = ({
 
         <div className="card-body">
           <div className="form-container">
-            <div className="mt-2 columns-2 lg:columns-3">
+            <div className="mt-2 md:columns-2 lg:columns-3">
               {services.map((service, index) => (
                 <div className="form-group" key={`service-${index}`}>
                   <label

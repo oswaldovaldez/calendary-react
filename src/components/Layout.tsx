@@ -56,7 +56,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       >
         {isNotRootPath && (
           <div
-            className={`w-full h-[40px] flex flex-row justify-between px-4 py-2 gap-3 ${isOpen ? "sm:pl-64" : ""}`}
+            className={`w-full flex flex-row justify-between px-4 py-4 gap-3 ${isOpen ? "sm:pl-64" : ""}`}
           >
             <div>
               <button onClick={toggle} className="mx-2 btn neumo btn-secondary">
@@ -72,7 +72,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <UserMenu
                 onProfile={() => console.log("Perfil")}
-                
                 onLogout={logout}
               />
               <NotificationMenu />
@@ -84,9 +83,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         )}
         {isNotRootPath ? (
-          <div className={`p-6 ${isOpen && "sm:ml-64"}`}>{children}</div>
+          <div className={`md:p-6 ${isOpen && "sm:ml-64"}`}>{children}</div>
         ) : (
-          <div className={`p-6`}>{children}</div>
+          <div className={`md:p-6`}>{children}</div>
         )}
       </main>
     </div>

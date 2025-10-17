@@ -34,9 +34,8 @@ function Login() {
   const router = useRouter();
 
   return (
-    <div className="flex justify-center items-center min-h-screen max-w-lg w-lg mx-auto">
+    <div className="flex justify-center items-center min-h-screen max-w-lg mx-auto">
       <div className="w-full max-w-md p-6 rounded-2xl shadow-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h2>
         <img src={logo} alt="logo" />
         <Formik
           initialValues={values}
@@ -82,7 +81,7 @@ function Login() {
                 />
               </div>
               <button
-                className="btn neumo btn-success mx-auto"
+                className="btn neumo btn-success mx-auto mt-4"
                 type="submit"
                 disabled={isSubmitting}
               >

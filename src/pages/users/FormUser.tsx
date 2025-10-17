@@ -18,7 +18,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
           <Form className="form-container">
             <Field type="hidden" name="commerce_id" value={commerce?.id ?? 0} />
             <div className="card neumo">
-              <div className="card-body grid gap-4 md:grid-cols-2">
+              <div className="card-body grid gap-4 grid-cols-1 md:grid-cols-2">
                 <div className="form-group md:col-span-2">
                   <label htmlFor="name" className="form-label">
                     Nombre
@@ -111,7 +111,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
                   <div className="card-header">
                     <h3>Detalles</h3>
                   </div>
-                  <div className="card-body grid gap-4 md:grid-cols-2">
+                  <div className="card-body grid gap-4 grid-cols-1 md:grid-cols-2">
                     {initialValues.record_templates?.length > 0 &&
                       initialValues.record_templates?.[0].fields?.length >
                         0 && (
@@ -132,8 +132,7 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
                 </div>
               </>
             )}
-            <div className="flex justify-end mt-6">
-            </div>
+            <div className="flex justify-end mt-6"></div>
             <button
               className="btn neumo btn-success ml-auto"
               type="submit"
@@ -141,7 +140,6 @@ const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
             >
               {isEdit ? "Actualizar" : "Registrar"}
             </button>
-              
           </Form>
         )}
       </Formik>

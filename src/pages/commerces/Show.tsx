@@ -100,7 +100,7 @@ const ShowCommerce = () => {
           <h2 className="text-lg font-semibold">Detalle de comercio</h2>
           <p className="text-sm text-gray-500">ID: {commerce.id}</p>
         </div>
-        <div className="card-body grid gap-3 md:grid-cols-2">
+        <div className="card-body grid gap-3 grid-cols-1 md:grid-cols-2">
           <div>
             <span className="font-semibold">Nombre:</span> {commerce.name}
           </div>
