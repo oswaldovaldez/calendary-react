@@ -34,7 +34,7 @@ export const useSocketStore = create<SocketState>()(
       connectSocket: (userId: number) => {
         if (get().socket) return;
 
-        const socket = io("https://socket.srv899715.hstgr.cloud", {
+        const socket = io("https://socket.grova.mx", {
           transports: ["websocket", "polling"],
           reconnection: true,
           reconnectionAttempts: Infinity,
