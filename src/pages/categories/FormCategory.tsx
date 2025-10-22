@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
+import ErrorForm from "../../components/ErrorForm";
+import { handleApiError } from "../../utils/handleFormErrorApi";
 
 export interface CategoryFormValues {
   name: string;
@@ -9,7 +12,7 @@ export interface CategoryFormValues {
 }
 
 const categorySchema = Yup.object().shape({
-  name: Yup.string().required("El nombre es obligatorio"),
+  name: Yup.string().required("El nombre de la categoría es obligatorio"),
   description: Yup.string().nullable(),
 });
 
@@ -27,49 +30,71 @@ const FormCategory: React.FC<FormCategoryProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
+  const [backendError, setBackendError] = useState<string | null>(null);
+  const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
+
+  const handleWrappedSubmit = async (
+    values: CategoryFormValues,
+    helpers: FormikHelpers<CategoryFormValues>
+  ) => {
+    setBackendError(null);
+    setLocalErrors({});
+
+    // Validación manualmente con Yup
+    try {
+      await categorySchema.validate(values, { abortEarly: false });
+    } catch (validationError: any) {
+      const formErrors: Record<string, string> = {};
+      validationError.inner.forEach((err: any) => {
+        if (err.path) formErrors[err.path] = err.message;
+      });
+      setLocalErrors(formErrors);
+    }
+
+    // Siempre intentamos enviar al backend
+    try {
+      await onSubmit(values, helpers);
+    } catch (apiError: any) {
+      const formatted = handleApiError(apiError);
+      setBackendError(formatted);
+    }
+  };
+
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={categorySchema}
-      onSubmit={onSubmit}
-      enableReinitialize
-    >
-      {({ errors, touched, isSubmitting }) => (
+    <Formik initialValues={initialValues} onSubmit={handleWrappedSubmit} enableReinitialize>
+      {({ isSubmitting }) => (
         <div className="card">
           <Form className="form-container">
+            {/*Solo errores del backend */}
+            <ErrorForm message={backendError} />
+
             <div className="card-body">
               {/* Nombre */}
               <div className="form-group">
                 <label htmlFor="name">Nombre</label>
                 <Field
-                  className={`input input-sm ${
-                    errors.name && touched.name ? "input-invalid" : ""
-                  }`}
+                  className={`input input-sm ${localErrors.name ? "input-invalid" : ""}`}
                   type="text"
                   name="name"
                   placeholder="Nombre de la categoría"
                 />
-                <ErrorMessage
-                  name="name"
-                  component="div"
-                  className="form-text-invalid"
-                />
+                {localErrors.name && (
+                  <div className="form-text-invalid">{localErrors.name}</div>
+                )}
               </div>
 
               {/* Descripción */}
               <div className="form-group">
                 <label htmlFor="description">Descripción</label>
                 <Field
-                  className="input input-sm"
+                  className={`input input-sm ${localErrors.description ? "input-invalid" : ""}`}
                   type="text"
                   name="description"
                   placeholder="Descripción breve (opcional)"
                 />
-                <ErrorMessage
-                  name="description"
-                  component="div"
-                  className="form-text-invalid"
-                />
+                {localErrors.description && (
+                  <div className="form-text-invalid">{localErrors.description}</div>
+                )}
               </div>
 
               {/* Campos ocultos */}
