@@ -26,22 +26,36 @@ export async function apiFetch<T = any, B = any>(
 ): Promise<T> {
   const { method = "GET", body, headers = {}, query = {} } = options;
   const params = buildQueryParams(query);
-  const res = await fetch(`${API_URL}${endpoint}${params==="?"?"":params}`, {
+  const res = await fetch(`${API_URL}${endpoint}${params === "?" ? "" : params}`, {
     method,
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
       ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,
   });
 
+  // Si la respuesta no es exitosa
   if (!res.ok) {
-    throw new Error(`Error ${res.status}: ${res.statusText}`);
+    let errorData: any;
+
+    try {
+      // parsear JSON de error de Laravel
+      errorData = await res.json();
+    } catch {
+      // si el backend no devolvió JSON
+      errorData = { message: `Error ${res.status}: ${res.statusText}` };
+    }
+
+    // Lanzamos el error crudo para que FormCategory lo capture
+    throw errorData;
   }
 
+  //  Si todo bien, devolvemos JSON
   return res.json();
 }
+
 
 // ✅ Aquí exportamos el handler de Netlify
 export const handler: Handler = async (event) => {
