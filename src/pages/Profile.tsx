@@ -6,17 +6,18 @@ import {
   CalendarDays,
   Building2,
   Lock,
-  Palette,
-  Bell,
-  BellOff,
 } from "lucide-react";
+// Palette,
+// Bell,
+// BellOff,
 import UserServicesComponent from "../components/UserServicesComponent";
 import { Api } from "../services/api";
 import { useNotificationStore } from "../store/notification.store";
+import { Link } from "@tanstack/react-router";
 
 const Profile: React.FC = () => {
   const user = useAuthStore((s) => s.user);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  // const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -59,19 +60,19 @@ const Profile: React.FC = () => {
     console.log({ currentPassword, newPassword, confirmPassword });
   };
 
-  const iconClass =
-    "text-[var(--color-primary)] dark:text-[hsl(145,85%,85%)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.4)]";
+  // const iconClass =
+  //   "text-[var(--color-primary)] dark:text-[hsl(145,85%,85%)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.4)]";
 
   return (
     <main className="w-full bg-[var(--color-background)] text-[var(--color-text-primary)] flex flex-col gap-8 p-4 md:p-8">
       {/* === ENCABEZADO === */}
-      <section className="flex flex-col md:flex-row items-center md:items-end md:justify-between gap-6 border-b border-gray-200 dark:border-gray-700 pb-6">
+      <section className="flex flex-col md:flex-row items-center md:items-end md:justify-between gap-6 pb-6">
         <div className="flex items-center gap-6 w-full">
           {/* Avatar */}
           <div className="w-28 h-28 rounded-full flex items-center justify-center bg-[var(--color-primary)/10]">
             <ShieldUser
               size={56}
-              className={`${iconClass} opacity-90 dark:opacity-100`}
+              className={`opacity-90 dark:opacity-100`}
             />
           </div>
 
@@ -85,11 +86,11 @@ const Profile: React.FC = () => {
             </p>
             <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-[var(--color-text-secondary)]">
               <div className="flex items-center gap-1.5">
-                <Mail size={14} className={iconClass} />
+                <Mail size={14}  />
                 <span>{user.email}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <CalendarDays size={14} className={iconClass} />
+                <CalendarDays size={14}  />
                 <span>
                   Registrado el{" "}
                   {new Date(user.created_at).toLocaleDateString("es-MX")}
@@ -100,12 +101,17 @@ const Profile: React.FC = () => {
         </div>
 
         {/* Botón Editar perfil */}
-        <button
-          className="px-6 py-2 bg-[var(--color-primary)] text-white font-semibold rounded-full shadow-sm
-					hover:scale-[1.03] active:scale-[0.98] whitespace-nowrap transition-all duration-200"
+        <Link
+          to={`/users/${user.id}`}
+          className="btn btn-add mt-2 hover:scale-[1.02] transition-transform whitespace-nowrap"
         >
           Editar perfil
-        </button>
+        </Link>
+        {/* <button
+          className=""
+        >
+          Editar perfil
+        </button> */}
       </section>
 
       {/* === SECCIONES PRINCIPALES === */}
@@ -113,9 +119,9 @@ const Profile: React.FC = () => {
         {/* COLUMNA IZQUIERDA */}
         <div className="space-y-6">
           {/* INFORMACIÓN GENERAL */}
-          <div className="card p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+          <div className="card p-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
-              <ShieldUser size={20} className={iconClass} />
+              <ShieldUser size={20}  />
               Información general
             </h2>
             <p>
@@ -148,9 +154,9 @@ const Profile: React.FC = () => {
           </div>
 
           {/* CAMBIO DE CONTRASEÑA */}
-          <div className="card p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+          <div className="card p-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
-              <Lock size={20} className={iconClass} />
+              <Lock size={20}  />
               Cambiar Contraseña
             </h2>
             <form
@@ -193,12 +199,14 @@ const Profile: React.FC = () => {
                   required
                 />
               </div>
-              <button
-                type="submit"
-                className="btn btn-add mt-2 w-full hover:scale-[1.02] transition-transform"
-              >
-                Actualizar contraseña
-              </button>
+              <div className="flex flex-row justify-end">
+                <button
+                  type="submit"
+                  className="btn btn-add mt-2 hover:scale-[1.02] transition-transform"
+                >
+                  Actualizar contraseña
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -206,9 +214,9 @@ const Profile: React.FC = () => {
         {/* COLUMNA DERECHA */}
         <div className="space-y-6">
           {/* COMERCIOS ASOCIADOS */}
-          <div className="card p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+          <div className="card p-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
-              <Building2 size={20} className={iconClass} />
+              <Building2 size={20}  />
               Comercios asociados
             </h2>
             {user.commerces?.length ? (
@@ -242,9 +250,9 @@ const Profile: React.FC = () => {
           </div>
 
           {/* PREFERENCIAS */}
-          <div className="card p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+          {/* <div className="card p-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
-              <Palette size={20} className={iconClass} />
+              <Palette size={20}  />
               Preferencias
             </h2>
             <div className="space-y-3">
@@ -282,7 +290,7 @@ const Profile: React.FC = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
       <UserServicesComponent

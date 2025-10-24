@@ -305,7 +305,28 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
                 />
               </div>
             </div>
-
+            {isEdit ? (
+              <div className="form-group">
+                <label htmlFor="status" className="form-label required">
+                  Hora fin
+                </label>
+                <Field name="status" as="select" className="input">
+                  <option value="scheduled">Programada</option>
+                  <option value="confirmed">Confirmada</option>
+                  <option value="cancelled">Cancelada</option>
+                  <option value="completed">Completada</option>
+                  <option value="missed">Perdida</option>
+                  <option value="rescheduled">Reprogramada</option>
+                </Field>
+                <ErrorMessage
+                  name="status"
+                  component="div"
+                  className="form-text-invalid"
+                />
+              </div>
+            ) : (
+              <></>
+            )}
             {/* Botón submit */}
             <div className="flex justify-end mt-6">
               <button type="submit" className="btn btn-primary">

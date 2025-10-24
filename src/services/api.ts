@@ -161,5 +161,6 @@ export const Api = {
   syncServices: (data: { services: Array<string>, _token: string, userId: number }) => apiFetch(`/users/${data.userId}/sync-services`, { method: 'POST', headers: { Authorization: `Bearer ${data._token}` }, body: { services: data.services } }),
   
   checkToken: (data: {_token: string})=>apiFetch('/check-token',{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
+  dashboard: (data: {_token: string,user_id:number,commerce_id:number})=>apiFetch('/dashboard',{method:'POST',headers: {Authorization:`Bearer ${data._token}`},body: { user_id: data.user_id, commerce_id: data.commerce_id }}),
   
 };
