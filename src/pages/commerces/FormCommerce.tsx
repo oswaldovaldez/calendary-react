@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
-import FormRender from "../../components/FormRender";
+import FormRender from "../../components/FormRenderOld";
 import { type CommerceType } from "../../types/index";
 
 export const commerceSchema = Yup.object({

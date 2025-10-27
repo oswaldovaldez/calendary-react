@@ -7,7 +7,7 @@ import {
   FieldArray,
 } from "formik";
 import * as Yup from "yup";
-import FormRender from "../../components/FormRender";
+import FormRender from "../../components/FormRenderOld";
 import { type PatientType } from "../../types/index";
 import { RecordsIndex } from "../records";
 

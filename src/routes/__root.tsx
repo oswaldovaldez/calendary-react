@@ -28,6 +28,7 @@ import {
   ProductsIndex,
   ProductsShow,
 } from "../pages/products/index.ts";
+import CartView from "../pages/appointments/CartView.tsx";
 // import {
 //   RecordsCreate,
 //   RecordsEdit,
@@ -155,6 +156,11 @@ const routeTree = rootRoute.addChildren([
         <AppointmentsShow />
       </RouteGuard>
     ),
+  }),
+  new Route({
+    getParentRoute: () => rootRoute,
+    path: "/appointments/$appointmentId/checkout",
+    component: () => <CartView />,
   }),
   // new Route({
   //   getParentRoute: () => rootRoute,

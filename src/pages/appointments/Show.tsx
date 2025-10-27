@@ -1,10 +1,11 @@
-import { useParams } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { useAuthStore } from "../../store/auth.store";
 import type { AppointmentType } from "../../types";
 import { useEffect, useState } from "react";
 import { Api } from "../../services/api";
 import { RecordsIndex } from "../records";
 import { Calendar, Clock, User, Briefcase } from "lucide-react";
+import { useCartStore } from "../../store/cartStore";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -29,12 +30,29 @@ const Show = () => {
     from: "/appointments/$appointmentId",
   });
   const token = useAuthStore((state) => state.token);
-
+  const navigate = useNavigate();
+  const { addItem, clear } = useCartStore();
   const [appointment, setAppointment] = useState<AppointmentType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(true);
-
+  const handleGenetareCart = () => {
+    // Lógica para generar la orden
+    console.log("Generando orden para la cita:", appointmentId);
+    clear();
+    addItem({
+      id: appointmentId ?? 0,
+      name: appointment?.service?.name || "Servicio de cita",
+      price: Number(appointment?.service?.price) || 0,
+      quantity: 1,
+      type: "service",
+    });
+    console.log(
+      "Cita agregada al carrito",
+      `/appointments/${appointmentId}/checkout`
+    );
+    navigate({ to: `/appointments/${appointmentId}/checkout` });
+  };
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
@@ -154,7 +172,10 @@ const Show = () => {
           </div>
 
           {/* Botón al nivel derecho */}
-          <button className="btn btn-add px-4 py-2 text-sm hover:scale-[1.02] transition-transform">
+          <button
+            onClick={handleGenetareCart}
+            className="btn btn-add px-4 py-2 text-sm hover:scale-[1.02] transition-transform"
+          >
             Generar orden
           </button>
         </div>

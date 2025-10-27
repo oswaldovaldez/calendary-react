@@ -36,7 +36,7 @@ function Login() {
   return (
     <div className="flex justify-center items-center min-h-screen max-w-lg mx-auto">
       <div className="w-full max-w-md p-6 rounded-2xl shadow-lg">
-        <img src={logo} alt="logo" />
+        <img src={logo} className="w-48 mx-auto" alt="logo" />
         <Formik
           initialValues={values}
           validationSchema={loginSchema}

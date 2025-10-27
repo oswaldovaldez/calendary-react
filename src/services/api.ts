@@ -105,9 +105,9 @@ export const Api = {
   detachUserCommerce:(data:{user_id:number,commerce_id:number,_token:string})=>apiFetch(`/commerces/${data.commerce_id}/detach-user`,{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
 
   //crud categorias
-  createCategory:(data:{name:string,description:string,parent_id:number|null,commerce_id:number,_token:string})=>apiFetch('/categories',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  createCategory:(data:{name:string,description:string,parent_id:number|null,commerce_id:number,service:boolean,product:boolean,_token:string})=>apiFetch('/categories',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   readCategories:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/categories`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
-  updateCategory:(data:{name:string,description:string,parent_id:number|null,commerce_id:number,category_id:number,_token: string})=>apiFetch(`/categories/${data.category_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
+  updateCategory:(data:{name:string,description:string,parent_id:number|null,commerce_id:number,category_id:number,service:boolean,product:boolean,_token: string})=>apiFetch(`/categories/${data.category_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteCategory:(data:{category_id:number,_token: string})=>apiFetch(`/categories/${data.category_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showCategory:(data:{category_id:number,_token:string,})=>apiFetch(`/categories/${data.category_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
   

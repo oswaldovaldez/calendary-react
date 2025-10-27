@@ -20,10 +20,10 @@ const CreateProduct = () => {
     const fetchCategories = async () => {
       Api.readCategories({
         _token: `${token}`,
-        query: {},
+        query: {all:'true'},
       })
         .then((response) => {
-          setCategories(response.data ?? []);
+          setCategories(response ?? []);
         })
         .catch((error) => {
           console.error("Error al cargar categorías:", error);

@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import type { FormikHelpers } from "formik";
 // import * as Yup from "yup";
-import FormRender from "../../components/FormRender";
+import FormRender from "../../components/FormRenderOld";
 import { RECORD_TYPES } from "../../types";
 
 export interface RecordFormValues {
@@ -133,15 +133,14 @@ const FormRecord: React.FC<FormRecordProps> = ({
               </div>
             </div>
             <div className="flex justify-end mt-6">
-              
-            <button
-              className="btn neumo btn-success ml-auto"
-              type="submit"
-              disabled={isSubmitting}
+              <button
+                className="btn neumo btn-success ml-auto"
+                type="submit"
+                disabled={isSubmitting}
               >
-              {isEdit ? "Actualizar" : "Registrar"}
-            </button>
-              </div>
+                {isEdit ? "Actualizar" : "Registrar"}
+              </button>
+            </div>
           </Form>
         )}
       </Formik>

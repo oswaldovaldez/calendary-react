@@ -57,7 +57,7 @@ export const productSchema = Yup.object({
 
 interface FormProductProps {
   initialValues: ProductType;
-  categories: { id: number; name: string }[];
+  categories: { id: number; name: string; procuct: boolean }[];
   isEdit?: boolean;
   onSubmit: (
     values: ProductType,
@@ -105,46 +105,49 @@ const FormProduct: React.FC<FormProductProps> = ({
                 <label htmlFor="categories">Categorías</label>
                 <div className="md:columns-3 gap-3">
                   {categories.length > 0 ? (
-                    categories.map((category) => (
-                      <div key={category.id} className="form-checkbox">
-                        <label className="flex items-center space-x-2">
-                          <Field name="categories">
-                            {({ field, form }: any) => {
-                              // Aseguramos que siempre sea un array
-                              const value = Array.isArray(field.value)
-                                ? field.value
-                                : [];
-                              const isChecked = value.includes(category.id);
+                    categories.map(
+                      (category) =>
+                        category.product && (
+                          <div key={category.id} className="form-checkbox">
+                            <label className="flex items-center space-x-2">
+                              <Field name="categories">
+                                {({ field, form }: any) => {
+                                  // Aseguramos que siempre sea un array
+                                  const value = Array.isArray(field.value)
+                                    ? field.value
+                                    : [];
+                                  const isChecked = value.includes(category.id);
 
-                              return (
-                                <input
-                                  type="checkbox"
-                                  value={category.id}
-                                  checked={isChecked}
-                                  onChange={(e) => {
-                                    if (e.target.checked) {
-                                      form.setFieldValue("categories", [
-                                        ...value,
-                                        category.id,
-                                      ]);
-                                    } else {
-                                      form.setFieldValue(
-                                        "categories",
-                                        value.filter(
-                                          (id: number) => id !== category.id
-                                        )
-                                      );
-                                    }
-                                  }}
-                                  className="checkbox checkbox-sm"
-                                />
-                              );
-                            }}
-                          </Field>
-                          <span>{category.name}</span>
-                        </label>
-                      </div>
-                    ))
+                                  return (
+                                    <input
+                                      type="checkbox"
+                                      value={category.id}
+                                      checked={isChecked}
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          form.setFieldValue("categories", [
+                                            ...value,
+                                            category.id,
+                                          ]);
+                                        } else {
+                                          form.setFieldValue(
+                                            "categories",
+                                            value.filter(
+                                              (id: number) => id !== category.id
+                                            )
+                                          );
+                                        }
+                                      }}
+                                      className="checkbox checkbox-sm"
+                                    />
+                                  );
+                                }}
+                              </Field>
+                              <span>{category.name}</span>
+                            </label>
+                          </div>
+                        )
+                    )
                   ) : (
                     <p>No hay categorías disponibles.</p>
                   )}

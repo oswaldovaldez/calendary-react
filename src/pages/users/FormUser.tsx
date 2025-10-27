@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import { userSchema, userSchemaEdit } from "../../schemas/userSchema";
-import FormRender from "../../components/FormRender";
+import FormRender from "../../components/FormRenderOld";
 import { useAuthStore } from "../../store/auth.store";
 import { SchedulesIndex } from "../schedules";
 const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {

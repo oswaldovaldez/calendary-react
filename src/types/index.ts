@@ -110,6 +110,8 @@ export interface CategoryType {
  parent_id:   number|null;
  slug:        string;
  status:      boolean;
+ service:      boolean;
+ product:      boolean;
  updated_at?:  string;
 }
 

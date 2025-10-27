@@ -26,3 +26,15 @@ function App() {
 }
 
 export default App
+/**
+ * Pendientes:
+ * - saldo de pacientes
+ * - boton y vista para recargar saldo
+ * - boton y vista para redimir saldo
+ * - historial de recargas y redenciones
+ * - servidor elimininar cita staus cancel
+ * - mensaje de erroes en todos los formularios
+ * - formulario de orden de cita 50%
+ * - otros puntos del dashboard
+ * - crear tabla de dias de asueto en el backend y formulario para gestionarlo
+*/

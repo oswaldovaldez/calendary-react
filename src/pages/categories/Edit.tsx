@@ -19,6 +19,8 @@ const EditCategory = () => {
     description: "",
     parent_id: null,
     commerce_id: currentCommerceId,
+    service: false,
+    product: false,
   });
 
   const [loading, setLoading] = useState(true);
@@ -59,6 +61,8 @@ const EditCategory = () => {
           description: res.description ?? "",
           parent_id: res.parent_id ?? null,
           commerce_id: res.commerce_id,
+          service: res.service,
+          product: res.product,
         });
         setLoading(false);
       })

@@ -28,11 +28,11 @@ const EditProduct = () => {
           }),
           Api.readCategories({
             _token: `${token}`,
-            query: {},
+            query: { all: "true" },
           }),
         ]);
 
-        setCategories(catResponse.data ?? []);
+        setCategories(catResponse ?? []);
         setInitialValues({
           categories: product.categories?.map((cat: any) => cat.id) || [],
           sku: product.sku,

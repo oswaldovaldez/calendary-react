@@ -9,11 +9,15 @@ export interface CategoryFormValues {
   description: string;
   parent_id: number | null;
   commerce_id: number;
+  service: boolean;
+  product: boolean;
 }
 
 const categorySchema = Yup.object().shape({
   name: Yup.string().required("El nombre de la categoría es obligatorio"),
   description: Yup.string().nullable(),
+  service: Yup.boolean().default(false),
+  product: Yup.boolean().default(false),
 });
 
 interface FormCategoryProps {
@@ -61,7 +65,11 @@ const FormCategory: React.FC<FormCategoryProps> = ({
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleWrappedSubmit} enableReinitialize>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleWrappedSubmit}
+      enableReinitialize
+    >
       {({ isSubmitting }) => (
         <div className="card">
           <Form className="form-container">
@@ -93,10 +101,45 @@ const FormCategory: React.FC<FormCategoryProps> = ({
                   placeholder="Descripción breve (opcional)"
                 />
                 {localErrors.description && (
-                  <div className="form-text-invalid">{localErrors.description}</div>
+                  <div className="form-text-invalid">
+                    {localErrors.description}
+                  </div>
                 )}
               </div>
-
+              {/* Servicio */}
+              <div className="form-group md:col-span-2">
+                <Field name="service">
+                  {({ field, form }: any) => (
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(field.value)}
+                        onChange={(e: any) =>
+                          form.setFieldValue(field.name, e.target.checked)
+                        }
+                      />
+                      Categoria de servicios
+                    </label>
+                  )}
+                </Field>
+              </div>
+              {/* Producto */}
+              <div className="form-group md:col-span-2">
+                <Field name="product">
+                  {({ field, form }: any) => (
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(field.value)}
+                        onChange={(e: any) =>
+                          form.setFieldValue(field.name, e.target.checked)
+                        }
+                      />
+                      Categoria de productos
+                    </label>
+                  )}
+                </Field>
+              </div>
               {/* Campos ocultos */}
               <Field type="hidden" name="parent_id" />
               <Field type="hidden" name="commerce_id" />

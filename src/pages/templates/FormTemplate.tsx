@@ -31,6 +31,7 @@ type FieldBase = {
   name: string;
   type: string;
   required: boolean;
+  isArray?: boolean;
   // additional index signature for dynamic props
   [key: string]: any;
 };
@@ -246,6 +247,26 @@ const FieldEditor = memo(function FieldEditor({
                 <span className="text-sm">Requerido</span>
               </label>
             </div>
+            {field.type === "group" && (
+              <div className="form-check">
+                <label className="form-label">
+                  <input
+                    type="checkbox"
+                    checked={!!field.isArray}
+                    onChange={(e: any) =>
+                      updateField(
+                        field.id,
+                        "isArray",
+                        e.target.checked,
+                        groupId
+                      )
+                    }
+                    className="mr-2"
+                  />
+                  <span className="text-sm">Multiple</span>
+                </label>
+              </div>
+            )}
           </div>
 
           {field.type === "textarea" && (

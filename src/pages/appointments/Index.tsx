@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 // import { Link } from "@tanstack/react-router";
 import Calendar from "@toast-ui/calendar";
 import "@toast-ui/calendar/dist/toastui-calendar.min.css";
@@ -9,10 +9,19 @@ import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import { useNotificationStore } from "../../store/notification.store";
 import Modal from "../../components/Modal";
-
+import { renderToString } from "react-dom/server";
+import {
+  Clock, // scheduled - programada
+  CheckCircle, // confirmed - confirmada
+  XCircle, // cancelled - cancelada
+  CheckCheck, // completed - completada
+  AlertCircle, // missed - perdida
+  RefreshCw, // rescheduled - reprogramada
+} from "lucide-react";
 import AppointmentsCreate from "./Create";
 import { AppointmentsEdit } from ".";
 import { useSocketStore } from "../../store/socket.store";
+// import { te } from "date-fns/locale";
 
 const getMonthRange = (date: Date) => {
   const start = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -229,14 +238,14 @@ const Index = () => {
     }
   };
 
-  const handleViewAllToggle = () => {
-    const newShowAll = !showAllCalendars;
-    setShowAllCalendars(newShowAll);
+  // const handleViewAllToggle = () => {
+  //   const newShowAll = !showAllCalendars;
+  //   setShowAllCalendars(newShowAll);
 
-    if (newShowAll) {
-      setVisibleCalendars(new Set(calendars.map((c) => c.id)));
-    }
-  };
+  //   if (newShowAll) {
+  //     setVisibleCalendars(new Set(calendars.map((c) => c.id)));
+  //   }
+  // };
 
   const handleDeleteEvent = async (eventId: string) => {
     try {
@@ -307,6 +316,57 @@ const Index = () => {
         week: {
           showTimezoneCollapseButton: true,
           timezonesCollapsed: false,
+        },
+        template: {
+          time: function (event: any) {
+            const status = event.raw.status;
+            let StatusIcon = null;
+            let title = "";
+            switch (status) {
+              case "scheduled":
+                StatusIcon = Clock;
+                title = "text-blue-700";
+                break;
+              case "confirmed":
+                StatusIcon = CheckCircle;
+                title = "text-green-700";
+                break;
+              case "cancelled":
+                StatusIcon = XCircle;
+                title = "text-red-700";
+                break;
+              case "completed":
+                StatusIcon = CheckCheck;
+                title = "text-emerald-700";
+                break;
+              case "missed":
+                StatusIcon = AlertCircle;
+                title = "text-orange-700";
+                break;
+              case "rescheduled":
+                StatusIcon = RefreshCw;
+                title = "text-purple-700";
+                break;
+              default:
+                StatusIcon = null;
+            }
+
+            const iconHtml = StatusIcon
+              ? renderToString(
+                  createElement(StatusIcon, {
+                    size: 12
+                    ,
+                    className: `inline mr-1 ${title}`,
+                  })
+                )
+              : "";
+            return (
+              '<span class="calendar-event-time" >' +
+              iconHtml +
+              event.title +
+              "</span>"
+            );
+          },
         },
       });
       calendarInstance.current.on("clickEvent", ({ event }: any) => {
@@ -390,24 +450,22 @@ const Index = () => {
   // Si no hay token, mostrar mensaje de carga
   if (!token) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen  flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando calendario...</p>
+          <p className="">Cargando calendario...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 p-4">
+      <header className=" p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-gray-900">
-              Calendario de Citas
-            </h1>
+            <h1 className="text-2xl font-bold ">Calendario de Citas</h1>
           </div>
           <div className="flex items-center space-x-2">
             <button
@@ -422,10 +480,10 @@ const Index = () => {
 
       <div className="flex flex-col md:flex-row flex-1">
         {/* Sidebar */}
-        <aside className="md:w-64 bg-white border-r border-gray-200 p-4">
+        <aside className="md:w-64  border-r border-gray-200 p-4">
           <div className="space-y-4">
             <div>
-              <div className="flex items-center space-x-2">
+              {/* <div className="flex items-center space-x-2">
                 <input
                   type="checkbox"
                   id="view-all"
@@ -436,13 +494,13 @@ const Index = () => {
                 <label htmlFor="view-all" className="font-medium text-gray-900">
                   Ver todos
                 </label>
-              </div>
+              </div> */}
             </div>
 
             <hr className="border-gray-200" />
 
             <div>
-              <h3 className="font-medium text-gray-900 mb-3">Calendarios</h3>
+              <h3 className="font-medium mb-3">Calendarios</h3>
               <div className="space-y-2">
                 {calendars.map((calendar) => (
                   <div
@@ -469,7 +527,7 @@ const Index = () => {
                     />
                     <label
                       htmlFor={`calendar-${calendar.id}`}
-                      className="text-sm text-gray-700 truncate"
+                      className="text-sm  truncate"
                     >
                       {calendar.name}
                     </label>
@@ -483,14 +541,14 @@ const Index = () => {
         {/* Main Content */}
         <div className="flex-1 flex flex-col">
           {/* Navigation Bar */}
-          <nav className="bg-white border-b border-gray-200 p-4">
+          <nav className=" border-b border-gray-200 p-4">
             <div className="flex items-center justify-between">
               <div className="flex flex-wrap items-center space-x-4">
                 {/* View Selector Dropdown */}
                 <div className="relative">
                   <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="flex items-center space-x-2 px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex items-center space-x-2 px-3 py-2  border border-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <span>{getViewDisplayName()}</span>
                     <svg
@@ -509,22 +567,22 @@ const Index = () => {
                   </button>
 
                   {isDropdownOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                    <div className="absolute top-full left-0 mt-1 w-32 commerce-dropdown border border-gray-300 rounded-lg shadow-lg z-10">
                       <button
                         onClick={() => handleViewChange("month")}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-50 first:rounded-t-lg"
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-500 first:rounded-t-lg"
                       >
                         Mensual
                       </button>
                       <button
                         onClick={() => handleViewChange("week")}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-50"
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-500"
                       >
                         Semanal
                       </button>
                       <button
                         onClick={() => handleViewChange("day")}
-                        className="block w-full text-left px-4 py-2 hover:bg-gray-50 last:rounded-b-lg"
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-500 last:rounded-b-lg"
                       >
                         Diario
                       </button>
@@ -578,9 +636,7 @@ const Index = () => {
                   </button>
                 </div>
 
-                <span className="font-medium text-gray-900 text-lg">
-                  {currentDateRange}
-                </span>
+                <span className="font-medium text-lg">{currentDateRange}</span>
               </div>
             </div>
           </nav>
