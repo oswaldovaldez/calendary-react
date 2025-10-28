@@ -45,6 +45,7 @@ export default function AppointmentCheckout(): JSX.Element {
         adjustment_concept: adjustmentConcept,
         wallet_amount: walletAmount,
         payment_method: paymentMethod,
+        status: "pending",
         folio: folio || null,
         total: grandTotal(),
       };
@@ -63,17 +64,8 @@ export default function AppointmentCheckout(): JSX.Element {
 
   return (
     <div>
-      <button
-        onClick={handleCheckout}
-        style={{
-          padding: "10px 14px",
-          background: "#2563eb",
-          color: "#fff",
-          border: "none",
-          borderRadius: 6,
-        }}
-      >
-        Confirmar cita y pagar
+      <button onClick={handleCheckout} className="btn btn-success">
+        Generar Orden
       </button>
     </div>
   );

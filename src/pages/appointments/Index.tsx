@@ -142,7 +142,16 @@ const Index = () => {
       const end = calendarInstance.current.getDateRangeEnd();
       const startDate = new Date(start);
       const endDate = new Date(end);
-      // console.log(startDate, endDate);
+      const nowDate = new Date();
+
+      const shouldFetch =
+        startDate.getMonth() !== nowDate.getMonth() ||
+        startDate.getFullYear() !== nowDate.getFullYear() ||
+        appointments.length === 0;
+
+      if (shouldFetch) {
+        fetchAppointments(startDate);
+      }
 
       if (viewType === "month") {
         setCurrentDateRange(
@@ -354,8 +363,7 @@ const Index = () => {
             const iconHtml = StatusIcon
               ? renderToString(
                   createElement(StatusIcon, {
-                    size: 12
-                    ,
+                    size: 12,
                     className: `inline mr-1 ${title}`,
                   })
                 )
