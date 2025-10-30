@@ -57,6 +57,7 @@ const Index = () => {
     if (reloadCalendar && token) {
       fetchAppointments(new Date());
       setReloadCalendar(false);
+      setShowAllCalendars(false);
     }
   }, [reloadCalendar]);
   const fetchAppointments = async (date: Date) => {

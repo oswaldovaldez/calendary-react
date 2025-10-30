@@ -1,4 +1,4 @@
-import type { UserType, ServiceType, ScheduleType, AppointmentType } from '../types/index';
+import type { UserType, ServiceType, ScheduleType } from '../types/index';
 
 
 interface SlotType {

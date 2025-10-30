@@ -134,6 +134,9 @@ input[type="color"].form-control {
   @apply inline-flex items-center px-4 py-2 cursor-pointer font-medium rounded-md shadow-sm 
          focus:outline-none focus:ring-2 focus:ring-offset-2 transition text-gray-700;
 }
+.btn-sm {
+  @apply px-3 py-1 text-sm leading-normal;
+}
 html.dark .btn {
   @apply text-gray-200;
 }

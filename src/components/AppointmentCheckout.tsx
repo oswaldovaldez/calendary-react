@@ -1,5 +1,5 @@
 // src/views/AppointmentCheckout.tsx
-import React, { type JSX } from "react";
+import  { type JSX } from "react";
 import { useCartStore } from "../store/cartStore";
 
 import { toast } from "react-hot-toast";
@@ -18,7 +18,6 @@ export default function AppointmentCheckout(): JSX.Element {
     paymentMethod,
     folio,
     grandTotal,
-    clear,
   } = useCartStore();
 
   async function handleCheckout() {
@@ -64,7 +63,7 @@ export default function AppointmentCheckout(): JSX.Element {
 
   return (
     <div>
-      <button onClick={handleCheckout} className="btn btn-success">
+      <button onClick={handleCheckout} className="btn btn-sm btn-success">
         Generar Orden
       </button>
     </div>

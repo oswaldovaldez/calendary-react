@@ -123,7 +123,9 @@ export const Api = {
   readProducts:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/products`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
   updateProduct:(data: { product_id: number, commerce_id: number, sku: string, name: string, barcode: string | null, brand: string, status: boolean, description: string, format: string, cost: number, price: number, price_with_discount: number | null, commission: number | null, iva: number, stock: number, stock_alert: number | null, active: boolean, image: string | null, categories: Array<number>, _token: string })=>apiFetch(`/products/${data.product_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteProduct:(data:{product_id:number,_token: string})=>apiFetch(`/products/${data.product_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
-  showProduct:(data:{product_id:number,_token:string,})=>apiFetch(`/products/${data.product_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
+  showProduct: (data: { product_id: number, _token: string, }) => apiFetch(`/products/${data.product_id}`, { method: 'GET', headers: { Authorization: `Bearer ${data._token}` } }),
+  
+  
   
   //crud Pacientes
   createPatient:(data:{first_name:string,last_name:string,email:string|null,phone:string|null,birth_date:string,gender:string|null,_token:string, commerce_id:number|null})=>apiFetch('/patients',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
@@ -131,6 +133,7 @@ export const Api = {
   updatePatient:(data:{first_name:string,last_name:string,email:string|null,phone:string|null,birth_date:string|null,gender:string|null,patient_id:number,_token: string})=>apiFetch(`/patients/${data.patient_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deletePatient:(data:{patient_id:number,_token: string})=>apiFetch(`/patients/${data.patient_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   showPatient:(data:{patient_id:number,_token:string,})=>apiFetch(`/patients/${data.patient_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
+  deposit: (data: { patient_id: number, _token: string, amount: number, description: string }) => apiFetch(`/patients/${data.patient_id}/deposit`, { method: 'POST', headers: { Authorization: `Bearer ${data._token}` }, body: { amount: data.amount, description: data.description } }),
   
   //crud  plantillas de registro
   createRecordTemplate:(data:{name:string,fields:object,_token:string})=>apiFetch('/record-templates',{method:'POST',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
@@ -158,8 +161,137 @@ export const Api = {
   readAppointments:(data:{_token:string,query:Record<string, string>})=>apiFetch(`/appointments`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`},query:data.query}),
   updateAppointment:(data:{start_at:string,end_at:string,status:string|null,commerce_id:number|null,patient_id:number,user_id:number,notes:string|null,name:string|null,description:string|null,_token:string,appointment_id:number})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'PATCH',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
   deleteAppointment:(data:{appointment_id:number,_token: string})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'DELETE',body:data,headers: {Authorization:`Bearer ${data._token}`}}),
-  showAppointment:(data:{appointment_id:number,_token:string,})=>apiFetch(`/appointments/${data.appointment_id}`,{method:'GET',headers: {Authorization:`Bearer ${data._token}`}}),
+  showAppointment: (data: { appointment_id: number, _token: string, }) => apiFetch(`/appointments/${data.appointment_id}`, { method: 'GET', headers: { Authorization: `Bearer ${data._token}` } }),
+  // appointments/ { appointment } / createorden
+  // appointments/orden/{orden}/update
+  //non-working-days resourde
+  //ordenes
+  //crud orders
+  createOrder: (data: {
+    appointment_id: number,
+    subtotal: number,
+    total: number,
+    consultation_fee?: number | null,
+    payment_method?: string | null,
+    folio?: string | null,
+    items?: any | null,
+    status?: string | null,
+    tax_rate?: number | null,
+    discount_type?: string | null,
+    discount_value?: number | null,
+    wallet_amount?: number | null,
+    adjustment_mode?: string | null,
+    adjustment_concept?: string | null,
+    _token: string
+  }) => apiFetch('/orders', {
+    method: 'POST',
+    body: data,
+    headers: { Authorization: `Bearer ${data._token}` }
+  }),
+
+  readOrders: (data: {
+    _token: string,
+    query: Record<string, string>
+  }) => apiFetch(`/orders`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${data._token}` },
+    query: data.query
+  }),
+
+  updateOrder: (data: {
+    order_id: number,
+    appointment_id?: number,
+    subtotal?: number,
+    total?: number,
+    consultation_fee?: number | null,
+    payment_method?: string | null,
+    folio?: string | null,
+    items?: any | null,
+    status?: string | null,
+    tax_rate?: number | null,
+    discount_type?: string | null,
+    discount_value?: number | null,
+    wallet_amount?: number | null,
+    adjustment_mode?: string | null,
+    adjustment_concept?: string | null,
+    _token: string
+  }) => apiFetch(`/orders/${data.order_id}`, {
+    method: 'PATCH',
+    body: data,
+    headers: { Authorization: `Bearer ${data._token}` }
+  }),
+
+  deleteOrder: (data: {
+    order_id: number,
+    _token: string
+  }) => apiFetch(`/orders/${data.order_id}`, {
+    method: 'DELETE',
+    body: data,
+    headers: { Authorization: `Bearer ${data._token}` }
+  }),
+
+  showOrder: (data: {
+    order_id: number,
+    _token: string
+  }) => apiFetch(`/orders/${data.order_id}`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${data._token}` }
+  }),
   
+
+  createNonWorkingDay: (data: {
+  commerce_id?: number | null,
+  user_id?: number | null,
+  type: 'day_off' | 'vacation' | 'sick_leave' | 'other',
+  start_date: string,
+  end_date?: string | null,
+  notes?: string | null,
+  _token: string
+}) => apiFetch('/non-working-days', {
+  method: 'POST',
+  body: data,
+  headers: { Authorization: `Bearer ${data._token}` }
+}),
+
+readNonWorkingDays: (data: {
+  _token: string,
+  query: Record<string, string>
+}) => apiFetch(`/non-working-days`, {
+  method: 'GET',
+  headers: { Authorization: `Bearer ${data._token}` },
+  query: data.query
+}),
+
+updateNonWorkingDay: (data: {
+  non_working_day_id: number,
+  type?: 'day_off' | 'vacation' | 'sick_leave' | 'other',
+  start_date?: string,
+  end_date?: string | null,
+  notes?: string | null,
+  _token: string
+}) => apiFetch(`/non-working-days/${data.non_working_day_id}`, {
+  method: 'PATCH',
+  body: data,
+  headers: { Authorization: `Bearer ${data._token}` }
+}),
+
+deleteNonWorkingDay: (data: {
+  non_working_day_id: number,
+  _token: string
+}) => apiFetch(`/non-working-days/${data.non_working_day_id}`, {
+  method: 'DELETE',
+  body: data,
+  headers: { Authorization: `Bearer ${data._token}` }
+}),
+
+showNonWorkingDay: (data: {
+  non_working_day_id: number,
+  _token: string
+}) => apiFetch(`/non-working-days/${data.non_working_day_id}`, {
+  method: 'GET',
+  headers: { Authorization: `Bearer ${data._token}` }
+}),
+
   //disponibilidad
   availability:(data:{user_id:number,start_at:string,end_at:string,_token:string,})=>apiFetch(`/availability?user_id=${data.user_id}&start_at=${data.start_at}&end_at=${data.end_at}`,{method:'GET'}),
   

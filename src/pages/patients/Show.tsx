@@ -3,6 +3,8 @@ import { useParams } from "@tanstack/react-router";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import type { PatientType } from "../../types";
+import Modal from "../../components/Modal";
+import { useNotificationStore } from "../../store/notification.store";
 
 /**
  * RenderObject imprime objetos JSON en forma de lista. Funciona para "Detalles"
@@ -42,6 +44,25 @@ const ShowPatient = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [saldo, setSaldo] = useState({ amount: 1, description: "-" });
+  const notify = useNotificationStore((state) => state.notify);
+  const handleAddCash = () => {
+    Api.deposit({
+      patient_id: Number(patientId),
+      _token: `${token}`,
+      amount: saldo.amount,
+      description: saldo.description,
+    })
+      .then((res: any) => {
+        setOpenModal(false);
+        setPatient(res.data);
+        notify("success", res.message);
+      })
+      .catch((err) => {
+        console.error("Error al agregar saldo:", err);
+      });
+  };
   useEffect(() => {
     if (!token) {
       setError("No hay sesión activa");
@@ -89,73 +110,124 @@ const ShowPatient = () => {
   }
 
   return (
-    <div className="card neumo">
-      <div className="card-header">
-        <h2 className="text-lg font-semibold">Detalle de paciente</h2>
-        <p className="text-sm text-gray-500">ID: {patient.id}</p>
-      </div>
+    <>
+      <Modal
+        title="Aumentar Saldo"
+        isOpen={openModal}
+        onClosex={() => setOpenModal(false)}
+      >
+        <div className="card">
+          <div className="card-body">
+            <div>
+              <div className="form-group pb-4">
+                <label className="form-label font-semibold pb-2">
+                  Cantidad a agregar
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  value={saldo.amount}
+                  onChange={(e) =>
+                    setSaldo({ ...saldo, amount: Number(e.target.value) })
+                  }
+                  className="input input-sm"
+                  placeholder="Cantidad en $"
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleAddCash}
+                  className="btn btn-sm btn-primary"
+                >
+                  Agregar Saldo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <div className="card neumo">
+        <div className="card-header">
+          <div className="grid grid-cols-2 gap-3">
+            <h2 className="text-lg font-semibold">Información de paciente</h2>
+            <div className="flex jus">
+              <span>
+                Saldo: ${Number(patient.wallet.balance??0).toLocaleString("en-US")}
+              </span>
+              <button
+                className=" ml-2 btn btn-sm btn-info"
+                onClick={() => setOpenModal(true)}
+              >
+                Aumentar
+              </button>
+            </div>
+          </div>
+          {/* <p className="text-sm text-gray-500">ID: {patient.id}</p> */}
+        </div>
 
-      <div className="card-body grid gap-3 grid-cols-1 md:grid-cols-2">
-        <div>
-          <span className="font-semibold">Nombre:</span> {patient.first_name}{" "}
-          {patient.last_name}
-        </div>
-        <div>
-          <span className="font-semibold">Correo:</span>{" "}
-          {patient.email ?? "Sin correo"}
-        </div>
-        <div>
-          <span className="font-semibold">Teléfono:</span>{" "}
-          {patient.phone ?? "Sin teléfono"}
-        </div>
-        <div>
-          <span className="font-semibold">Fecha de nacimiento:</span>{" "}
-          {patient.birth_date
-            ? new Date(patient.birth_date).toLocaleDateString("es-MX", {
-                dateStyle: "medium",
-              })
-            : "Sin fecha"}
-        </div>
-        <div>
-          <span className="font-semibold">Género:</span>{" "}
-          {patient.gender ?? "Sin especificar"}
-        </div>
-        <div>
-          <span className="font-semibold">Comercio asociado:</span>{" "}
-          {patient.commerce_id ?? "No asociado"}
-        </div>
-        <div>
-          <span className="font-semibold">Registrado:</span>{" "}
-          {patient.created_at
-            ? new Date(patient.created_at).toLocaleString("es-MX", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })
-            : "-"}
-        </div>
-        <div>
-          <span className="font-semibold">Última actualización:</span>{" "}
-          {patient.updated_at
-            ? new Date(patient.updated_at).toLocaleString("es-MX", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })
-            : "-"}
-        </div>
+        <div className="card-body grid gap-3 grid-cols-1 md:grid-cols-2">
+          <div>
+            <span className="font-semibold">Nombre:</span> {patient.first_name}{" "}
+            {patient.last_name}
+          </div>
+          <div>
+            <span className="font-semibold">Correo:</span>{" "}
+            {patient.email ?? "Sin correo"}
+          </div>
+          <div>
+            <span className="font-semibold">Teléfono:</span>{" "}
+            {patient.phone ?? "Sin teléfono"}
+          </div>
+          <div>
+            <span className="font-semibold">Fecha de nacimiento:</span>{" "}
+            {patient.birth_date
+              ? new Date(patient.birth_date).toLocaleDateString("es-MX", {
+                  dateStyle: "medium",
+                })
+              : "Sin fecha"}
+          </div>
+          <div>
+            <span className="font-semibold">Género:</span>{" "}
+            {patient.gender ?? "Sin especificar"}
+          </div>
+          {/* <div>
+            <span className="font-semibold">Comercio asociado:</span>{" "}
+            {patient.commerce_id ?? "No asociado"}
+          </div> */}
+          <div>
+            <span className="font-semibold">Registrado:</span>{" "}
+            {patient.created_at
+              ? new Date(patient.created_at).toLocaleString("es-MX", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })
+              : "-"}
+          </div>
+          <div>
+            <span className="font-semibold">Última actualización:</span>{" "}
+            {patient.updated_at
+              ? new Date(patient.updated_at).toLocaleString("es-MX", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })
+              : "-"}
+          </div>
 
-        {/* Detalles bien formateados */}
-        <div className="md:col-span-2 mt-4">
-          <span className="font-semibold text-gray-800 block mb-3 text-lg">
-            Detalles:
-          </span>
-          {patient.data && Object.keys(patient.data).length > 0 ? (
-            <RenderObject obj={patient.data} />
-          ) : (
-            <p className="text-gray-600">Sin datos adicionales</p>
-          )}
+          {/* Detalles bien formateados */}
+          <div className="md:col-span-2 mt-4">
+            <span className="font-semibold text-gray-800 block mb-3 text-lg">
+              Detalles:
+            </span>
+            {patient.data && Object.keys(patient.data).length > 0 ? (
+              <RenderObject obj={patient.data} />
+            ) : (
+              <p className="text-gray-600">Sin datos adicionales</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

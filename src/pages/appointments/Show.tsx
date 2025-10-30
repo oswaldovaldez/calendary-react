@@ -44,7 +44,7 @@ const Show = () => {
       id: appointmentId ?? 0,
       name: appointment?.service?.name || "Servicio de cita",
       price: Number(appointment?.service?.price) || 0,
-      quantity: 1,
+      qty: 1,
       type: "service",
     });
     console.log(

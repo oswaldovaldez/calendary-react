@@ -6,8 +6,8 @@ export type CartItem = {
   id: number | string;
   name: string;
   price: number;
-  quantity: number;
   type: string;
+  qty: number;
 };
 
 export type PaymentMethod = "cash" | "card" | "transfer" | "wallet" | null;
@@ -18,7 +18,7 @@ interface CartState {
   items: CartItem[];
   taxRate: number; // 16 = 16%
   discountType: DiscountType;
-  discountValue: number; // amount or percent depending on discountType
+  discountValue: number; // amount or percent depending on 
 
   // New: adjustment sign and concept
   adjustmentMode: AdjustmentMode; // add => incremento, subtract => descuento
@@ -28,7 +28,7 @@ interface CartState {
   paymentMethod: PaymentMethod;
   folio: string | null;
 
-  addItem: (item: Omit<CartItem, "quantity">, qty?: number) => void;
+  addItem: (item: CartItem) => void;
   removeItem: (id: string | number) => void;
   updateQty: (id: string | number, qty: number) => void;
   editPrice: (id: string | number, price: number) => void;
@@ -66,11 +66,11 @@ export const useCartStore = create<CartState>()(
         if (existing) {
           set({
             items: get().items.map((i) =>
-              i.id === item.id ? { ...i, quantity: i.quantity + qty } : i
+              i.id === item.id ? { ...i, quantity: i.qty + qty } : i
             ),
           });
         } else {
-          set({ items: [...get().items, { ...item, quantity: qty }] });
+          set({ items: [...get().items, { ...item, qty: qty }] });
         }
       },
 
@@ -99,7 +99,7 @@ export const useCartStore = create<CartState>()(
           adjustmentConcept: "",
         }),
 
-      subtotal: () => get().items.reduce((s, i) => s + i.price * i.quantity, 0),
+      subtotal: () => get().items.reduce((s, i) => s + i.price * i.qty, 0),
 
       taxAmount: () => (get().subtotal() * get().taxRate) / 100,
 
@@ -125,7 +125,7 @@ export const useCartStore = create<CartState>()(
         const base = get().subtotal();
         const tax = get().taxAmount();
         const adjustment = get().adjustmentSignedAmount();
-        const discount = get().discountAmount(); // for compatibility if needed (we treat adjustment as primary)
+        // const discount = get().discountAmount(); // for compatibility if needed (we treat adjustment as primary)
         // We will treat "adjustment" (with sign) as the thing affecting total.
         // If adjustmentMode === 'add' => add adjustment; if 'subtract' => subtract adjustment.
         const adj = get().adjustmentMode === "add" ? adjustment : -adjustment;

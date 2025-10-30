@@ -317,3 +317,92 @@ export const RECORD_TYPES = [
   { value: "reporte", label: "Reporte o bitácora" },
   { value: "otro", label: "Otro tipo de registro" },
 ];
+
+
+
+
+// Order Types
+export interface OrderType {
+  id?: number;
+  appointment_id: number;
+  appointment?: AppointmentType;
+  subtotal: string | number;
+  total: string | number;
+  consultation_fee: string | number;
+  payment_method: string | null;
+  folio: string | null;
+  items: OrderItemType[] | null;
+  status: string | null;
+  tax_rate: number;
+  discount_type: string | null;
+  discount_value: string | number;
+  wallet_amount: string | number;
+  adjustment_mode: string | null;
+  adjustment_concept: string | null;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: Date | null;
+}
+
+export interface OrderItemType {
+  id?: number;
+  product_id?: number;
+  service_id?: number;
+  name: string;
+  quantity: number;
+  price: string | number;
+  subtotal: string | number;
+  discount?: string | number;
+  type?: 'product' | 'service';
+}
+
+// NonWorkingDay Types
+export interface NonWorkingDayType {
+  id?: number;
+  commerce_id: number | null;
+  commerce?: CommerceType;
+  user_id: number | null;
+  user?: UserType;
+  type: 'day_off' | 'vacation' | 'sick_leave' | 'other';
+  start_date: string;
+  end_date: string | null;
+  notes: string | null;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: Date | null;
+}
+
+// Constantes para NonWorkingDay
+export const NON_WORKING_DAY_TYPES: Record<string, string> = {
+  day_off: "Día libre",
+  vacation: "Vacaciones",
+  sick_leave: "Incapacidad médica",
+  other: "Otro"
+};
+
+// Constantes para Order
+export const ORDER_STATUS: Record<string, string> = {
+  pending: "Pendiente",
+  paid: "Pagado",
+  partial: "Pago parcial",
+  cancelled: "Cancelado",
+  refunded: "Reembolsado"
+};
+
+export const PAYMENT_METHODS: Record<string, string> = {
+  cash: "Efectivo",
+  card: "Tarjeta",
+  transfer: "Transferencia",
+  wallet: "Monedero",
+  mixed: "Mixto"
+};
+
+export const DISCOUNT_TYPES: Record<string, string> = {
+  percentage: "Porcentaje",
+  fixed: "Cantidad fija"
+};
+
+export const ADJUSTMENT_MODES: Record<string, string> = {
+  increase: "Incremento",
+  decrease: "Descuento"
+};

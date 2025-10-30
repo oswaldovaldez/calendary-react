@@ -57,7 +57,7 @@ export const productSchema = Yup.object({
 
 interface FormProductProps {
   initialValues: ProductType;
-  categories: { id: number; name: string; procuct: boolean }[];
+  categories: any[];
   isEdit?: boolean;
   onSubmit: (
     values: ProductType,
@@ -106,7 +106,7 @@ const FormProduct: React.FC<FormProductProps> = ({
                 <div className="md:columns-3 gap-3">
                   {categories.length > 0 ? (
                     categories.map(
-                      (category) =>
+                      (category: any) =>
                         category.product && (
                           <div key={category.id} className="form-checkbox">
                             <label className="flex items-center space-x-2">
