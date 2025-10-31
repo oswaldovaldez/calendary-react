@@ -175,7 +175,6 @@ const Index = () => {
       } else {
         setCurrentDateRange(
           startDate.toLocaleDateString("es-MX", {
-            weekday: "long",
             day: "numeric",
             month: "long",
             year: "numeric",
