@@ -4,12 +4,12 @@ import { useNotificationStore } from "../../store/notification.store";
 
 import FormRecord, { type RecordFormValues } from "./FormRecord";
 
-const CreateRecord = ({ template, onClosex }: any) => {
+const CreateRecord = ({ template, onClosex, patientId }: any) => {
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
 
   const initialValues: RecordFormValues = {
-    patient_id: 0,
+    patient_id: patientId,
     commerce_id: 0,
     record_template_id: null,
     type: null,
@@ -18,8 +18,9 @@ const CreateRecord = ({ template, onClosex }: any) => {
   };
 
   const handleSubmit = async (values: RecordFormValues) => {
+    console.log("Submitting form with values:", values, );
     Api.createRecord({
-      patient_id: Number(values.patient_id),
+      patient_id: Number(patientId),
       commerce_id: Number(values.commerce_id),
       record_template_id: values.record_template_id
         ? Number(values.record_template_id)
@@ -31,7 +32,6 @@ const CreateRecord = ({ template, onClosex }: any) => {
       .then((res) => {
         onClosex(false);
         setTimeout(() => {
-          
           notify("success", res.message);
         }, 100);
       })

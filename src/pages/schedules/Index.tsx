@@ -23,6 +23,16 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
 
   useEffect(() => {
     setQuery({ user_id: userId });
+    if (scheduleArray.length === 0) {
+      Api.readSchedules({
+        _token: `${token}`,
+        query: { user_id: userId },
+      })
+        .then((res: any) => {
+          setSchedules(res.data);
+        })
+        .catch(console.log);
+    }
   }, []);
   // const [search, setSearch] = useState("");
   const handleDeleteSchedule = useCallback(
@@ -59,19 +69,7 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
       handleGetData();
     }
   }, [query]);
-  // const handleSearch = useCallback(
-  //   (queryData: any) => {
-  //     setQuery({ ...query, ...queryData });
-  //   },
-  //   [setQuery]
-  // );
-  // const handlePaginate = useCallback(
-  //   (queryData: any) => {
-  //     setQuery({ ...query, queryData });
-  //   },
-  //   [setQuery]
-  // );
-  // return <>sad</>;
+
   return (
     <div>
       <div className="flex flex-col">

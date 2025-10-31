@@ -9,6 +9,8 @@ import { useAuthStore } from "../../store/auth.store";
 import { type PatientType } from "../../types/index";
 import Modal from "../../components/Modal";
 import { RecordsCreate, RecordsEdit } from ".";
+import { useNotificationStore } from "../../store/notification.store";
+import { showConfirm } from "../../utils/alert";
 
 interface IndexProps {
   patient: PatientType;
@@ -23,6 +25,7 @@ const RecordsIndex = ({ patient }: IndexProps) => {
   // const [query, setQuery] = useState({});
   const token = useAuthStore((s) => s.token);
   const commerce = useAuthStore((s) => s.commerce);
+  const notify = useNotificationStore((state) => state.notify);
 
   useEffect(() => {
     setRecords(patient.records || []);
@@ -35,95 +38,19 @@ const RecordsIndex = ({ patient }: IndexProps) => {
       })
       .catch(console.log);
   }, []);
-  // const handleDeleteRecord = (id: number) => {
-  //   Api.deleteRecord({ record_id: id, _token: `${token}` })
-  //     .then((res) => {
-  //       notify("success", res.message);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       notify("error", "Algo salió mal ❌");
-  //     });
-  // };
-  // const createLink = {
-  //   url: "/records/create",
-  //   name: "Nuevo Expediente",
-  // };
-  // const cols = [
-  //   {
-  //     accessorKey: "id",
-  //     header: "ID",
-  //   },
-  //   { accessorKey: "name", header: "Nombre" },
-  //   {
-  //     // Nueva columna para las acciones
-  //     header: "Acciones",
-  //     cell: (info: any) => (
-  //       <div className="flex gap-2">
-  //         {/* Botón para ver registro */}
-  //         <Link
-  //           to={`/records/${info.row.original.id}`}
-  //           className="btn neumo btn-info"
-  //         >
-  //           Ver
-  //         </Link>
-  //         {/* Botón para editar */}
-  //         <Link
-  //           to={`/records/${info.row.original.id}/edit`}
-  //           className="btn neumo btn-warning"
-  //         >
-  //           Editar
-  //         </Link>
-  //         {/* Botón para eliminar (puede ser un botón con un evento onClick) */}
-  //         <button
-  //           onClick={() =>
-  //             showConfirm({
-  //               id: info.row.original.id ?? 0,
-  //               handleConfirm: handleDeleteRecord,
-  //               title: "Eliminar registro",
-  //               message: `¿Deseas eliminar el registro <strong>${info.row.original.name}</strong>?`,
-  //               successText: `El registro <strong>${info.row.original.name}</strong> se eliminó correctamente.`,
-  //               errorText: `No se pudo eliminar el registro <strong>${info.row.original.name}</strong>. Intenta de nuevo.`,
-  //             })
-  //           }
-  //           className="btn neumo btn-danger"
-  //         >
-  //           Eliminar
-  //         </button>
-  //       </div>
-  //     ),
-  //   },
-  // ];
-  // useEffect(() => {
-  //   Api.readRecords({
-  //     _token: `${token}`,
-  //     query: { commerce_id: `${commerce?.id}`, patient_id: `${patient.id}` },
-  //   })
-  //     .then((res: any) => {
-  //       setRecords(res);
-  //     })
-  //     .catch(console.log);
-  // }, []);
-  // const handleSearch = (query: any) => {
-  //   Api.readRecords({
-  //     _token: `${token}`,
-  //     query: { ...query, commerce_id: `${commerce?.id}` },
-  //   })
-  //     .then((res: any) => {
-  //       setRecords(res);
-  //     })
-  //     .catch(console.log);
-  // };
-  // const handlePaginate = (query: any) => {
-  //   Api.readRecords({
-  //     _token: `${token}`,
-  //     query: { ...query, commerce_id: `${commerce?.id}` },
-  //   })
-  //     .then((res: any) => {
-  //       setRecords(res);
-  //     })
-  //     .catch(console.log);
-  // };
+
+  const handdleDelete = (id: number) => {
+    Api.deleteRecord({
+      _token: `${token}`,
+      record_id: id,
+    })
+      .then(() => {
+        setRecords(records.filter((r) => r.id !== id));
+        notify("success", "Registro eliminado correctamente");
+      })
+      .catch(console.log);
+  };
+
   return (
     <div>
       <div className="flex flex-col">
@@ -205,7 +132,16 @@ const RecordsIndex = ({ patient }: IndexProps) => {
                               Editar
                             </button>
                             <button
-                              onClick={() => {}}
+                              onClick={() => {
+                                showConfirm({
+                                  id: row.id ?? 0,
+                                  handleConfirm: handdleDelete,
+                                  title: "Eliminar día no laborable",
+                                  message: `¿Estás seguro de que deseas eliminar este día no laborable? Esta acción no se puede deshacer.`,
+                                  successText: `Registro eliminado correctamente.`,
+                                  errorText: `Error al eliminar el registro.`,
+                                });
+                              }}
                               className="btn neumo btn-danger"
                             >
                               Eliminar
@@ -240,6 +176,7 @@ const RecordsIndex = ({ patient }: IndexProps) => {
       >
         <RecordsCreate
           template={template ?? {}}
+          patientId={patient.id}
           onClosex={() => {
             setOpenCreate(false);
           }}

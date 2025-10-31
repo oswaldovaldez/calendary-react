@@ -28,6 +28,9 @@ import {
   ProductsIndex,
   ProductsShow,
 } from "../pages/products/index.ts";
+
+import { OrdersCreate,OrdersEdit,OrdersIndex,OrdersShow} from "../pages/orders/index.ts";
+
 import CartView from "../pages/appointments/CartView.tsx";
 // import {
 //   RecordsCreate,
@@ -126,6 +129,46 @@ const routeTree = rootRoute.addChildren([
     component: () => (
       <RouteGuard permission="users.edit">
         <UsersEdit />
+      </RouteGuard>
+    ),
+  }),
+
+  //ordenes
+  new Route({
+    getParentRoute: () => rootRoute,
+    path: "/orders",
+    component: () => (
+      <RouteGuard permission="categories.view">
+        <OrdersIndex />
+      </RouteGuard>
+    ),
+  }),
+  new Route({
+    getParentRoute: () => rootRoute,
+    path: "/orders/create",
+    component: () => (
+      <RouteGuard permission="categories.create">
+        <OrdersCreate />
+      </RouteGuard>
+    ),
+  }),
+
+  new Route({
+    getParentRoute: () => rootRoute,
+    path: "/orders/$orderId",
+    component: () => (
+      <RouteGuard permission="categories.view">
+        <OrdersShow />
+      </RouteGuard>
+    ),
+  }),
+
+  new Route({
+    getParentRoute: () => rootRoute,
+    path: "/orders/$orderId/edit",
+    component: () => (
+      <RouteGuard permission="categories.edit">
+        <OrdersEdit />
       </RouteGuard>
     ),
   }),

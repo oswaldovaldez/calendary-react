@@ -5,7 +5,7 @@ import {
   Mail,
   CalendarDays,
   Building2,
-  Lock,
+  // Lock,
 } from "lucide-react";
 // Palette,
 // Bell,
@@ -14,13 +14,15 @@ import UserServicesComponent from "../components/UserServicesComponent";
 import { Api } from "../services/api";
 import { useNotificationStore } from "../store/notification.store";
 import { Link } from "@tanstack/react-router";
+import { NonWorkingDaysIndex } from "./on-working-days";
+import { SchedulesIndex } from "./schedules";
 
 const Profile: React.FC = () => {
   const user = useAuthStore((s) => s.user);
   // const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // const [currentPassword, setCurrentPassword] = useState("");
+  // const [newPassword, setNewPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
   const [services, setServices] = useState([]);
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
@@ -55,10 +57,10 @@ const Profile: React.FC = () => {
     );
   }
 
-  const handleChangePassword = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log({ currentPassword, newPassword, confirmPassword });
-  };
+  // const handleChangePassword = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   console.log({ currentPassword, newPassword, confirmPassword });
+  // };
 
   // const iconClass =
   //   "text-[var(--color-primary)] dark:text-[hsl(145,85%,85%)] dark:drop-shadow-[0_0_4px_rgba(255,255,255,0.4)]";
@@ -154,7 +156,7 @@ const Profile: React.FC = () => {
           </div>
 
           {/* CAMBIO DE CONTRASEÑA */}
-          <div className="card p-6">
+          {/* <div className="card p-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
               <Lock size={20}  />
               Cambiar Contraseña
@@ -208,7 +210,7 @@ const Profile: React.FC = () => {
                 </button>
               </div>
             </form>
-          </div>
+          </div> */}
         </div>
 
         {/* COLUMNA DERECHA */}
@@ -298,6 +300,25 @@ const Profile: React.FC = () => {
         services={services}
         handleOnSubmit={syncService}
       />
+      <div className="card neumo mt-4">
+                <div className="card-header">
+                  <h3>Horarios</h3>
+                </div>
+                <div className="card-body">
+                  <SchedulesIndex
+                    userId={user.id}
+                    scheduleArray={user.schedules??[]}
+                  />
+                </div>
+              </div>
+      <div className="card">
+              <div className="card-header">
+                <h2> Dias No Laborables</h2>
+              </div>
+              <div className="card-body">
+                <NonWorkingDaysIndex userId={user.id} />
+              </div>
+            </div>
     </main>
   );
 };

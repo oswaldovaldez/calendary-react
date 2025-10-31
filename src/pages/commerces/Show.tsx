@@ -105,27 +105,27 @@ const ShowCommerce = () => {
             <span className="font-semibold">Nombre:</span> {commerce.name}
           </div>
           <div>
-            <span className="font-semibold">Descripción:</span>{" "}
+            <span className="font-semibold">Descripción:</span>
             {commerce.description ?? "Sin descripción"}
           </div>
           <div>
-            <span className="font-semibold">Email:</span>{" "}
+            <span className="font-semibold">Email:</span>
             {commerce.email ?? "Sin email"}
           </div>
           <div>
-            <span className="font-semibold">Teléfono:</span>{" "}
+            <span className="font-semibold">Teléfono:</span>
             {commerce.phone ?? "Sin teléfono"}
           </div>
           <div>
-            <span className="font-semibold">Dirección:</span>{" "}
+            <span className="font-semibold">Dirección:</span>
             {commerce.address ?? "Sin dirección"}
           </div>
           {/* <div>
-            <span className="font-semibold">Slug:</span>{" "}
+            <span className="font-semibold">Slug:</span>
             {commerce.slug ?? "Sin slug"}
           </div> */}
           <div>
-            <span className="font-semibold">Imagen:</span>{" "}
+            <span className="font-semibold">Imagen:</span>
             {commerce.image ? (
               <img
                 src={commerce.image}

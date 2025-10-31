@@ -31,5 +31,4 @@ export default App
  * - mensaje de erroes en todos los formularios pendiente a mejorar
  * - formulario de orden de cita 99%
  * - otros puntos del dashboard
- * - crear tabla de dias de asueto en el backend 100% y formulario para gestionarlo
 */

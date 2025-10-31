@@ -76,7 +76,7 @@ const ShowProduct = () => {
           <span className="font-semibold">Marca:</span> {product.brand ?? "-"}
         </div>
         <div>
-          <span className="font-semibold">Formato:</span>{" "}
+          <span className="font-semibold">Formato:</span>
           {product.format ?? "-"}
         </div>
         <div>
@@ -99,23 +99,23 @@ const ShowProduct = () => {
           <span className="font-semibold">Stock:</span> {product.stock}
         </div>
         <div>
-          <span className="font-semibold">Alerta de stock:</span>{" "}
+          <span className="font-semibold">Alerta de stock:</span>
           {product.stock_alert}
         </div>
         <div>
-          <span className="font-semibold">Activo:</span>{" "}
+          <span className="font-semibold">Activo:</span>
           {product.active ? "Sí" : "No"}
         </div>
         <div>
-          <span className="font-semibold">Estatus:</span>{" "}
+          <span className="font-semibold">Estatus:</span>
           {product.status ? "Publicado" : "No publicado"}
         </div>
         <div className="md:col-span-2">
-          <span className="font-semibold">Descripción:</span>{" "}
+          <span className="font-semibold">Descripción:</span>
           {product.description || "Sin descripción"}
         </div>
         <div>
-          <span className="font-semibold">Creado:</span>{" "}
+          <span className="font-semibold">Creado:</span>
           {product.created_at
             ? new Date(product.created_at).toLocaleString("es-MX", {
                 dateStyle: "medium",
@@ -124,7 +124,7 @@ const ShowProduct = () => {
             : "-"}
         </div>
         <div>
-          <span className="font-semibold">Última actualización:</span>{" "}
+          <span className="font-semibold">Última actualización:</span>
           {product.updated_at
             ? new Date(product.updated_at).toLocaleString("es-MX", {
                 dateStyle: "medium",
@@ -135,7 +135,7 @@ const ShowProduct = () => {
 
         {/* Solo el nombre de la categoría */}
         <div className="md:col-span-2 mt-4">
-          <span className="font-semibold">Categorías:</span>{" "}
+          <span className="font-semibold">Categorías:</span>
           {product.categories?.length === 0
             ? "Sin categoría"
             : product.categories

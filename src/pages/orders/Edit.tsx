@@ -20,7 +20,7 @@ const EditOrder = () => {
     payment_method: "",
     folio: "",
     status: "",
-    tax_rate: 16,
+    tax_rate: 0,
     discount_type: "",
     discount_value: 0,
     wallet_amount: 0,
@@ -38,7 +38,7 @@ const EditOrder = () => {
       order_id: orderId,
     })
       .then((res) => {
-        notify("success", res.message ||"Orden actualizada correctamente");
+        notify("success", res.message || "Orden actualizada correctamente");
         navigate({ to: "/orders" });
       })
       .catch((error: any) => {
@@ -63,7 +63,7 @@ const EditOrder = () => {
           payment_method: res.payment_method || "",
           folio: res.folio || "",
           status: res.status || "",
-          tax_rate: res.tax_rate || 16,
+          tax_rate: res.tax_rate || 0,
           discount_type: res.discount_type || "",
           discount_value: Number(res.discount_value),
           wallet_amount: Number(res.wallet_amount),

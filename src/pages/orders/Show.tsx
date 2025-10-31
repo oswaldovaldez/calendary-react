@@ -75,17 +75,17 @@ const ShowOrder = () => {
           <span className="font-semibold">ID:</span> {order.id}
         </div>
         <div>
-          <span className="font-semibold">Folio:</span>{" "}
+          <span className="font-semibold">Folio:</span>
           {order.folio || "Sin folio"}
         </div>
         <div>
-          <span className="font-semibold">Paciente:</span>{" "}
+          <span className="font-semibold">Paciente:</span>
           {patient
             ? `${patient.first_name} ${patient.last_name}`
             : "No disponible"}
         </div>
         <div>
-          <span className="font-semibold">Estado:</span>{" "}
+          <span className="font-semibold">Estado:</span>
           {order.status || "Sin estado"}
         </div>
         <div>
@@ -101,11 +101,11 @@ const ShowOrder = () => {
           {Number(order.consultation_fee).toFixed(2)}
         </div>
         <div>
-          <span className="font-semibold">Método de pago:</span>{" "}
+          <span className="font-semibold">Método de pago:</span>
           {order.payment_method || "N/A"}
         </div>
         <div>
-          <span className="font-semibold">Tasa de impuesto:</span>{" "}
+          <span className="font-semibold">Tasa de impuesto:</span>
           {order.tax_rate}%
         </div>
         <div>
@@ -118,11 +118,11 @@ const ShowOrder = () => {
           {Number(order.wallet_amount).toFixed(2)}
         </div>
         <div>
-          <span className="font-semibold">Ajuste:</span>{" "}
+          <span className="font-semibold">Ajuste:</span>
           {order.adjustment_concept || "Sin ajuste"}
         </div>
         <div className="md:col-span-2">
-          <span className="font-semibold">Orden Creada:</span>{" "}
+          <span className="font-semibold">Orden Creada:</span>
           {order.created_at
             ? new Date(order.created_at).toLocaleString("es-MX", {
                 dateStyle: "medium",
@@ -142,7 +142,7 @@ const ShowOrder = () => {
                   <th className="text-left p-2">Nombre</th>
                   <th className="text-right p-2">Cantidad</th>
                   <th className="text-right p-2">Precio</th>
-                  <th className="text-right p-2">Subtotal</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -153,9 +153,7 @@ const ShowOrder = () => {
                     <td className="text-right p-2">
                       ${Number(item.price).toFixed(2)}
                     </td>
-                    <td className="text-right p-2">
-                      ${Number(item.subtotal).toFixed(2)}
-                    </td>
+                    
                   </tr>
                 ))}
               </tbody>

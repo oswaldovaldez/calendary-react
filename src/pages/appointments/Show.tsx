@@ -157,7 +157,7 @@ const Show = () => {
               <div className="flex items-center gap-1.5">
                 <Clock size={16} className={iconClass} />
                 <span className="font-medium">
-                  {formatTime(appointment.start_at)} –{" "}
+                  {formatTime(appointment.start_at)} –
                   {formatTime(appointment.end_at)}
                 </span>
               </div>
@@ -192,11 +192,11 @@ const Show = () => {
               <h2 className="font-semibold text-lg">Paciente</h2>
             </div>
             <p>
-              <strong>Nombre:</strong> {appointment.patient?.first_name}{" "}
+              <strong>Nombre:</strong> {appointment.patient?.first_name}
               {appointment.patient?.last_name}
             </p>
             <p>
-              <strong>Saldo a favor:</strong>{" "}
+              <strong>Saldo a favor:</strong>
               {appointment.patient?.wallet?.balance ?? 0}
             </p>
             <p>
@@ -207,14 +207,14 @@ const Show = () => {
             </p>
             {appointment.patient?.birth_date && (
               <p>
-                <strong>Edad:</strong>{" "}
+                <strong>Edad:</strong>
                 {new Date().getFullYear() -
-                  new Date(appointment.patient.birth_date).getFullYear()}{" "}
+                  new Date(appointment.patient.birth_date).getFullYear()}
                 años
               </p>
             )}
             <p>
-              <strong>Tipo de sangre:</strong>{" "}
+              <strong>Tipo de sangre:</strong>
               {appointment.patient?.data?.blood_type ?? "No especificado"}
             </p>
 
@@ -238,7 +238,7 @@ const Show = () => {
               <strong>Nombre:</strong> {appointment.service?.name}
             </p>
             <p>
-              <strong>Duración:</strong> {appointment.service?.duration}{" "}
+              <strong>Duración:</strong> {appointment.service?.duration}
               {appointment.service?.duration_type}
             </p>
             <p>

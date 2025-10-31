@@ -12,8 +12,10 @@ import {
   Store,
   Truck,
   User,
+  FilePenLine,
 } from "lucide-react";
 import { RouteGuard } from "./RouteGuard";
+
 
 const links = [
   {
@@ -27,6 +29,12 @@ const links = [
     icon: <CalendarDays />,
     to: "/appointments",
     label: "Citas",
+  },
+  {
+    permission: "categories.view",
+    icon: <FilePenLine />,
+    to: "/orders",
+    label: "Ordenes",
   },
   {
     permission: "categories.view",

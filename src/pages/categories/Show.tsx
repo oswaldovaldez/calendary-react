@@ -70,27 +70,27 @@ const ShowCategory = () => {
           <span className="font-semibold">Nombre:</span> {category.name}
         </div>
         <div>
-          <span className="font-semibold">Descripción:</span>{" "}
+          <span className="font-semibold">Descripción:</span>
           {category.description ?? "Sin descripción"}
         </div>
         <div>
-          <span className="font-semibold">Comercio:</span>{" "}
+          <span className="font-semibold">Comercio:</span>
           {category.commerce_id}
         </div>
         <div>
-          <span className="font-semibold">Categoría padre:</span>{" "}
+          <span className="font-semibold">Categoría padre:</span>
           {category.parent_id ?? "Sin asignar"}
         </div>
         <div>
-          <span className="font-semibold">Estado:</span>{" "}
+          <span className="font-semibold">Estado:</span>
           {category.status ? "Activa" : "Inactiva"}
         </div>
         <div>
-          <span className="font-semibold">Slug:</span>{" "}
+          <span className="font-semibold">Slug:</span>
           {category.slug ?? "Sin slug"}
         </div>
         <div>
-          <span className="font-semibold">Categoría Creada:</span>{" "}
+          <span className="font-semibold">Categoría Creada:</span>
           {category.created_at
             ? new Date(category.created_at).toLocaleString("es-MX", {
                 dateStyle: "medium",
@@ -99,7 +99,7 @@ const ShowCategory = () => {
             : "-"}
         </div>
         <div>
-          <span className="font-semibold">Última actualización:</span>{" "}
+          <span className="font-semibold">Última actualización:</span>
           {category.updated_at
             ? new Date(category.updated_at).toLocaleString("es-MX", {
                 dateStyle: "medium",

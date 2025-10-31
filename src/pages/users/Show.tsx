@@ -7,6 +7,7 @@ import PermissionsComponent from "../../components/PermissionsComponent";
 import { useNotificationStore } from "../../store/notification.store";
 
 import UserServicesComponent from "../../components/UserServicesComponent";
+import { NonWorkingDaysIndex } from "../on-working-days";
 
 const ShowUser = () => {
   const { userId } = useParams({ from: "/users/$userId" });
@@ -123,7 +124,7 @@ const ShowUser = () => {
             <span className="font-semibold">Email:</span> {user.email}
           </div>
           <div>
-            <span className="font-semibold">Roles:</span>{" "}
+            <span className="font-semibold">Roles:</span>
             {Array.isArray(user.roles) && user.roles.length > 0
               ? user.roles
                   .map((r: any) => (typeof r === "string" ? r : r.name))
@@ -131,24 +132,24 @@ const ShowUser = () => {
               : "Sin roles"}
           </div>
           {/* <div>
-					<span className="font-semibold">Permisos:</span>{" "}
+					<span className="font-semibold">Permisos:</span>
 					{Array.isArray(user.permissions) &&
 					user.permissions.length > 0
 						? user.permissions.join(", ")
 						: "Sin permisos"}
 				</div> */}
           <div>
-            <span className="font-semibold">Comercios asignados:</span>{" "}
+            <span className="font-semibold">Comercios asignados:</span>
             {user.commerces?.length
               ? user.commerces.map((c) => c.name).join(", ")
               : "Ninguno"}
           </div>
           <div>
-            <span className="font-semibold">Creado:</span>{" "}
+            <span className="font-semibold">Creado:</span>
             {user.created_at ? String(user.created_at) : "-"}
           </div>
           <div>
-            <span className="font-semibold">Actualizado:</span>{" "}
+            <span className="font-semibold">Actualizado:</span>
             {user.updated_at ? String(user.updated_at) : "-"}
           </div>
         </div>
@@ -163,6 +164,14 @@ const ShowUser = () => {
         services={services}
         handleOnSubmit={syncService}
       />
+      <div className="card">
+        <div className="card-header">
+          <h2> Dias No Laborables</h2>
+        </div>
+        <div className="card-body">
+          <NonWorkingDaysIndex userId={user.id} />
+        </div>
+      </div>
     </>
   );
 };

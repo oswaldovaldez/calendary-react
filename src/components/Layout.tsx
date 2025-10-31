@@ -71,7 +71,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div>
               <UserMenu
-                onProfile={() => console.log("Perfil")}
+                onProfile={() => {}}
                 onLogout={logout}
               />
               <NotificationMenu />

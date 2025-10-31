@@ -153,7 +153,8 @@ const ShowPatient = () => {
             <h2 className="text-lg font-semibold">Información de paciente</h2>
             <div className="flex jus">
               <span>
-                Saldo: ${Number(patient.wallet.balance??0).toLocaleString("en-US")}
+                Saldo: $
+                {Number(patient.wallet.balance ?? 0).toLocaleString("en-US")}
               </span>
               <button
                 className=" ml-2 btn btn-sm btn-info"
@@ -168,19 +169,19 @@ const ShowPatient = () => {
 
         <div className="card-body grid gap-3 grid-cols-1 md:grid-cols-2">
           <div>
-            <span className="font-semibold">Nombre:</span> {patient.first_name}{" "}
+            <span className="font-semibold">Nombre:</span> {patient.first_name}
             {patient.last_name}
           </div>
           <div>
-            <span className="font-semibold">Correo:</span>{" "}
+            <span className="font-semibold">Correo:</span>
             {patient.email ?? "Sin correo"}
           </div>
           <div>
-            <span className="font-semibold">Teléfono:</span>{" "}
+            <span className="font-semibold">Teléfono:</span>
             {patient.phone ?? "Sin teléfono"}
           </div>
           <div>
-            <span className="font-semibold">Fecha de nacimiento:</span>{" "}
+            <span className="font-semibold">Fecha de nacimiento:</span>
             {patient.birth_date
               ? new Date(patient.birth_date).toLocaleDateString("es-MX", {
                   dateStyle: "medium",
@@ -188,15 +189,15 @@ const ShowPatient = () => {
               : "Sin fecha"}
           </div>
           <div>
-            <span className="font-semibold">Género:</span>{" "}
+            <span className="font-semibold">Género:</span>
             {patient.gender ?? "Sin especificar"}
           </div>
           {/* <div>
-            <span className="font-semibold">Comercio asociado:</span>{" "}
+            <span className="font-semibold">Comercio asociado:</span>
             {patient.commerce_id ?? "No asociado"}
           </div> */}
           <div>
-            <span className="font-semibold">Registrado:</span>{" "}
+            <span className="font-semibold">Registrado:</span>
             {patient.created_at
               ? new Date(patient.created_at).toLocaleString("es-MX", {
                   dateStyle: "medium",
@@ -205,7 +206,7 @@ const ShowPatient = () => {
               : "-"}
           </div>
           <div>
-            <span className="font-semibold">Última actualización:</span>{" "}
+            <span className="font-semibold">Última actualización:</span>
             {patient.updated_at
               ? new Date(patient.updated_at).toLocaleString("es-MX", {
                   dateStyle: "medium",

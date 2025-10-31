@@ -65,14 +65,14 @@ const FormOrder: React.FC<FormOrderProps> = ({
   onSubmit,
 }) => {
   const [backendError, setBackendError] = useState<string | null>(null);
-  const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
+  // const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
 
   const handleWrappedSubmit = async (
     values: OrderFormValues,
     helpers: FormikHelpers<OrderFormValues>
   ) => {
     setBackendError(null);
-    setLocalErrors({});
+    // setLocalErrors({});
 
     try {
       await orderSchema.validate(values, { abortEarly: false });
@@ -81,7 +81,7 @@ const FormOrder: React.FC<FormOrderProps> = ({
       validationError.inner.forEach((err: any) => {
         if (err.path) formErrors[err.path] = err.message;
       });
-      setLocalErrors(formErrors);
+      // setLocalErrors(formErrors);
     }
 
     try {
@@ -105,7 +105,7 @@ const FormOrder: React.FC<FormOrderProps> = ({
 
             <div className="card-body grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Appointment ID */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="appointment_id">ID de Cita</label>
                 <Field
                   className={`input input-sm ${localErrors.appointment_id ? "input-invalid" : ""}`}
@@ -118,10 +118,10 @@ const FormOrder: React.FC<FormOrderProps> = ({
                     {localErrors.appointment_id}
                   </div>
                 )}
-              </div>
+              </div> */}
 
               {/* Folio */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="folio">Folio</label>
                 <Field
                   className={`input input-sm ${localErrors.folio ? "input-invalid" : ""}`}
@@ -129,10 +129,10 @@ const FormOrder: React.FC<FormOrderProps> = ({
                   name="folio"
                   placeholder="Folio (opcional)"
                 />
-              </div>
+              </div> */}
 
               {/* Subtotal */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="subtotal">Subtotal</label>
                 <Field
                   className={`input input-sm ${localErrors.subtotal ? "input-invalid" : ""}`}
@@ -146,10 +146,10 @@ const FormOrder: React.FC<FormOrderProps> = ({
                     {localErrors.subtotal}
                   </div>
                 )}
-              </div>
+              </div> */}
 
               {/* Total */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="total">Total</label>
                 <Field
                   className={`input input-sm ${localErrors.total ? "input-invalid" : ""}`}
@@ -161,10 +161,10 @@ const FormOrder: React.FC<FormOrderProps> = ({
                 {localErrors.total && (
                   <div className="form-text-invalid">{localErrors.total}</div>
                 )}
-              </div>
+              </div> */}
 
               {/* Consultation Fee */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="consultation_fee">Costo de Consulta</label>
                 <Field
                   className={`input input-sm`}
@@ -173,7 +173,7 @@ const FormOrder: React.FC<FormOrderProps> = ({
                   name="consultation_fee"
                   placeholder="0.00"
                 />
-              </div>
+              </div> */}
 
               {/* Payment Method */}
               <div className="form-group">
@@ -205,7 +205,7 @@ const FormOrder: React.FC<FormOrderProps> = ({
               </div>
 
               {/* Tax Rate */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="tax_rate">Tasa de Impuesto (%)</label>
                 <Field
                   className="input input-sm"
@@ -213,10 +213,10 @@ const FormOrder: React.FC<FormOrderProps> = ({
                   name="tax_rate"
                   placeholder="16"
                 />
-              </div>
+              </div> */}
 
               {/* Discount Type */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="discount_type">Tipo de Descuento</label>
                 <Field
                   as="select"
@@ -227,10 +227,10 @@ const FormOrder: React.FC<FormOrderProps> = ({
                   <option value="porcentaje">Porcentaje</option>
                   <option value="fijo">Cantidad Fija</option>
                 </Field>
-              </div>
+              </div> */}
 
               {/* Discount Value */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="discount_value">Valor del Descuento</label>
                 <Field
                   className="input input-sm"
@@ -239,10 +239,10 @@ const FormOrder: React.FC<FormOrderProps> = ({
                   name="discount_value"
                   placeholder="0.00"
                 />
-              </div>
+              </div> */}
 
               {/* Wallet Amount */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="wallet_amount">Monto Monedero</label>
                 <Field
                   className="input input-sm"
@@ -251,10 +251,10 @@ const FormOrder: React.FC<FormOrderProps> = ({
                   name="wallet_amount"
                   placeholder="0.00"
                 />
-              </div>
+              </div> */}
 
               {/* Adjustment Concept */}
-              <div className="form-group md:col-span-2">
+              {/* <div className="form-group md:col-span-2">
                 <label htmlFor="adjustment_concept">Concepto de Ajuste</label>
                 <Field
                   className="input input-sm"
@@ -262,7 +262,7 @@ const FormOrder: React.FC<FormOrderProps> = ({
                   name="adjustment_concept"
                   placeholder="Opcional"
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="card-footer">

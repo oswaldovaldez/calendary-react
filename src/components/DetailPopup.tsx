@@ -239,7 +239,7 @@ const DetailPopup: React.FC<DetailPopupProps> = ({
                 {formatDate(event.raw?.start_at || event.start)}
               </div>
               <div className="text-gray-500">
-                {formatTime(event.raw?.start_at || event.start)} -{" "}
+                {formatTime(event.raw?.start_at || event.start)} -
                 {formatTime(event.raw?.end_at || event.end)}
               </div>
             </div>

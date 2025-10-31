@@ -344,7 +344,7 @@ export default function CartView(): React.ReactElement {
             Vaciar carrito
           </button>
 
-          <AppointmentCheckout />
+          <AppointmentCheckout appointmentId={appointmentId} />
         </div>
       </div>
     </>

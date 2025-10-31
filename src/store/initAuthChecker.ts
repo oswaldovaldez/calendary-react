@@ -12,7 +12,7 @@ export const startAuthChecker = () => {
     // Validación cada 5 minutos
     const intervalId = setInterval(() => {
     store.checkToken();
-  }, 30 * 1000);
+  }, 60 * 1000);
 
   // Opcional: limpiar interval si el usuario hace logout
   const unsubscribe = useAuthStore.subscribe((token: any) => {
