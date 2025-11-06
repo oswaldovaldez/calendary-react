@@ -37,7 +37,7 @@ const Index = () => {
   const calendarInstance = useRef<any>(null);
   const [appointments, setAppointments] = useState<AppointmentType[]>([]);
   const [calendars, setCalendars] = useState<any[]>([]);
-  const [viewType, setViewType] = useState("day");
+  const [viewType, setViewType] = useState("month");
   const [currentDateRange, setCurrentDateRange] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [visibleCalendars, setVisibleCalendars] = useState(new Set<string>());
@@ -246,16 +246,6 @@ const Index = () => {
       );
     }
   };
-
-  // const handleViewAllToggle = () => {
-  //   const newShowAll = !showAllCalendars;
-  //   setShowAllCalendars(newShowAll);
-
-  //   if (newShowAll) {
-  //     setVisibleCalendars(new Set(calendars.map((c) => c.id)));
-  //   }
-  // };
-
   const handleDeleteEvent = async (eventId: string) => {
     try {
       // Aquí harías la llamada a tu API
@@ -440,7 +430,14 @@ const Index = () => {
         calendarInstance.current = null;
       }
     };
+  }, []);
+
+  useEffect(() => {
+    if (token && calendarInstance.current) {
+      fetchAppointments(new Date());
+    }
   }, [token]);
+
 
   const getViewDisplayName = () => {
     switch (viewType) {
