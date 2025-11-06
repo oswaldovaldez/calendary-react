@@ -37,7 +37,7 @@ const Index = () => {
   const calendarInstance = useRef<any>(null);
   const [appointments, setAppointments] = useState<AppointmentType[]>([]);
   const [calendars, setCalendars] = useState<any[]>([]);
-  const [viewType, setViewType] = useState("month");
+  const [viewType, setViewType] = useState("day");
   const [currentDateRange, setCurrentDateRange] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [visibleCalendars, setVisibleCalendars] = useState(new Set<string>());
