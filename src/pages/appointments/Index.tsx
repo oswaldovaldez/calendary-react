@@ -24,8 +24,10 @@ import { useSocketStore } from "../../store/socket.store";
 // import { te } from "date-fns/locale";
 
 const getMonthRange = (date: Date) => {
-  const start = new Date(date.getFullYear(), date.getMonth(), 1);
-  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  // const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  // const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  const start = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 2, 0);
   return {
     start_at: start.toISOString().split("T")[0],
     end_at: end.toISOString().split("T")[0],
@@ -155,12 +157,19 @@ const Index = () => {
       }
 
       if (viewType === "month") {
-        setCurrentDateRange(
-          startDate.toLocaleDateString("es-MX", {
-            month: "long",
-            year: "numeric",
-          })
-        );
+         const currentViewDate = calendarInstance.current.getDate(); // <-- Fecha actual visible en el calendario
+         setCurrentDateRange(
+           new Date(currentViewDate).toLocaleDateString("es-MX", {
+             month: "long",
+             year: "numeric",
+           })
+         );
+        // setCurrentDateRange(
+        //   startDate.toLocaleDateString("es-MX", {
+        //     month: "long",
+        //     year: "numeric",
+        //   })
+        // );
       } else if (viewType === "week") {
         setCurrentDateRange(
           `${startDate.toLocaleDateString("es-MX", {
@@ -183,6 +192,8 @@ const Index = () => {
       }
     }
   };
+ 
+
 
   const handleViewChange = (view: string) => {
     setViewType(view);
@@ -437,7 +448,6 @@ const Index = () => {
       fetchAppointments(new Date());
     }
   }, [token]);
-
 
   const getViewDisplayName = () => {
     switch (viewType) {
