@@ -23,6 +23,7 @@ const Edit = () => {
   const [loading, setLoading] = useState(true);
 
   const handleSubmit = async (values: any) => {
+    // console.log('VALUES',values.role);
     Api.updateUser({ ...values, user_id: values.id, _token: `${token}` })
       .then((res) => {
         notify("success", res.message);

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // api.ts
-const API_URL = import.meta.env.API_URL || "https://calendary.grova.mx/api";
+const API_URL = import.meta.env.VITE_API_URL
 import type { Handler } from "@netlify/functions";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE"| "PATCH";

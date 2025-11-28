@@ -29,7 +29,12 @@ import {
   ProductsShow,
 } from "../pages/products/index.ts";
 
-import { OrdersCreate,OrdersEdit,OrdersIndex,OrdersShow} from "../pages/orders/index.ts";
+import {
+  OrdersCreate,
+  OrdersEdit,
+  OrdersIndex,
+  OrdersShow,
+} from "../pages/orders/index.ts";
 
 import CartView from "../pages/appointments/CartView.tsx";
 // import {
@@ -82,9 +87,9 @@ const routeTree = rootRoute.addChildren([
     getParentRoute: () => rootRoute,
     path: "/dashboard",
     component: () => (
-      <RouteGuard permission="dashboard.view">
+      <>
         <Dashboard />
-      </RouteGuard>
+      </>
     ),
   }),
   new Route({

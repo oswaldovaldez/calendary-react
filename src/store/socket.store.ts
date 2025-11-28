@@ -2,6 +2,8 @@ import { io, Socket } from "socket.io-client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+
 export interface NotificationPayload {
   id: string;
   message: string;
@@ -34,7 +36,7 @@ export const useSocketStore = create<SocketState>()(
       connectSocket: (userId: number) => {
         if (get().socket) return;
 
-        const socket = io("https://socket.grova.mx", {
+        const socket = io(SOCKET_URL, {
           transports: ["websocket", "polling"],
           reconnection: true,
           reconnectionAttempts: Infinity,

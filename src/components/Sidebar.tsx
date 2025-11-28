@@ -14,16 +14,16 @@ import {
   User,
   FilePenLine,
 } from "lucide-react";
-import { RouteGuard } from "./RouteGuard";
+import { useAuthStore } from "../store/auth.store";
+// import { RouteGuard } from "./RouteGuard";
 
-
+// {
+//   permission: "",
+//   icon: <LayoutDashboard />,
+//   to: "/dashboard",
+//   label: "Dashboard",
+// },
 const links = [
-  {
-    permission: "dashboard.view",
-    icon: <LayoutDashboard />,
-    to: "/dashboard",
-    label: "Dashboard",
-  },
   {
     permission: "appointments.view",
     icon: <CalendarDays />,
@@ -83,6 +83,20 @@ const links = [
 export function Sidebar() {
   const { isOpen, close } = useSidebarStore();
 
+  const user = useAuthStore((s) => s.user);
+  const role = user?.roles?.[0];
+  const rolePermissions = role?.permissions ?? [];
+  const userPermissions = user?.permissions ?? [];
+
+  const permissions = [...rolePermissions, ...userPermissions].map(
+    (p) => p.name
+  );
+
+  const hasPermission = (perm: string) => {
+    if (role?.name === "superadmin") return true;
+    return permissions.includes(perm);
+  };
+
   const handleLinkClick = () => {
     if (window.innerWidth < 1024) {
       close();
@@ -122,7 +136,7 @@ export function Sidebar() {
         </div>
 
         <nav className="flex flex-col gap-2 p-2 overflow-y-auto">
-          {links.map((l) => (
+          {/* {links.map((l) => (
             <RouteGuard key={l.to} permission={l.permission}>
               <Link
                 key={l.to}
@@ -140,7 +154,43 @@ active:scale-[0.98]"
                 {l.label}
               </Link>
             </RouteGuard>
-          ))}
+          ))} */}
+          <Link
+            key="dashboard"
+            to="/dashboard"
+            onClick={handleLinkClick}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-150 
+hover:bg-[color-mix(in_oklab,var(--color-primary)_15%,transparent)] 
+dark:hover:bg-[color-mix(in_oklab,var(--color-primary)_25%,black)]
+hover:text-[var(--color-primary)] 
+dark:hover:text-[hsl(145,85%,85%)] 
+active:scale-[0.98]"
+            activeProps={{ className: "sidebar-active" }}
+          >
+            <span className="inline-block mr-2 align-middle">
+              <LayoutDashboard />
+            </span>
+            Dashboard
+          </Link>
+          {links
+            .filter((l) => hasPermission(l.permission))
+            .map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                onClick={handleLinkClick}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-150 
+hover:bg-[color-mix(in_oklab,var(--color-primary)_15%,transparent)] 
+dark:hover:bg-[color-mix(in_oklab,var(--color-primary)_25%,black)]
+hover:text-[var(--color-primary)] 
+dark:hover:text-[hsl(145,85%,85%)] 
+active:scale-[0.98]"
+                activeProps={{ className: "sidebar-active" }}
+              >
+                <span className="inline-block mr-2 align-middle">{l.icon}</span>
+                {l.label}
+              </Link>
+            ))}
         </nav>
       </aside>
     </>

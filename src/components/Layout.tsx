@@ -40,8 +40,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const logout = () => {
     Api.logout({ user_id: user.id, _token: `${token}` })
       .then(() => {
-        clearAuth();
         router.navigate({ to: "/" });
+        clearAuth();
       })
       .catch(() => {
         router.navigate({ to: "/" });
@@ -70,10 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </button>
             </div>
             <div>
-              <UserMenu
-                onProfile={() => {}}
-                onLogout={logout}
-              />
+              <UserMenu onProfile={() => {}} onLogout={logout} />
               <NotificationMenu />
               {/* <ThemeSwitch /> */}
               {/* <button onClick={logout} className="ml-2 btn neumo btn-danger">
