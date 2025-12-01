@@ -28,7 +28,7 @@ const EditProduct = () => {
           }),
           Api.readCategories({
             _token: `${token}`,
-            query: { all: "true" },
+            query: { commerce_id: `${commerce?.id}` },
           }),
         ]);
 

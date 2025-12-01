@@ -20,13 +20,14 @@ const Index = React.memo(({ userId, scheduleArray }: any) => {
   const [query, setQuery] = useState({});
   const token = useAuthStore((s) => s.token);
   const notify = useNotificationStore((state) => state.notify);
+  const commerce = useAuthStore((s) => s.commerce);
 
   useEffect(() => {
-    setQuery({ user_id: userId });
+    setQuery({ user_id: userId, commerce_id: `${commerce?.id}` });
     if (scheduleArray.length === 0) {
       Api.readSchedules({
         _token: `${token}`,
-        query: { user_id: userId },
+        query: { user_id: userId, commerce_id: `${commerce?.id}` },
       })
         .then((res: any) => {
           setSchedules(res.data);

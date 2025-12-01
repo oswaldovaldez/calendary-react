@@ -20,7 +20,7 @@ const CreateProduct = () => {
     const fetchCategories = async () => {
       Api.readCategories({
         _token: `${token}`,
-        query: {all:'true'},
+        query: { commerce_id: `${commerce?.id}` },
       })
         .then((response) => {
           setCategories(response ?? []);
