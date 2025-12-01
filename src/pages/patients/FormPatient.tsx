@@ -10,6 +10,8 @@ import * as Yup from "yup";
 import FormRender from "../../components/FormRenderOld";
 import { type PatientType } from "../../types/index";
 import { RecordsIndex } from "../records";
+import { handleApiError } from "../../utils/handleFormErrorApi";
+import ErrorForm from "../../components/ErrorForm";
 
 // export interface PatientType {
 //   first_name: string;
@@ -52,17 +54,28 @@ const FormPatient: React.FC<FormPatientProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
+  const [backendError, setBackendError] = useState<string | null>(null);
+  const handleWrappedSubmit = async (values: any, helpers: any) => {
+    setBackendError(null);
+    try {
+      await onSubmit(values, helpers);
+    } catch (apiError: any) {
+      const formatted = handleApiError(apiError);
+      setBackendError(formatted);
+    }
+  };
   return (
     <>
       <Formik
         initialValues={initialValues}
         validationSchema={patientSchema}
-        onSubmit={onSubmit}
+        onSubmit={handleWrappedSubmit}
         enableReinitialize
       >
         {({ errors, touched, isSubmitting }) => (
           <Form className="form-container">
             <div className="card neumo">
+              <ErrorForm message={backendError} />
               <div className="card-body grid gap-4 grid-cols-1 md:grid-cols-2">
                 {/* Nombre */}
                 <div className="form-group md:col-span-2">

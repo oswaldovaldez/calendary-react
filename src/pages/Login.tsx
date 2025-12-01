@@ -4,6 +4,9 @@ import { useRouter } from "@tanstack/react-router"; // 👈
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import logo from "../assets/logo.png";
+import { useState } from "react";
+import ErrorForm from "../components/ErrorForm";
+import { handleApiError } from "../utils/handleFormErrorApi";
 
 type LoginFormValues = {
   email: string;
@@ -11,6 +14,7 @@ type LoginFormValues = {
 };
 
 function Login() {
+  const [backendError, setBackendError] = useState<string | null>(null);
   const setAuth = useAuthStore((s) => s.setAuth);
 
   const values: LoginFormValues = {
@@ -23,12 +27,16 @@ function Login() {
   });
 
   const handleSubmit = async (values: LoginFormValues) => {
+    setBackendError(null);
     Api.login(values)
       .then((res) => {
         setAuth(res);
         router.navigate({ to: "/dashboard" });
       })
-      .catch(console.error);
+      .catch((apiError: any) => {
+        const formatted = handleApiError(apiError);
+        setBackendError(formatted);
+      });
   };
 
   const router = useRouter();
@@ -37,6 +45,7 @@ function Login() {
     <div className="flex justify-center items-center min-h-screen max-w-lg mx-auto">
       <div className="w-full max-w-md p-6 rounded-2xl shadow-lg">
         <img src={logo} className="w-48 mx-auto" alt="logo" />
+
         <Formik
           initialValues={values}
           validationSchema={loginSchema}
@@ -90,6 +99,7 @@ function Login() {
             </Form>
           )}
         </Formik>
+        <ErrorForm message={backendError} />
       </div>
     </div>
   );

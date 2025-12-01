@@ -4,6 +4,8 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
+import ErrorForm from "../../components/ErrorForm";
+import { handleApiError } from "../../utils/handleFormErrorApi";
 
 export interface NonWorkingDayFormValues {
   commerce_id: number | null;
@@ -41,14 +43,25 @@ const FormNonWorkingDay: React.FC<FormNonWorkingDayProps> = ({
   onSubmit,
   userId,
 }) => {
+  const [backendError, setBackendError] = useState<string | null>(null);
+  const handleWrappedSubmit = async (values: any, helpers: any) => {
+    setBackendError(null);
+    try {
+      await onSubmit(values, helpers);
+    } catch (apiError: any) {
+      const formatted = handleApiError(apiError);
+      setBackendError(formatted);
+    }
+  };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={nonWorkingDaySchema}
-      onSubmit={onSubmit}
+      onSubmit={handleWrappedSubmit}
     >
       {() => (
         <Form className="form-container">
+          <ErrorForm message={backendError} />
           <Field type="hidden" name="commerce_id" />
           <Field type="hidden" name="user_id" value={userId} />
 

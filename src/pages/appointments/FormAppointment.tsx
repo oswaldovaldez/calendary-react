@@ -7,6 +7,8 @@ import { Api } from "../../services/api";
 import { IoIosPersonAdd } from "react-icons/io";
 import Modal from "../../components/Modal";
 import CreatePatient from "../patients/Create";
+import ErrorForm from "../../components/ErrorForm";
+import { handleApiError } from "../../utils/handleFormErrorApi";
 
 export const appointmentSchema = Yup.object({
   first_name: Yup.string().trim().required("El nombre es obligatorio"),
@@ -31,8 +33,20 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
   const [services, setServices] = useState<ServiceType[]>([]);
   const [users, setUsers] = useState<ServiceType[]>([]);
   const [openCreate, setOpenCreate] = useState(false);
+  const [backendError, setBackendError] = useState<string | null>(null);
+
   const setPatient = (patient: PatientType) => {
     setPatients([patient]);
+  };
+
+  const handleSumit = async (values: any, helpers: any) => {
+    setBackendError(null);
+    try {
+      await onSubmit(values, helpers);
+    } catch (apiError: any) {
+      const formatted = handleApiError(apiError);
+      setBackendError(formatted);
+    }
   };
   useEffect(() => {
     if (commerce !== null) {
@@ -64,7 +78,9 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
         },
       })
         .then((res) => setUsers(res))
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [commerce]);
   //validationSchema={appointmentSchema}
@@ -72,11 +88,12 @@ const FormAppointment = ({ initialValues, isEdit = false, onSubmit }: any) => {
     <>
       <Formik
         initialValues={initialValues}
-        onSubmit={onSubmit}
+        onSubmit={handleSumit}
         enableReinitialize
       >
         {({ errors, touched }: any) => (
           <Form className="form-container card">
+            <ErrorForm message={backendError} />
             {/* <Field type="hidden" name="commerce_id" value="scheduled" /> */}
             <div className="card-body grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Nombre */}

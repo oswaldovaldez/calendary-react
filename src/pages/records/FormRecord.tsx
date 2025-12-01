@@ -3,6 +3,9 @@ import type { FormikHelpers } from "formik";
 // import * as Yup from "yup";
 import FormRender from "../../components/FormRenderOld";
 import { RECORD_TYPES } from "../../types";
+import { handleApiError } from "../../utils/handleFormErrorApi";
+import ErrorForm from "../../components/ErrorForm";
+import { useState } from "react";
 
 export interface RecordFormValues {
   patient_id: number;
@@ -51,12 +54,23 @@ const FormRecord: React.FC<FormRecordProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
+  const [backendError, setBackendError] = useState<string | null>(null);
+  const handleWrappedSubmit = async (values: any, helpers: any) => {
+    setBackendError(null);
+    try {
+      await onSubmit(values, helpers);
+    } catch (apiError: any) {
+      const formatted = handleApiError(apiError);
+      setBackendError(formatted);
+    }
+  };
   return (
     <div>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+      <Formik initialValues={initialValues} onSubmit={handleWrappedSubmit}>
         {({ errors, touched, isSubmitting }) => (
           <Form className="form-container">
             <div className="card neumo">
+              <ErrorForm message={backendError} />
               <div className="card-body">
                 {/* Tipo */}
                 <div className="form-group">

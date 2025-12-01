@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import type { ServiceType } from "../../types";
+import ErrorForm from "../../components/ErrorForm";
+import { handleApiError } from "../../utils/handleFormErrorApi";
 
 export interface CategoryOption {
   id: number;
@@ -64,6 +66,7 @@ const FormService: React.FC<FormServiceProps> = ({
   const token = useAuthStore((s) => s.token);
   const commerce = useAuthStore((s) => s.commerce);
   const [categories, setCategories] = useState<CategoryOption[]>([]);
+  const [backendError, setBackendError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!token || !commerce?.id) return;
@@ -82,15 +85,25 @@ const FormService: React.FC<FormServiceProps> = ({
       .catch((err) => console.error("Error cargando categorías:", err));
   }, [token, commerce?.id]);
 
+  const handleWrappedSubmit = async (values: any, helpers: any) => {
+    setBackendError(null);
+    try {
+      await onSubmit(values, helpers);
+    } catch (apiError: any) {
+      const formatted = handleApiError(apiError);
+      setBackendError(formatted);
+    }
+  };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={serviceSchema}
-      onSubmit={onSubmit}
+      onSubmit={handleWrappedSubmit}
       enableReinitialize
     >
       {({ errors, touched, values, isSubmitting }) => (
         <Form className="form-container card">
+          <ErrorForm message={backendError} />
           <div className="card-body grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="form-group md:col-span-2">
               <label htmlFor="name" className="form-label required">

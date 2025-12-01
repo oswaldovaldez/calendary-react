@@ -2,6 +2,9 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { IoTrash } from "react-icons/io5"; // ícono de basura
+import ErrorForm from "../../components/ErrorForm";
+import { handleApiError } from "../../utils/handleFormErrorApi";
+import { useState } from "react";
 
 export interface BreakType {
   start: string;
@@ -47,18 +50,29 @@ const FormSchedule: React.FC<FormScheduleProps> = ({
   onSubmit,
   userId,
 }) => {
+  const [backendError, setBackendError] = useState<string | null>(null);
+  const handleWrappedSubmit = async (values: any, helpers: any) => {
+    setBackendError(null);
+    try {
+      await onSubmit(values, helpers);
+    } catch (apiError: any) {
+      const formatted = handleApiError(apiError);
+      setBackendError(formatted);
+    }
+  };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={scheduleSchema}
-      onSubmit={onSubmit}
+      onSubmit={handleWrappedSubmit}
     >
       {() => (
         <Form className="form-container ">
           {/* comercio_id oculto */}
           <Field type="hidden" name="commerce_id" />
 
-          <div className="">
+          <div className="card">
+            <ErrorForm message={backendError} />
             <div className="card-body">
               {/* Usuario */}
               <Field

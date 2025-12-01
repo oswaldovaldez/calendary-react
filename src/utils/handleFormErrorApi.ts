@@ -11,6 +11,10 @@ export const handleApiError = (error: any): string => {
     return formatted;
   }
 
+  if (typeof error?.message === "string") { 
+    return error?.message ?? "";
+  }
+
   if (error?.response?.data) {
     const data = error.response.data;
     const formatted = Object.values(data.errors || {})

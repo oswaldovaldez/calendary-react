@@ -12,6 +12,8 @@ const Index = () => {
   const [users, setUsers] = useState([]);
   const token = useAuthStore((s) => s.token);
   const commerce = useAuthStore((s) => s.commerce);
+  const _user = useAuthStore((s) => s.user);
+
   const notify = useNotificationStore((state) => state.notify);
   const handleDeleteUser = (id: number) => {
     Api.deleteUser({ user_id: id, _token: `${token}` })
@@ -76,7 +78,10 @@ const Index = () => {
   useEffect(() => {
     Api.readUsers({
       _token: `${token}`,
-      query: { commerce_id: `${commerce?.id}` },
+      query: {
+        commerce_id: `${commerce?.id}`,
+        is_admin: `${_user?.roles?.[0]?.name === "superadmin"}`,
+      },
     })
       .then((res) => {
         setUsers(res);
