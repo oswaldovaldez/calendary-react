@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import type { ProductType } from "../../types";
 import ErrorForm from "../../components/ErrorForm";
 import { handleApiError } from "../../utils/handleFormErrorApi";
+import { useState } from "react";
 
 // category_id: number;
 // export interface ProductFormValues {

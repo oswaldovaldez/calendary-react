@@ -12,6 +12,7 @@ import { type PatientType } from "../../types/index";
 import { RecordsIndex } from "../records";
 import { handleApiError } from "../../utils/handleFormErrorApi";
 import ErrorForm from "../../components/ErrorForm";
+import { useState } from "react";
 
 // export interface PatientType {
 //   first_name: string;
