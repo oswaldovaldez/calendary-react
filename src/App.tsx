@@ -1,22 +1,17 @@
-
 // import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./routes/__root"; // lo armamos con tus rutas
 import { Toaster } from "react-hot-toast";
-import { startAuthChecker } from "./store/initAuthChecker";
+// import { startAuthChecker } from "./store/initAuthChecker";
 //import "react-toastify/dist/ReactToastify.css";
 
 // const queryClient = new QueryClient();
 
-
-
 function App() {
-
-  startAuthChecker();
+  // startAuthChecker();
 
   return (
     <>
-      
       <Toaster position="top-right" reverseOrder={false} />
       <RouterProvider router={router} />
     </>
@@ -25,10 +20,10 @@ function App() {
   );
 }
 
-export default App
+export default App;
 /**
  * Pendientes:
  * - mensaje de erroes en todos los formularios pendiente a mejorar
  * - formulario de orden de cita 99%
  * - otros puntos del dashboard
-*/
+ */
