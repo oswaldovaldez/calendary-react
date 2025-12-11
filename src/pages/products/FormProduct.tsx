@@ -2,9 +2,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 import type { ProductType } from "../../types";
-import ErrorForm from "../../components/ErrorForm";
-import { handleApiError } from "../../utils/handleFormErrorApi";
-import { useState } from "react";
+// import ErrorForm from "../../components/ErrorForm";
+// import { handleApiError } from "../../utils/handleFormErrorApi";
+// import { useState } from "react";
 
 // category_id: number;
 // export interface ProductFormValues {
@@ -74,27 +74,27 @@ const FormProduct: React.FC<FormProductProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
-  const [backendError, setBackendError] = useState<string | null>(null);
-  const handleWrappedSubmit = async (values: any, helpers: any) => {
-    setBackendError(null);
-    try {
-      await onSubmit(values, helpers);
-    } catch (apiError: any) {
-      const formatted = handleApiError(apiError);
-      setBackendError(formatted);
-    }
-  };
+  // const [backendError, setBackendError] = useState<string | null>(null);
+  // const handleWrappedSubmit = async (values: any, helpers: any) => {
+  //   setBackendError(null);
+  //   try {
+  //     await onSubmit(values, helpers);
+  //   } catch (apiError: any) {
+  //     const formatted = handleApiError(apiError);
+  //     setBackendError(formatted);
+  //   }
+  // };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={productSchema}
-      onSubmit={handleWrappedSubmit}
+      onSubmit={onSubmit}
       enableReinitialize
     >
       {({ errors, touched, isSubmitting, setFieldValue }) => (
         <Form className="form-container">
           <div className="card neumo">
-            <ErrorForm message={backendError} />
+            {/* <ErrorForm message={backendError} /> */}
             <div className="card-body md:grid gap-4 grid-cols-1 md:grid-cols-2">
               {/* Nombre */}
               <div className="form-group md:col-span-2">

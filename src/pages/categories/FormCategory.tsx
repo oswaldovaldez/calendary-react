@@ -1,8 +1,8 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Formik, Form, Field, type FormikHelpers } from "formik";
 import * as Yup from "yup";
-import ErrorForm from "../../components/ErrorForm";
-import { handleApiError } from "../../utils/handleFormErrorApi";
+// import ErrorForm from "../../components/ErrorForm";
+// import { handleApiError } from "../../utils/handleFormErrorApi";
 
 export interface CategoryFormValues {
   name: string;
@@ -34,60 +34,61 @@ const FormCategory: React.FC<FormCategoryProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
-  const [backendError, setBackendError] = useState<string | null>(null);
-  const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
+  // const [backendError, setBackendError] = useState<string | null>(null);
+  // const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
 
-  const handleWrappedSubmit = async (
-    values: CategoryFormValues,
-    helpers: FormikHelpers<CategoryFormValues>
-  ) => {
-    setBackendError(null);
-    setLocalErrors({});
+  // const handleWrappedSubmit = async (
+  //   values: CategoryFormValues,
+  //   helpers: FormikHelpers<CategoryFormValues>
+  // ) => {
+  //   setBackendError(null);
+  //   setLocalErrors({});
 
-    // Validación manualmente con Yup
-    try {
-      await categorySchema.validate(values, { abortEarly: false });
-    } catch (validationError: any) {
-      const formErrors: Record<string, string> = {};
-      validationError.inner.forEach((err: any) => {
-        if (err.path) formErrors[err.path] = err.message;
-      });
-      setLocalErrors(formErrors);
-    }
+  //   // Validación manualmente con Yup
+  //   try {
+  //     await categorySchema.validate(values, { abortEarly: false });
+  //   } catch (validationError: any) {
+  //     const formErrors: Record<string, string> = {};
+  //     validationError.inner.forEach((err: any) => {
+  //       if (err.path) formErrors[err.path] = err.message;
+  //     });
+  //     setLocalErrors(formErrors);
+  //   }
 
-    // Siempre intentamos enviar al backend
-    try {
-      await onSubmit(values, helpers);
-    } catch (apiError: any) {
-      const formatted = handleApiError(apiError);
-      setBackendError(formatted);
-    }
-  };
+  //   // Siempre intentamos enviar al backend
+  //   try {
+  //     await onSubmit(values, helpers);
+  //   } catch (apiError: any) {
+  //     const formatted = handleApiError(apiError);
+  //     setBackendError(formatted);
+  //   }
+  // };
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={handleWrappedSubmit}
+      onSubmit={onSubmit}
+      validationSchema={categorySchema}
       enableReinitialize
     >
-      {({ isSubmitting }) => (
+      {({ errors, isSubmitting }) => (
         <div className="card">
           <Form className="form-container">
             {/*Solo errores del backend */}
-            <ErrorForm message={backendError} />
+            {/* <ErrorForm message={backendError} /> */}
 
             <div className="card-body">
               {/* Nombre */}
               <div className="form-group">
                 <label htmlFor="name">Nombre</label>
                 <Field
-                  className={`input input-sm ${localErrors.name ? "input-invalid" : ""}`}
+                  className={`input input-sm ${errors.name ? "input-invalid" : ""}`}
                   type="text"
                   name="name"
                   placeholder="Nombre de la categoría"
                 />
-                {localErrors.name && (
-                  <div className="form-text-invalid">{localErrors.name}</div>
+                {errors.name && (
+                  <div className="form-text-invalid">{errors.name}</div>
                 )}
               </div>
 
@@ -95,15 +96,13 @@ const FormCategory: React.FC<FormCategoryProps> = ({
               <div className="form-group">
                 <label htmlFor="description">Descripción</label>
                 <Field
-                  className={`input input-sm ${localErrors.description ? "input-invalid" : ""}`}
+                  className={`input input-sm ${errors.description ? "input-invalid" : ""}`}
                   type="text"
                   name="description"
                   placeholder="Descripción breve (opcional)"
                 />
-                {localErrors.description && (
-                  <div className="form-text-invalid">
-                    {localErrors.description}
-                  </div>
+                {errors.description && (
+                  <div className="form-text-invalid">{errors.description}</div>
                 )}
               </div>
               {/* Servicio */}

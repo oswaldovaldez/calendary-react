@@ -4,8 +4,8 @@ import * as Yup from "yup";
 import { Api } from "../../services/api";
 import { useAuthStore } from "../../store/auth.store";
 import type { ServiceType } from "../../types";
-import ErrorForm from "../../components/ErrorForm";
-import { handleApiError } from "../../utils/handleFormErrorApi";
+// import ErrorForm from "../../components/ErrorForm";
+// import { handleApiError } from "../../utils/handleFormErrorApi";
 
 export interface CategoryOption {
   id: number;
@@ -40,13 +40,12 @@ export const serviceSchema = Yup.object({
     then: (schema) =>
       schema
         .required("Debes indicar el número de sesiones")
-        .min(1, "Debe ser al menos 1"),
+        .min(0, "Debe ser al menos 1"),
     otherwise: (schema) => schema.notRequired(),
   }),
   home_service: Yup.boolean(),
   start_offer_at: Yup.string().nullable(),
   end_offer_at: Yup.string().nullable(),
-  _token: Yup.string().required(),
 });
 
 interface FormServiceProps {
@@ -66,7 +65,7 @@ const FormService: React.FC<FormServiceProps> = ({
   const token = useAuthStore((s) => s.token);
   const commerce = useAuthStore((s) => s.commerce);
   const [categories, setCategories] = useState<CategoryOption[]>([]);
-  const [backendError, setBackendError] = useState<string | null>(null);
+  // const [backendError, setBackendError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!token || !commerce?.id) return;
@@ -85,25 +84,27 @@ const FormService: React.FC<FormServiceProps> = ({
       .catch((err) => console.error("Error cargando categorías:", err));
   }, [token, commerce?.id]);
 
-  const handleWrappedSubmit = async (values: any, helpers: any) => {
-    setBackendError(null);
-    try {
-      await onSubmit(values, helpers);
-    } catch (apiError: any) {
-      const formatted = handleApiError(apiError);
-      setBackendError(formatted);
-    }
-  };
+  // const handleWrappedSubmit = async (values: any, helpers: any) => {
+  //   console.log("handlesubmit");
+  //   setBackendError(null);
+  //   try {
+  //     await onSubmit(values, helpers);
+  //   } catch (apiError: any) {
+  //     console.log(apiError);
+  //     const formatted = handleApiError(apiError);
+  //     setBackendError(formatted);
+  //   }
+  // };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={serviceSchema}
-      onSubmit={handleWrappedSubmit}
+      onSubmit={onSubmit}
       enableReinitialize
     >
-      {({ errors, touched, values, isSubmitting }) => (
+      {({ errors, touched, values }) => (
         <Form className="form-container card">
-          <ErrorForm message={backendError} />
+          {/* <ErrorForm message={backendError} /> */}
           <div className="card-body grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="form-group md:col-span-2">
               <label htmlFor="name" className="form-label required">
@@ -365,11 +366,7 @@ const FormService: React.FC<FormServiceProps> = ({
           </div>
 
           <div className="card-footer flex justify-end mt-6">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isSubmitting}
-            >
+            <button type="submit" className="btn btn-primary">
               {isEdit ? "Actualizar" : "Registrar"}
             </button>
           </div>

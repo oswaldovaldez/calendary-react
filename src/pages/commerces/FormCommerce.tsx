@@ -3,9 +3,9 @@ import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 import FormRender from "../../components/FormRenderOld";
 import { type CommerceType } from "../../types/index";
-import { useState } from "react";
-import { handleApiError } from "../../utils/handleFormErrorApi";
-import ErrorForm from "../../components/ErrorForm";
+// import { useState } from "react";
+// import { handleApiError } from "../../utils/handleFormErrorApi";
+// import ErrorForm from "../../components/ErrorForm";
 
 export const commerceSchema = Yup.object({
   name: Yup.string()
@@ -38,27 +38,27 @@ const FormCommerce: React.FC<FormCommerceProps> = ({
   isEdit = false,
   onSubmit,
 }) => {
-  const [backendError, setBackendError] = useState<string | null>(null);
-  const handleWrappedSubmit = async (values: any, helpers: any) => {
-    setBackendError(null);
-    try {
-      await onSubmit(values, helpers);
-    } catch (apiError: any) {
-      const formatted = handleApiError(apiError);
-      setBackendError(formatted);
-    }
-  };
+  // const [backendError, setBackendError] = useState<string | null>(null);
+  // const handleWrappedSubmit = async (values: any, helpers: any) => {
+  //   setBackendError(null);
+  //   try {
+  //     await onSubmit(values, helpers);
+  //   } catch (apiError: any) {
+  //     const formatted = handleApiError(apiError);
+  //     setBackendError(formatted);
+  //   }
+  // };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={commerceSchema}
-      onSubmit={handleWrappedSubmit}
+      onSubmit={onSubmit}
       enableReinitialize
     >
       {({ errors, touched, isSubmitting }) => (
         <Form className="form-container">
           <div className="card neumo">
-            <ErrorForm message={backendError} />
+            {/* <ErrorForm message={backendError} /> */}
             <div className="card-body grid gap-4 grid-cols-1 md:grid-cols-2">
               {/* Nombre */}
               <div className="form-group md:col-span-2">

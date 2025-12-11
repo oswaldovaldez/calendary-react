@@ -3,35 +3,35 @@ import { userSchema, userSchemaEdit } from "../../schemas/userSchema";
 import FormRender from "../../components/FormRenderOld";
 import { useAuthStore } from "../../store/auth.store";
 import { SchedulesIndex } from "../schedules";
-import { handleApiError } from "../../utils/handleFormErrorApi";
-import ErrorForm from "../../components/ErrorForm";
-import { useState } from "react";
+// import { handleApiError } from "../../utils/handleFormErrorApi";
+// import ErrorForm from "../../components/ErrorForm";
+// import { useState } from "react";
 
 const FormUser = ({ initialValues, isEdit = false, onSubmit }: any) => {
   const rolesStore = useAuthStore((s) => s.roles);
   const roleUser = useAuthStore((s) => s.user.roles[0]);
   const commerce = useAuthStore((s) => s.commerce);
 
-  const [backendError, setBackendError] = useState<string | null>(null);
-  const handleWrappedSubmit = async (values: any, helpers: any) => {
-    setBackendError(null);
-    try {
-      await onSubmit(values, helpers);
-    } catch (apiError: any) {
-      const formatted = handleApiError(apiError);
-      setBackendError(formatted);
-    }
-  };
+  // const [backendError, setBackendError] = useState<string | null>(null);
+  // const handleWrappedSubmit = async (values: any, helpers: any) => {
+  //   setBackendError(null);
+  //   try {
+  //     await onSubmit(values, helpers);
+  //   } catch (apiError: any) {
+  //     const formatted = handleApiError(apiError);
+  //     setBackendError(formatted);
+  //   }
+  // };
   return (
     <div>
       <Formik
         initialValues={initialValues}
         validationSchema={isEdit ? userSchemaEdit : userSchema}
-        onSubmit={handleWrappedSubmit}
+        onSubmit={onSubmit}
       >
         {({ errors, touched, isSubmitting }) => (
           <Form className="form-container">
-            <ErrorForm message={backendError} />
+            {/* <ErrorForm message={backendError} /> */}
             <Field type="hidden" name="commerce_id" value={commerce?.id ?? 0} />
             <div className="card neumo">
               <div className="card-body grid gap-4 grid-cols-1 md:grid-cols-2">
