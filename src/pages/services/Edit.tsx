@@ -25,6 +25,8 @@ const EditService = () => {
   // };
 
   const handleSubmit = async (values: any) => {
+    // console.log(values.categories);
+    // return;
     const payload = {
       name: values.name.trim(),
       description: values.description,
@@ -60,7 +62,17 @@ const EditService = () => {
       service_id: Number(serviceId),
     })
       .then((res: ServiceType) => {
-        setFormData(res);
+        console.log(res);
+        const categories: number[] = res.categories.map((category) => {
+          if (typeof category === "number") {
+            // Si es un número (ID directo), lo devolvemos tal cual.
+            return category;
+          }
+          // Si es un objeto (CategoryType), devolvemos su ID.
+          return category.id;
+        });
+
+        setFormData({ ...res, categories: categories });
         setLoading(false);
       })
       .catch((error) => {
